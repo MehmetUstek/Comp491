@@ -34,7 +34,7 @@ for image in images:
     # src = image.get_attribute('src')
     # print(src)
     # image_list.append(src)
-    image_name = "image" + str(index) + ".png"
+    image_name = "images/image" + str(index) + ".png"
     with open(image_name, "wb") as fh:
         fh.write(image.screenshot_as_png)
     image_list.append(image_name)
