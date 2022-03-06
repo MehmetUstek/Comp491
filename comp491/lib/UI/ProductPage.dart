@@ -16,6 +16,7 @@ class _ProductPage extends State<ProductPage> {
   }
 
   double headerSize = 17;
+  double slideItemWidth = 80;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +50,8 @@ class _ProductPage extends State<ProductPage> {
                       child: Text('3000,00 TL',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
                               color: Colors.white)),
                     ),
                   ],
@@ -61,12 +62,66 @@ class _ProductPage extends State<ProductPage> {
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 height: 180,
-                child: Center(
-                  child: Image(image: ),
+                child: SizedBox(
+                  height: 130,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.asset("assets/nike_blazer_mid_77.png",
+                      fit: BoxFit.fitHeight),
                 ),
-
               ),
               const Padding(padding: EdgeInsets.only(top: 25)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                children:  <Widget> [
+                  Container(
+                    width: slideItemWidth,
+                    height: 10,
+                    color: Color(0xffF891A9),
+                  ),
+                  Container(
+                    width: slideItemWidth,
+                    height: 10,
+                    color: Colors.white,
+                  ),
+                  Container(
+                    width: slideItemWidth,
+                    height: 10,
+                    color: Colors.white,
+                  ),
+                  Container(
+                    width: slideItemWidth,
+                    height: 10,
+                    color: Colors.white,
+                  ),
+
+                ],
+              ),
+              const Padding(padding: EdgeInsets.only(top: 40)),
+              const Center(
+                child:
+                SizedBox(
+                  height: 25,
+                  child: Text('Suggestions for you',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18,
+                          color: Colors.white)),
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(top: 30)),
+
+              Container(
+                color: Colors.white,
+                width: MediaQuery.of(context).size.width,
+                height: 165,
+                child: SizedBox(
+                  height: 130,
+                  width: MediaQuery.of(context).size.width,
+
+                ),
+              ),
             ],
           ),
         ),
