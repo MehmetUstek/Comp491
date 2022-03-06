@@ -72,8 +72,7 @@ class _ProductPage extends State<ProductPage> {
               const Padding(padding: EdgeInsets.only(top: 25)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                children:  <Widget> [
+                children: <Widget>[
                   Container(
                     width: slideItemWidth,
                     height: 10,
@@ -94,13 +93,11 @@ class _ProductPage extends State<ProductPage> {
                     height: 10,
                     color: Colors.white,
                   ),
-
                 ],
               ),
               const Padding(padding: EdgeInsets.only(top: 40)),
               const Center(
-                child:
-                SizedBox(
+                child: SizedBox(
                   height: 25,
                   child: Text('Suggestions for you',
                       textAlign: TextAlign.center,
@@ -111,15 +108,176 @@ class _ProductPage extends State<ProductPage> {
                 ),
               ),
               const Padding(padding: EdgeInsets.only(top: 30)),
-
               Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 height: 165,
-                child: SizedBox(
-                  height: 130,
-                  width: MediaQuery.of(context).size.width,
+                child: ListView(
+                  padding: EdgeInsets.only(left: 10),
+                  scrollDirection: Axis.horizontal,
+                  addAutomaticKeepAlives: false,
+                  cacheExtent: 100,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 70,
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: 35,
+                            height: 20,
+                            margin: const EdgeInsets.only( left: 90),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFFB2C4),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text('99%',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 11,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
+                          Image.asset(
+                            "assets/nike_blazer_mid_77.png",
+                            fit: BoxFit.scaleDown,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 5, top: 15),
+                            child: Text('Jordan Delta 2',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                    color: Colors.black)),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 5, top: 10),
+                            child: Text('3000,00 TL',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 13,
+                                    color: Colors.black45)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 30)),
+                    SizedBox(
+                      height: 70,
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // const Padding(padding: EdgeInsets.only(left: 10)),
+                          Container(
+                            width: 35,
+                            height: 20,
+                            margin: const EdgeInsets.only( left: 90),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFFB2C4),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text('99%',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 11,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
+                          Image.asset(
+                            "assets/nike_blazer_mid_77.png",
+                            fit: BoxFit.scaleDown,
+                          ),
 
+                          const Padding(
+                            padding: EdgeInsets.only(left: 5, top: 15),
+                            child: Text('Jordan Delta 2',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                    color: Colors.black)),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 5, top: 10),
+                            child: Text('3000,00 TL',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 13,
+                                    color: Colors.black45)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 30)),
+                    SizedBox(
+                      height: 70,
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // const Padding(padding: EdgeInsets.only(left: 10)),
+                          Container(
+                            width: 35,
+                            height: 20,
+                            margin: const EdgeInsets.only( left: 90),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFFB2C4),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text('99%',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 11,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
+                          Image.asset(
+                            "assets/nike_blazer_mid_77.png",
+                            fit: BoxFit.scaleDown,
+                          ),
+
+                          const Padding(
+                            padding: EdgeInsets.only(left: 5, top: 15),
+                            child: Text('Jordan Delta 2',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
+                                    color: Colors.black)),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 5, top: 10),
+                            child: Text('3000,00 TL',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 13,
+                                    color: Colors.black45)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
