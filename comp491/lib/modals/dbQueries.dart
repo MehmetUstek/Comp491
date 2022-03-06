@@ -1,14 +1,14 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 enum CollectionType { UserCollection }
 
 var db = Db(
-    'mongodb+srv://comp491_admin:XMc3X5OQ7zJO0PSE@cluster0.qqnws.mongodb.net/comp491?retryWrites=true&w=majority');
-// dETjut6S7UhvU3fCXGCidh6LF8B3
+    dotenv.get('MONGODB_URI', fallback: 'API_URL not found'));
 //User
 Future<DbCollection> getUsersCollection() async {
   db = await Db.create(
-      'mongodb+srv://comp491_admin:XMc3X5OQ7zJO0PSE@cluster0.qqnws.mongodb.net/comp491?retryWrites=true&w=majority');
+  dotenv.get('MONGODB_URI', fallback: 'API_URL not found'));
   await db.open();
   final collection = db.collection('Users');
   // db.close();
