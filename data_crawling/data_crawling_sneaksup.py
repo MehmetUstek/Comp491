@@ -6,21 +6,24 @@ import numpy as np
 name_list = []
 image_list = []
 
+
 def write_to_csv(filename, name_list, image_list):
-    stack = np.stack((name_list, image_list), axis=1) 
+    stack = np.stack((name_list, image_list), axis=1)
     print(stack)
     np.savetxt(filename, stack, delimiter=",", fmt="%s")
+
 
 # Crawling part
 driver = webdriver.Chrome()
 
+# SneaksUp
 # # Start the process, wait for website to load.
 driver.get("https://www.adidas.com/us/men-athletic_sneakers")
 sleep(10)
 
-images = driver.find_elements_by_xpath('//*[@id="APL"]/li/a/figure/img')
-names = driver.find_elements_by_xpath('//*[@id="APL"]/li/a/span/h3')
-
+images = driver.find_elements_by_xpath('//*[@id="app"]/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/a/img')
+names = driver.find_elements_by_xpath('//*[@id="app"]/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/a/div/p')
+price = driver.find_elements_by_xpath('//*[@id="app"]/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/div/a/div/div/div[1]')
 
 for name in names:
     text = name.text
@@ -38,7 +41,7 @@ for image in images:
     with open(image_name, "wb") as fh:
         fh.write(image.screenshot_as_png)
     image_list.append(image_name)
-    
+
     index += 1
 
 # i = 0
@@ -53,12 +56,16 @@ for image in images:
 # for index in range(13):
 #     print(index)
 #     body.send_keys(Keys.PAGE_DOWN)
-#     sleep(1) 
+#     sleep(1)
 
 driver.close()
 
 # Put it into csv:
 write_to_csv("data.csv", name_list, image_list)
 
-#kullanici_adi_kutusu.send_keys(kullanici_adi)
-#giris_yap.click()
+# kullanici_adi_kutusu.send_keys(kullanici_adi)
+# giris_yap.click()
+
+
+
+
