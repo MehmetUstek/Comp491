@@ -27,25 +27,31 @@ driver.get("https://www.nike.com/w/mens-shoes-nik1zy7ok")
 sleep(sleep_time)
 
 # images = driver.find_elements_by_xpath('//*[@id="Wall"]/div/div/div/main/section/div/div/div/figure/a/div/div/img')
-names = driver.find_elements_by_css_selector('div.product-card__titles')
-prices = driver.find_elements_by_xpath('//*[@id="Wall"]/div/div/div/main/section/div/div/div/figure/div/div/div/div/div/div[1]')
+# names = driver.find_elements_by_css_selector('div.product-card__titles')
+# prices = driver.find_elements_by_xpath('//*[@id="Wall"]/div/div/div/main/section/div/div/div/figure/div/div/div/div/div/div[1]')
 
-for name in names:
-    text = name.text
-    print(text)
-    name_list.append(text)
-for price in prices:
-    text = price.text
-    print(text)
-    price_list.append(text)
+# for name in names:
+#     text = name.text
+#     print(text)
+#     name_list.append(text)
+# for price in prices:
+#     text = price.text
+#     print(text)
+#     price_list.append(text)
 index = 0
-for name in names:
+for _ in range(588):
     # For scrolling down.
     body = driver.find_element_by_css_selector('body')
     for _ in range(2):
         body.send_keys(Keys.PAGE_DOWN)
         sleep(1)
     sleep(sleep_time-2)
+    name = driver.find_elements_by_css_selector('div.product-card__title')[index].text
+    name_list.append(name)
+    price = driver.find_elements_by_xpath(
+        '//*[@id="Wall"]/div/div/div/main/section/div/div/div/figure/div/div/div/div/div/div[1]')[index].text
+    price_list.append(price)
+
     driver.find_elements(by=By.XPATH, value='//*[@id="Wall"]/div/div/div/main/section/div/div/div/figure/a[2]')[index].click()
     sleep(sleep_time)
     for image_index in range(1, 5):
@@ -66,8 +72,8 @@ for name in names:
     sleep(sleep_time)
 
     # Mid-way data save
-    if (index % 10 == 0):
-        write_to_csv("data.csv", name_list, image_list, price_list)
+    # if (index % 10 == 0):
+    write_to_csv("data.csv", name_list, image_list, price_list)
 
 
 
