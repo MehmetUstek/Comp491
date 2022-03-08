@@ -9,10 +9,11 @@ import numpy as np
 name_list = []
 image_list = []
 price_list = []
+description_list = []
 
-sleep_time = 3
-def write_to_csv(filename, name_list, image_list, price_list):
-    stack = np.stack((name_list, image_list, price_list), axis=1)
+sleep_time = 2
+def write_to_csv(filename, name_list, image_list, price_list, description_list):
+    stack = np.stack((name_list, image_list, price_list,description_list), axis=1)
     print(stack)
     np.savetxt(filename, stack, delimiter=",", fmt="%s")
 
@@ -21,38 +22,29 @@ def write_to_csv(filename, name_list, image_list, price_list):
 driver = webdriver.Chrome()
 driver.set_window_size(700, 1080)
 
-# SneaksUp
 # # Start the process, wait for website to load.
 driver.get("https://www.nike.com/w/mens-shoes-nik1zy7ok")
-sleep(sleep_time)
+# Initial wait
+sleep(sleep_time+20)
 
-# images = driver.find_elements_by_xpath('//*[@id="Wall"]/div/div/div/main/section/div/div/div/figure/a/div/div/img')
-# names = driver.find_elements_by_css_selector('div.product-card__titles')
-# prices = driver.find_elements_by_xpath('//*[@id="Wall"]/div/div/div/main/section/div/div/div/figure/div/div/div/div/div/div[1]')
-
-# for name in names:
-#     text = name.text
-#     print(text)
-#     name_list.append(text)
-# for price in prices:
-#     text = price.text
-#     print(text)
-#     price_list.append(text)
-index = 0
-for _ in range(588):
+for index in range(588):
     # For scrolling down.
-    body = driver.find_element_by_css_selector('body')
+    body = driver.find_element(by=By.CSS_SELECTOR, value='body')
     for _ in range(2):
         body.send_keys(Keys.PAGE_DOWN)
         sleep(1)
     sleep(sleep_time-2)
-    name = driver.find_elements_by_css_selector('div.product-card__title')[index].text
-    name_list.append(name)
-    price = driver.find_elements_by_xpath(
-        '//*[@id="Wall"]/div/div/div/main/section/div/div/div/figure/div/div/div/div/div/div[1]')[index].text
-    price_list.append(price)
-
     driver.find_elements(by=By.XPATH, value='//*[@id="Wall"]/div/div/div/main/section/div/div/div/figure/a[2]')[index].click()
+
+    price = driver.find_element(by=By.XPATH, value=
+        '//*[@id="PDP"]/div/div[3]/div[1]/div/div[2]/div/div/div/div/div').text
+    price_list.append(price)
+    description = driver.find_element(by=By.XPATH, value='//*[@id="PDP"]/div/div[3]/div[1]/div/div[2]/div/h2').text
+    description_list.append(description)
+    name = driver.find_element(by=By.XPATH, value=
+        '//*[@id="pdp_product_title"]').text
+    name_list.append(name)
+
     sleep(sleep_time)
     for image_index in range(1, 5):
         value = '//*[@id="PDP"]/div/div[3]/div[2]/div[1]/div/div/ul/li[' + str(
@@ -72,8 +64,8 @@ for _ in range(588):
     sleep(sleep_time)
 
     # Mid-way data save
-    # if (index % 10 == 0):
-    write_to_csv("data.csv", name_list, image_list, price_list)
+    if (index % 10 == 0):
+        write_to_csv("data.csv", name_list, image_list, price_list)
 
 
 
@@ -81,7 +73,7 @@ for _ in range(588):
 driver.close()
 
 # Put it into csv:
-write_to_csv("data.csv", name_list, image_list, price_list)
+write_to_csv("data.csv", name_list, image_list, price_list, description_list)
 
 
 
