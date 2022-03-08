@@ -5,6 +5,7 @@ from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import numpy as np
+import csv
 
 name_list = []
 image_list = []
@@ -12,10 +13,13 @@ price_list = []
 description_list = []
 
 sleep_time = 2
-def write_to_csv(filename, name_list, image_list, price_list, description_list):
-    stack = np.stack((name_list, image_list, price_list,description_list), axis=1)
-    print(stack)
-    np.savetxt(filename, stack, delimiter=",", fmt="%s")
+
+
+def write_to_csv(filename, name, imageId, price, description):
+
+    with open(filename, 'a', newline='') as fd:
+        writer = csv.writer(fd)
+        writer.writerow([name,imageId, price, description])
 
 
 # Crawling part
@@ -25,9 +29,11 @@ driver.set_window_size(700, 1080)
 # # Start the process, wait for website to load.
 driver.get("https://www.nike.com/w/mens-shoes-nik1zy7ok")
 # Initial wait
-sleep(sleep_time+20)
+sleep(sleep_time+ 10)
 
-for index in range(588):
+for index in range(11,588):
+    if index == 50 or index == 80 or index == 81:
+        continue
     # For scrolling down.
     body = driver.find_element(by=By.CSS_SELECTOR, value='body')
     for _ in range(2):
@@ -60,20 +66,12 @@ for index in range(588):
     imageId = "imageId" + str(index)
     image_list.append(imageId)
     driver.back()
-    index += 1
     sleep(sleep_time)
-
-    # Mid-way data save
-    if (index % 10 == 0):
-        write_to_csv("data.csv", name_list, image_list, price_list)
-
-
-
+    stack = np.stack((name, imageId, price, description))
+    print(stack)
+    write_to_csv("data.csv", name, imageId, price, description)
 
 driver.close()
-
-# Put it into csv:
-write_to_csv("data.csv", name_list, image_list, price_list, description_list)
 
 
 
