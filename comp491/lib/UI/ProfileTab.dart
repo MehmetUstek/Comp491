@@ -2,6 +2,8 @@ import 'package:comp491/UI/profilePage.dart';
 import 'package:flutter/material.dart';
 
 import '../modals/User.dart';
+import '../modals/authentication_service.dart';
+import 'package:provider/provider.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({Key? key, required this.user}) : super(key: key);
@@ -38,6 +40,10 @@ class _ProfileTab extends State<ProfileTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(padding: EdgeInsets.only(top: 100)),
+                ElevatedButton(onPressed: () {
+                  var v = context.read<AuthenticationService>().signOut();
+                  }
+                  ,child: Text("Sign Out"),)
               ],
             ),
           ),
