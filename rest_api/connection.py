@@ -1,6 +1,6 @@
 import pymongo
 import dotenv
-from bson import json_util
+from bson import json_util, objectid
 from flask import Flask, jsonify, request, json
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
@@ -32,7 +32,7 @@ def getUserUIDbyEmail():
 def parse_json(data):
     return json.loads(json_util.dumps(data))
 
-@app.route("/user/getUsernameByUID", methods= ['GET'])
+@app.route("/user/getUsernameByUID", methods= ['GET', 'POST'])
 def getUsernameByUID():
     userUID = request.get_json()['userUID']
     filter = {
@@ -41,7 +41,11 @@ def getUsernameByUID():
     user = users_collection.find_one(filter=filter)
     user = parse_json(user)
 
-    return jsonify(user)
+    return user
+
+
+
+
 
 
 if __name__ == '__main__':

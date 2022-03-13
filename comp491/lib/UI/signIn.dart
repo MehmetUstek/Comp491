@@ -53,16 +53,6 @@ class _SignInState extends State<SignInPage> {
     ],
   );
 
-  // void _emailValid() {
-  //   setState(() {
-  //
-  //   });
-  // }
-  // void _passwordValid() {
-  //   setState(() {
-  //
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

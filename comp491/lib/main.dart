@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'UI/ProductPage.dart';
 import 'UI/ProfileTab.dart';
 import 'modals/User.dart';
+import 'modals/dbQueries.dart';
 
 
 void main() async {
@@ -208,17 +209,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // print(futureFullData);
     // futureHomeContent = fetchHomeContent();
 
-    UserData user = UserData(userUID: userUID!);
-
-    user.initUser(userUID!).then((value) {
-      print(value);
-      print("outside" + user.toString());
-      _user = value;
-
-
-
-      // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    });
+    fetchUser(userUID!).then((value) =>_user = value);
+    // user.initUser(userUID!).then((value) {
+    //   print(value);
+    //   print("outside" + user.toString());
+    //   _user = value;
+    //
+    //
+    //
+    //   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // });
     setState(() {
       // getLocation();
     });

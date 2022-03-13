@@ -28,13 +28,13 @@ driver.set_window_size(700, 970)
 driver.get("https://www.nike.com/w/mens-shoes-nik1zy7ok")
 
 # Initial wait
-sleep(sleep_time+ 10)
+sleep(sleep_time+ 15)
 body = driver.find_element(by=By.CSS_SELECTOR, value='body')
-for _ in range(150):
+for _ in range(200):
     body.send_keys(Keys.PAGE_DOWN)
     sleep(0.4)
 
-for index in range(288,588):
+for index in range(553,588):
     # For scrolling down.
     sleep(sleep_time*1.5)
 

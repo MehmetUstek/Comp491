@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../modals/User.dart';
 
 class ProfileTab extends StatefulWidget {
-  ProfileTab({Key? key, required this.user}) : super(key: key);
+  const ProfileTab({Key? key, required this.user}) : super(key: key);
   final UserData? user;
 
   @override

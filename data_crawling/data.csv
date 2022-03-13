@@ -229,7 +229,7 @@ Nike Air Max Goadome SE,imageId231,$180,Men's Boots
 Nike Pegasus Trail 3,imageId232,$130,Men's Trail Running Shoes
 Nike Phantom GT2 Academy MG,imageId233,$80,Multi-Ground Soccer Cleat
 Nike Air Zoom SuperRep 2,imageId234,$120,Men's HIIT Class Shoes
-Nike Blazer Mid ’77 Vintage By You,imageId235,$120,Custom Shoe
+Nike Blazer Mid ï¿½77 Vintage By You,imageId235,$120,Custom Shoe
 Nike Force Savage Elite 2,imageId236,$140,Men's Football Cleats
 Nike Quest 3,imageId237,$63.97,Men's Road Running Shoes
 Nike Air Max Plus SE,imageId238,$185,Men's Shoes
@@ -261,7 +261,7 @@ Nike React Live By You,imageId264,$120,Custom Men's Shoes
 Nike Mercurial Superfly 8 Academy MG,imageId265,$85,Multi-Ground Soccer Cleats
 Nike Flex Run 2021,imageId266,$80,Men's Road Running Shoes
 Nike Air Max 95,imageId267,$175,Men's Shoes
-Nike Blazer Mid ’77 Vintage By You,imageId268,$120,Custom Shoe
+Nike Blazer Mid ï¿½77 Vintage By You,imageId268,$120,Custom Shoe
 Nike Air Force 1 GTX,imageId269,$150,Men's Shoes
 Nike SB Shane,imageId270,$80,Skate Shoes
 Nike Offcourt (MLB Los Angeles Dodgers),imageId272,$35,Slide
@@ -280,7 +280,7 @@ Nike Renew Run 2,imageId284,$67.97,Men's Road Running Shoe
 Nike React Element 55 By You,imageId285,$140,Custom Men's Lifestyle Shoe
 Nike Revolution 5 FlyEase,imageId286,$65,Men's Easy On/Off Road Running Shoes
 Nike ZoomX Dragonfly,imageId288,$150,Track & Field Distance Spikes
-NikeCourt Zoom Vapor Cage 4 Rafa,imageId289,$150,Men’s Hard Court Tennis Shoes
+NikeCourt Zoom Vapor Cage 4 Rafa,imageId289,$150,Menï¿½s Hard Court Tennis Shoes
 Nike Air Max 95 Essential,imageId290,$175,Men's Shoes
 Nike OffCourt Slide Be True,imageId291,$45,Shoes
 Nike SB BLZR Court Mid,imageId292,$70,Skate Shoes
@@ -310,7 +310,7 @@ Nike Run Swift 2,imageId315,$70,Men's Road Running Shoes
 Jordan ADG 3,imageId316,$140,Men's Golf Shoes
 Nike Downshifter 11,imageId317,$60,Men's Road Running Shoes (Extra Wide)
 Nike Air Presto By You,imageId318,$150,Custom Men's Shoe
-Nike Blazer Low ’77 Vintage By You,imageId319,$105,Custom Shoe
+Nike Blazer Low ï¿½77 Vintage By You,imageId319,$105,Custom Shoe
 LeBron Soldier 14,imageId320,$124.97,Basketball Shoes
 "Nike SFB Gen 2 8"" GORE-TEX",imageId321,$185,Tactical Boots
 Nike Air Zoom Infinity Tour,imageId322,$111.97,Golf Shoes
@@ -335,7 +335,7 @@ Nike Offcourt (NFL Indianapolis Colts),imageId340,$35,Slide
 Nike Air Max 95 By You,imageId341,$180,Custom Men's Shoe
 Nike Air Zoom Pegasus 37,imageId342,$92.97,Men's Road Running Shoes (Wide)
 Nike Offcourt (UNC),imageId343,$35,Slide
-Nike React SFB Carbon Low,imageId344,$140,Men’s Elite Outdoor Shoes
+Nike React SFB Carbon Low,imageId344,$140,Menï¿½s Elite Outdoor Shoes
 Nike On Deck,imageId345,$25,Men's Slides
 Nike Offcourt (NFL Tennessee Titans),imageId346,$35,Slide
 Nike React Miler,imageId347,$80.97,Men's Road Running Shoes
@@ -350,7 +350,7 @@ Nike Zoom Victory 5 XC,imageId355,$110,Track & Field Distance Spikes
 Nike Renew Fusion,imageId356,$72.97,Men's Training Shoes
 Nike Air Force 1 Low FM Joy By You,imageId357,$140,Custom Shoes
 Nike Air Pegasus 83 Premium,imageId358,$100,Men's Shoes
-Nike SFB Gen 2 8”,imageId359,$165,Tactical Boot
+Nike SFB Gen 2 8ï¿½,imageId359,$165,Tactical Boot
 Nike Blazer Low '77,imageId360,$65.97,Men's Shoes
 Nike Offcourt (MLB Philadelphia Phillies),imageId361,$26.97,Slide
 Nike Fly.By Mid 2,imageId362,$65,Basketball Shoe
@@ -368,7 +368,7 @@ Nike Flex Control 3,imageId375,$54.97,Men's Training Shoes
 Nike Air Max 90,imageId376,$113.97,Men's Shoes
 Nike Air Zoom Pegasus 36,imageId377,$96.97,Men's Running Shoes
 Nike ACG Air Mowabb,imageId378,$160,Shoes
-Nike React SFB Carbon,imageId379,$165,Men’s Elite Outdoor Shoes
+Nike React SFB Carbon,imageId379,$165,Menï¿½s Elite Outdoor Shoes
 "Nike SFB Field 2 8"" Leather",imageId380,$170,Tactical Boots
 Nike Air Max 90 SE,imageId381,$140,Men's Shoes
 Nike Air Force 1 Mid '07 LV8,imageId382,$130,Men's Shoes
@@ -498,7 +498,7 @@ Nike Force Zoom Trout LTD Turf,imageId507,$120,Men's Baseball Shoes
 Nike Zoom Rotational 6,imageId508,$100,Track & Field Throwing Shoes
 Nike Air Max 2017,imageId509,$190,Men's Shoes
 Nike SB Zoom Blazer Mid Premium,imageId510,$78.97,Skate Shoes
-"Nike SFB Gen 2 8"" Realtree®",imageId511,$195,Boot
+"Nike SFB Gen 2 8"" Realtreeï¿½",imageId511,$195,Boot
 Nike Tiempo Legend 9 Club MG,imageId512,$50,Multi-Ground Soccer Cleat
 Jordan LS,imageId513,$60.97,Slides
 Nike React Vision,imageId514,$119.97,Men's Shoe
@@ -534,7 +534,42 @@ Nike Blazer Mid '77,imageId543,$110,Men's Shoes
 Nike Blazer Low '77 Premium,imageId544,$100,Men's Shoes
 Nike Offcourt (NFL Kansas City Chiefs),imageId545,$35,Slide
 Nike Internationalist By You,imageId546,$110,Custom Men's Shoe
-Nike SFB Field 2 8” Realtree® GORE-TEX,imageId547,$135.97,Outdoor Boot
+Nike SFB Field 2 8ï¿½ Realtreeï¿½ GORE-TEX,imageId547,$135.97,Outdoor Boot
 Nike Offcourt (NFL New York Giants),imageId548,$35,Slide
 Nike x Kim Jones Air Max 95,imageId550,$220,Shoe
 Nike Offcourt (Michigan State),imageId551,$35,Slide
+Nike Offcourt (NFL Chicago Bears),imageId553,$35,Slide
+Air Jordan 6 Retro Low,imageId554,$200,Men's Shoes
+Nike SB Force 58 Premium,imageId555,$75,Skate Shoes
+Nike Zoom Javelin Elite 3,imageId556,$112.97,Track & Field Throwing Spikes
+Nike Air Zoom LJ Elite,imageId557,$135.97,Track & Field Jumping Spikes
+Nike Metcon 7 AMP,imageId558,$150,Training Shoes
+Nike Air Max 97 SE,imageId559,$185,Men's Shoes
+Nike Phantom GT2 Academy Dynamic Fit TF,imageId560,$85,Turf Soccer Shoe
+Nike Air Force 1 Low FM Change By Brandon 'Stix' Salaam-Bailey,imageId561,$140,Custom Shoes
+Nike React Miler 2 Shield,imageId562,$140,Men's Weatherized Road Running Shoes
+Nike Blazer Low X,imageId563,$64.97,Men's Shoes
+Air Jordan 1 Centre Court,imageId564,$109.97,Men's Shoes
+Nike Offcourt (Alabama),imageId565,$35,Slide
+Nike Court Legacy Canvas,imageId566,$60,Men's Shoes
+Jordan Series Mid,imageId567,$90,Men's Shoes
+Nike Blazer Mid '77 Vintage,imageId568,$110,Men's Shoes
+Nike Air Zoom Maxfly,imageId569,$180,Track & Field Sprinting Spikes
+"Jordan Series .02 ""Dear Deloris""",imageId570,$80,Shoe
+Nike Air Max 90 SE,imageId571,$130,Men's Shoes
+Nike Offcourt (NFL Cincinnati Bengals),imageId572,$35,Slide
+Nike Air Force 1 Low FM Joy By Saroya Tinker,imageId573,$140,Custom Shoes
+Nike Offcourt (MLB Los Angeles Angels),imageId574,$35,Slide
+Nike Overbreak,imageId575,$140,Men's Shoes
+Nike Offcourt (MLB Miami Marlins),imageId576,$35,Slide
+Jordan Break,imageId577,$35,Slides
+Nike Free RN Flyknit 2018,imageId578,$120,Men's Running Shoes
+Nike Killshot 2 Leather,imageId579,$90,Men's Shoe
+Nike Force Zoom Trout 7 Pro,imageId580,$85,Men's Baseball Cleats
+Jordan Air NFH,imageId581,$110,Shoes
+Nike Offcourt (MLB Boston Red Sox),imageId582,$35,Slide
+Nike SFB Field 2 8s,imageId583,$170,Tactical Boots
+Nike Offcourt (MLB Chicago Cubs),imageId584,$35,Slide
+Nike Offcourt (MLB Chicago White Sox),imageId585,$35,Slide
+Nike Blazer Low 77 Vintage By You,imageId586,$105,Custom Shoe
+Nike SB Zoom Verona Slip x Leticia Bufoni,imageId587,$85,Slip-On Skate Shoes

@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:comp491/modals/dbQueries.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
+
 class UserData {
-  ObjectId? id;
+  String? oid;
   final String userUID;
   String? userEmail;
   String? userName;
@@ -10,7 +14,7 @@ class UserData {
   UserData({
     required this.userUID,
     this.userEmail,
-    this.id,
+    this.oid,
     this.userName,
   });
 
@@ -24,17 +28,11 @@ class UserData {
 
   Future<UserData?> initUser(String uid) async {
     try {
-      final response = await findOne(where.eq('userUID', uid),
-          collectionType: CollectionType.UserCollection);
-      print(response);
-      UserData usertemp = UserData.fromJson(response);
-      print(usertemp);
-      print(usertemp.userEmail);
-      print(usertemp.userName);
-      this.userEmail = usertemp.userEmail;
-      this.userName = usertemp.userName;
-
-      return usertemp;
+      // final response = await findOne(where.eq('userUID', uid),
+      //     collectionType: CollectionType.UserCollection);
+      // late UserData usertemp;
+      //
+      // return usertemp;
     } on Exception catch (e) {
       print(e.toString());
       return null;
@@ -67,10 +65,10 @@ class UserData {
 
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
-      id: json['_id'],
+      oid: json['_id']["\$oid"],
       userUID: json['userUID'],
       userEmail: json['userEmail'],
-      userName: json['userName'],
+      userName: json['username'],
     );
   }
 
