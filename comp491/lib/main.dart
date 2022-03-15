@@ -12,7 +12,6 @@ import 'UI/ProfileTab.dart';
 import 'modals/User.dart';
 import 'modals/dbQueries.dart';
 
-
 void main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,26 +32,26 @@ class MyApp extends StatelessWidget {
         ),
         StreamProvider(
           create: (context) =>
-          context.read<AuthenticationService>().authStateChanges,
+              context.read<AuthenticationService>().authStateChanges,
           initialData: null,
         ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          // primarySwatch: Colors.b,
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            // primarySwatch: Colors.b,
 
-        ),
-        home: AuthenticationWrapper(),
+            ),
+        home: const AuthenticationWrapper(),
       ),
     );
   }
@@ -65,17 +64,28 @@ class AuthenticationWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      return MyHomePage(
-          title: 'Flutter Memo Home Page', userUID: currentUser.uid);
+    final firebaseUser = context.watch<User?>();
+    if(firebaseUser == null){
+    // if (FirebaseAuth.instance.currentUser?.uid == null) {
+      return SignInPage();
     }
-    return SignInPage();
+    return MyHomePage(
+        title: 'Flutter Memo Home Page',
+        userUID: FirebaseAuth.instance.currentUser?.uid);
   }
+
+//   var currentUser = FirebaseAuth.instance.currentUser;
+//   if (currentUser != null) {
+//     return MyHomePage(
+//         title: 'Flutter Memo Home Page', userUID: currentUser.uid);
+//   }
+//   return SignInPage();
+// }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title, this.userUID}) : super(key: key);
+  const MyHomePage({Key? key, required this.title, required this.userUID})
+      : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -178,14 +188,11 @@ class _MyHomePageState extends State<MyHomePage> {
   //   if (navigatorState != null) {}
   // }
 
-  _MyHomePageState(String? userUID) {
-    this.userUID = userUID;
-  }
+  _MyHomePageState(this.userUID);
 
   bool isUserPremium() {
     return isPremium;
   }
-
 
   Gradient background = LinearGradient(
     begin: Alignment.topLeft,
@@ -200,7 +207,6 @@ class _MyHomePageState extends State<MyHomePage> {
     ],
   );
 
-
   @override
   void initState() {
     super.initState();
@@ -208,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // print(futureFullData);
     // futureHomeContent = fetchHomeContent();
 
-    fetchUser(userUID!).then((value) =>_user = value);
+    fetchUser(userUID!).then((value) => _user = value);
     // user.initUser(userUID!).then((value) {
     //   print(value);
     //   print("outside" + user.toString());
@@ -220,6 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // });
     setState(() {
       // getLocation();
+      // fetchUser(userUID!).then((value) =>_user = value);
     });
     // });
 
@@ -300,7 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //   return Center(
             children: <Widget>[
               const ProductPage(),
-              ImprovementPage(user: _user),
+              ImprovementPage(userUID: userUID),
               // Scaffold(
               //   backgroundColor: Colors.deepOrange,
               //   body: Center(
@@ -316,7 +323,7 @@ class _MyHomePageState extends State<MyHomePage> {
               //   ),
               // ),
               ProfileTab(
-                user: _user,
+                userUID: userUID,
               ),
               //TODO: Sign-out, Profile, Credit Card Payment implementations exist in here. Commenting out. -- Include after.
               // Center(

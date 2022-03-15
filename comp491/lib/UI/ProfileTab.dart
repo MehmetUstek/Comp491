@@ -6,18 +6,18 @@ import '../modals/authentication_service.dart';
 import 'package:provider/provider.dart';
 
 class ProfileTab extends StatefulWidget {
-  const ProfileTab({Key? key, required this.user}) : super(key: key);
-  final UserData? user;
+  const ProfileTab({Key? key, required this.userUID}) : super(key: key);
+  final String? userUID;
 
   @override
-  _ProfileTab createState() => _ProfileTab(user!);
+  _ProfileTab createState() => _ProfileTab(userUID!);
 }
 
 class _ProfileTab extends State<ProfileTab> {
-  late UserData user;
+  late String userUID;
 
-  _ProfileTab(UserData _user) {
-    this.user = _user;
+  _ProfileTab(String _userUID) {
+    this.userUID = _userUID;
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:comp491/modals/authentication_service.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -59,7 +60,7 @@ class _SignInState extends State<SignInPage> {
     return Scaffold(
       body: Center(
         child: Container(
-          color: Color(0xffFEC7D4),
+          color: Colors.white,
           // margin: const EdgeInsets.only(left: 50.0, right: 50.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -71,79 +72,122 @@ class _SignInState extends State<SignInPage> {
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 22,
-                        color: Colors.white)),
+                        color: Color(0xff272022))),
               ),
               const Padding(padding: EdgeInsets.only(top: 50)),
-              SizedBox(width: MediaQuery.of(context).size.width *6 /7,
-                child:
-              TextField(
 
-                controller: emailController,
-                onEditingComplete: () {
-                  isEmailValid =
-                      EmailValidator.validate(emailController.text.trim());
-                  if (isEmailValid) {
-                    print("Valid");
-                  } else {
-                    print("Not Valid");
-                  }
-                },
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      borderSide: BorderSide(
-                          width: 1.0,
-                          color: Colors.white,
-                          style: BorderStyle.solid),
+              // Username textfield.
+              Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width * 6 / 7,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Color(0xff272022).withOpacity(0.88),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 20, top: 10),
+                      child: Text(
+                        "Username",
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ),
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      borderSide: BorderSide(
-                          width: 0.0,
+                    Container(
+                      padding: EdgeInsets.only(left: 20),
+                      height: 25,
+                      child: TextField(
+                        autocorrect: false,
+                        enableSuggestions: false,
+
+                        cursorColor: Colors.white54,
+                        textAlign: TextAlign.start,
+                        controller: emailController,
+                        onEditingComplete: () {
+                          isEmailValid = EmailValidator.validate(
+                              emailController.text.trim());
+                          if (isEmailValid) {
+                            print("Valid");
+                          } else {
+                            print("Not Valid");
+                          }
+                        },
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 13,
                           color: Colors.white,
-                          style: BorderStyle.solid),
+                          decoration: TextDecoration.none,
+
+                        ),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                        ),
+                      ),
                     ),
-                    hintStyle: TextStyle(color: Colors.black45),
-                    hintText: "Username",
-                    fillColor: Colors.white70),
+                  ],
+                ),
               ),
-              ),
-              Padding(padding: EdgeInsets.only(top: 10.0)),
-          SizedBox(width: MediaQuery.of(context).size.width *6 /7,
-            child:
-              TextField(
-                controller: passwordController,
-                onEditingComplete: () {
-                  isPasswordValid =
-                      isPasswordCompliant(passwordController.text.trim());
-                  if (isPasswordValid) {
-                    print("Valid pass");
-                  } else {
-                    print("Not Valid pass");
-                  }
-                },
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      borderSide: BorderSide(
-                          width: 1.0,
-                          color: Colors.white,
-                          style: BorderStyle.solid),
+              Padding(padding: EdgeInsets.only(top: 20.0)),
+
+              Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width * 6 / 7,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Color(0xff272022).withOpacity(0.88),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 20, top: 10),
+                      child: Text(
+                        "Password",
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ),
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      borderSide: BorderSide(
-                          width: 0.0,
+                    Container(
+                      padding: EdgeInsets.only(left: 20),
+                      height: 25,
+                      child: TextField(
+                        cursorColor: Colors.white54,
+                        obscureText: true,
+                        controller: passwordController,
+                        onEditingComplete: () {
+                          isPasswordValid =
+                              isPasswordCompliant(passwordController.text.trim());
+                          if (isPasswordValid) {
+                            print("Valid pass");
+                          } else {
+                            print("Not Valid pass");
+                          }
+                        },
+                        style: const TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 13,
                           color: Colors.white,
-                          style: BorderStyle.solid),
+                        ),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
                     ),
-                    hintStyle: TextStyle(color: Colors.black45),
-                    hintText: "Password",
-                    fillColor: Colors.white70),
+                  ],
+                ),
               ),
-          ),
               Padding(padding: EdgeInsets.only(top: 10.0)),
               Row(children: <Widget>[
                 Padding(padding: EdgeInsets.only(left: 22.0)),
@@ -153,8 +197,8 @@ class _SignInState extends State<SignInPage> {
                       unselectedWidgetColor: Colors.black87, // Your color
                     ),
                     child: Checkbox(
-                        checkColor: Colors.black,
-                        activeColor: Color(0xffFEC7D4),
+                        checkColor: Colors.white,
+                        activeColor: Color(0xff272022),
 
                         // fillColor: MaterialStateProperty.all(Color(0xffFEC7D4)),
                         value: showValue,
@@ -181,17 +225,21 @@ class _SignInState extends State<SignInPage> {
                   ),
                   fixedSize:
                       Size(MediaQuery.of(context).size.width * 4 / 5, 45),
-                  primary: Color(0xffF891A9),
+                  primary: Color(0xff272022),
                 ),
                 child: Text(
                   'Sign In',
                   style: TextStyle(fontSize: 15, color: Colors.white),
                 ),
                 onPressed: () {
-                  var v = context.read<AuthenticationService>().signIn(
-                      emailController.text.trim(),
-                      passwordController.text.trim());
+                  Future<User?> v = context
+                      .read<AuthenticationService>()
+                      .signIn(emailController.text.trim(),
+                          passwordController.text.trim());
                   print(v);
+                  v.then((value) => () {
+                        setState(() {});
+                      });
                 },
               ),
 
@@ -207,6 +255,7 @@ class _SignInState extends State<SignInPage> {
                               passwordController.text.trim());
                       print("Returned user");
                       print(v);
+
                       v.then((value) => print(value));
                     } else {
                       //TODO: Will change design.
@@ -233,7 +282,7 @@ class _SignInState extends State<SignInPage> {
                   },
                   child: Text(
                     "Don't have an account? Sign Up!",
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    style: TextStyle(color: Colors.black, fontSize: 12),
                   ),
                   style: TextButton.styleFrom(
                       fixedSize:
@@ -267,7 +316,7 @@ class _SignInState extends State<SignInPage> {
                 children: <Widget>[
                   Container(
                     height: 2,
-                    color: Colors.white,
+                    color: Colors.black,
                     width: 130,
                   ),
                   Padding(padding: EdgeInsets.only(left: 10)),
@@ -276,11 +325,11 @@ class _SignInState extends State<SignInPage> {
                       style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 12,
-                          color: Colors.white)),
+                          color: Colors.black)),
                   Padding(padding: EdgeInsets.only(left: 10)),
                   Container(
                     height: 2,
-                    color: Colors.white,
+                    color: Colors.black,
                     width: 130,
                   ),
                 ],
@@ -307,99 +356,109 @@ class _SignInState extends State<SignInPage> {
               //           fontSize: 13,
               //           color: Colors.white)),
               // ),
-              Padding(padding: EdgeInsets.only(top:30)),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              side: BorderSide(
-                                  width: 0.0,
-                                  color: Colors.white,
-                                  style: BorderStyle.solid),
-                            ),
-                            fixedSize: Size(60, 60),
-                            primary: Colors.white,
-                          ),
-                          child: FaIcon(
-                            FontAwesomeIcons.google,
-                            color: Color(0xffF891A9),
-                          ),
-                          onPressed: () {},
+              Padding(padding: EdgeInsets.only(top: 30)),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
+                  Widget>[
+                Column(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          side: BorderSide(
+                              width: 0.0,
+                              color: Colors.white,
+                              style: BorderStyle.solid),
                         ),
-                        TextButton(onPressed: () {}, child: Text('Google',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.white)),)
-                      ],
+                        fixedSize: Size(60, 60),
+                        primary: Colors.white,
+                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.google,
+                        color: Color(0xff272022),
+                      ),
+                      onPressed: () {
+                        Future<String?> v = context
+                            .read<AuthenticationService>()
+                            .signInWithGoogle();
+                        v.then((value) => print(value));
+                        setState(() {});
+                      },
                     ),
-
-                    Column(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(10.0)),
-                              side: BorderSide(
-                                  width: 0.0,
-                                  color: Colors.white,
-                                  style: BorderStyle.solid),
-                            ),
-                            fixedSize: Size(60, 60),
-                            primary: Colors.white,
-                          ),
-                          child: FaIcon(
-                            FontAwesomeIcons.apple,
-                            color: Color(0xffF891A9),
-                          ),
-                          onPressed: () {},
+                    TextButton(
+                      onPressed: () {},
+                      child: Text('Google',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.black)),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          side: BorderSide(
+                              width: 0.0,
+                              color: Colors.white,
+                              style: BorderStyle.solid),
                         ),
-                        TextButton(onPressed: () {}, child: Text('Apple',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.white)),)
-                      ],
+                        fixedSize: Size(60, 60),
+                        primary: Colors.white,
+                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.apple,
+                        color: Color(0xff272022),
+                      ),
+                      onPressed: () {},
                     ),
-                    Column(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(10.0)),
-                              side: BorderSide(
-                                  width: 0.0,
-                                  color: Colors.white,
-                                  style: BorderStyle.solid),
-                            ),
-                            fixedSize: Size(60, 60),
-                            primary: Colors.white,
-                          ),
-                          child: FaIcon(
-                            FontAwesomeIcons.microsoft,
-                            color: Color(0xffF891A9),
-                          ),
-                          onPressed: () {},
+                    TextButton(
+                      onPressed: () {},
+                      child: Text('Apple',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.black)),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          side: BorderSide(
+                              width: 0.0,
+                              color: Colors.white,
+                              style: BorderStyle.solid),
                         ),
-                        TextButton(onPressed: () {}, child: Text('Microsoft',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.white)),)
-                      ],
+                        fixedSize: Size(60, 60),
+                        primary: Colors.white,
+                      ),
+                      child: FaIcon(
+                        FontAwesomeIcons.microsoft,
+                        color: Color(0xff272022),
+                      ),
+                      onPressed: () {},
                     ),
-                  ])
+                    TextButton(
+                      onPressed: () {},
+                      child: Text('Microsoft',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.black)),
+                    )
+                  ],
+                ),
+              ])
             ],
           ),
         ),

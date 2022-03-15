@@ -51,14 +51,14 @@ class UserData {
 
   void userChangeEmail(String email) {
     this.userEmail = email;
-    update(where.eq('userUID', userUID), modify.set('userEMail', email),
-        collectionType: CollectionType.UserCollection);
+    // update(where.eq('userUID', userUID), modify.set('userEMail', email),
+    //     collectionType: CollectionType.UserCollection);
   }
 
   Future<String> userChangeName(String userName) async {
     this.userName = userName;
-    await update(where.eq('userUID', userUID), modify.set('userName', userName),
-        collectionType: CollectionType.UserCollection);
+    // await update(where.eq('userUID', userUID), modify.set('userName', userName),
+    //     collectionType: CollectionType.UserCollection);
     return userName;
   }
 

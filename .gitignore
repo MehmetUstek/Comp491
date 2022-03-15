@@ -1,0 +1,7 @@
+
+*.png
+*.png
+rest_api/.env
+*.iml
+*.xml
+*.pyc

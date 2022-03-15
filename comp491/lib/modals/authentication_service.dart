@@ -16,12 +16,13 @@ class AuthenticationService{
     await _firebaseAuth.signOut();
 }
 
-  Future<String?> signIn(String email, String password) async {
+  Future<User?> signIn(String email, String password) async {
     try{
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return "Signed in";
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      
+      return userCredential.user;
     } on FirebaseAuthException catch(e){
-      return e.message;
+      throw FirebaseAuthException(code: "User not found");
     }
   }
   Future<String?> signUp(String email, String password) async {
@@ -29,15 +30,15 @@ class AuthenticationService{
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       final userFirebase = _firebaseAuth.currentUser;
-      if (findOne(where.eq('userUID', userFirebase!.uid),
-              collectionType: CollectionType.UserCollection) ==
-          null) {
-        insertOne({
-          'userUID': userFirebase.uid,
-          'userEmail': userFirebase.email,
-          'userName': userFirebase.displayName,
-        }, collectionType: CollectionType.UserCollection);
-      }
+      // if (findOne(where.eq('userUID', userFirebase!.uid),
+      //         collectionType: CollectionType.UserCollection) ==
+      //     null) {
+      //   insertOne({
+      //     'userUID': userFirebase.uid,
+      //     'userEmail': userFirebase.email,
+      //     'userName': userFirebase.displayName,
+      //   }, collectionType: CollectionType.UserCollection);
+
 
       return "Signed In";
     } on FirebaseAuthException catch(e){
@@ -46,26 +47,32 @@ class AuthenticationService{
   }
   Future<String?> signInWithGoogle() async {
     try{
-      final user = await GoogleSignIn().signIn();
-      final googleAuth = await user!.authentication;
+      final googleSignIn = await GoogleSignIn().signIn();
+      final googleAuth = await googleSignIn!.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      await _firebaseAuth.signInWithCredential(credential);
+      UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      User? user = userCredential.user;
       final userFirebase = _firebaseAuth.currentUser;
-      if (findOne(where.eq('userUID', userFirebase!.uid),
-              collectionType: CollectionType.UserCollection) ==
-          null) {
-        insertOne({
-          'userUID': userFirebase.uid,
-          'userEmail': userFirebase.email,
-          'userName': userFirebase.displayName,
-        }, collectionType: CollectionType.UserCollection);
-      }
+      fetchUser(userFirebase!.uid).then((value) =>{
+
+      });
+      // if (findOne(where.eq('userUID', userFirebase!.uid),
+      //         collectionType: CollectionType.UserCollection) ==
+      //     null) {
+      //   insertOne({
+      //     'userUID': userFirebase.uid,
+      //     'userEmail': userFirebase.email,
+      //     'userName': userFirebase.displayName,
+      //   }, collectionType: CollectionType.UserCollection);
+      // }
       return "Signed in";
     } on FirebaseAuthException catch(e){
       return e.message;
+    } on Exception catch(e){
+      return e.toString();
     }
   }
 }

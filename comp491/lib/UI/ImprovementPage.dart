@@ -2,23 +2,24 @@ import 'package:comp491/modals/User.dart';
 import 'package:flutter/material.dart';
 
 class ImprovementPage extends StatefulWidget {
-  final UserData? user;
+  final String? userUID;
 
   const ImprovementPage({
     Key? key,
-    required this.user,
+    required this.userUID,
   }) : super(key: key);
 
   @override
-  _ImprovementPage createState() => _ImprovementPage(user!);
+  _ImprovementPage createState() => _ImprovementPage(userUID);
 }
 
 class _ImprovementPage extends State<ImprovementPage> {
-  late UserData user;
+  late String? userUID;
 
-  _ImprovementPage(UserData _user) {
-    this.user = _user;
+  _ImprovementPage(String? _userUID) {
+    userUID = _userUID;
   }
+
 
   @override
   void initState() {
