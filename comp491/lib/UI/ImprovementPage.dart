@@ -37,99 +37,75 @@ class _ImprovementPage extends State<ImprovementPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Padding(padding: EdgeInsets.only(top: 100)),
-              Padding(
-                padding: EdgeInsets.only(left:40),
-                  child: Text('Shopping Bag',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontFamily:"Arial",
-                          fontWeight: FontWeight.normal,
-                          fontSize: 18,
-                          color: Colors.black87)),
-                ),
+              const Padding(
+                padding: EdgeInsets.only(left: 40),
+                child: Text('Shopping Bag',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontFamily: "Arial",
+                        fontWeight: FontWeight.normal,
+                        fontSize: 18,
+                        color: Colors.black87)),
+              ),
               const Padding(padding: EdgeInsets.only(top: 40)),
               Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 //TODO: Change later.
-                height: MediaQuery.of(context).size.height *2 /3,
+                height: MediaQuery.of(context).size.height * 2 / 3,
                 child: ListView(
-                  padding: EdgeInsets.only(left: 20, right:50),
+                  padding: EdgeInsets.only(left: 5, right: 5),
                   scrollDirection: Axis.vertical,
                   addAutomaticKeepAlives: false,
                   cacheExtent: 100,
+                  shrinkWrap: true,
                   children: <Widget>[
                     SizedBox(
-                      height: 90,
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Image.asset(
-                            "assets/nike_blazer_mid_77.png",
-                            fit: BoxFit.fitHeight,
+                      height: 100,
+                      // width: 100,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          side: const BorderSide(
+                            color: Colors.black12,
                           ),
-                          Column(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 5, top: 15),
-                                child: Text('Jordan Delta 2',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12,
-                                        color: Colors.black)),
+                        ),
+                        semanticContainer: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        elevation: 10,
+                        shadowColor: Colors.black,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 30),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Image.asset(
+                                "assets/nike_blazer_mid_77.png",
+                                fit: BoxFit.fitHeight,
                               ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 5, top: 10),
-                                child: Text('3000,00 TL',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 13,
-                                        color: Colors.black45)),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 30)),
-                    SizedBox(
-                      height: 90,
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Image.asset(
-                            "assets/nike_blazer_mid_77.png",
-                            fit: BoxFit.fitHeight,
-                          ),
-                          Column(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 5, top: 15),
-                                child: Text('Jordan Delta 2',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12,
-                                        color: Colors.black)),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 5, top: 10),
-                                child: Text('3000,00 TL',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 13,
-                                        color: Colors.black45)),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const <Widget>[
+                                  Text('Jordan Delta 2',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 12,
+                                          color: Colors.black)),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 10),
+                                    child: Text('3000,00 TL',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 13,
+                                            color: Colors.black45)),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
