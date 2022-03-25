@@ -1,3 +1,4 @@
+import 'package:comp491/UI/HomePage.dart';
 import 'package:comp491/UI/ImprovementPage.dart';
 import 'package:comp491/modals/authentication_service.dart';
 import 'package:comp491/UI/signIn.dart';
@@ -264,7 +265,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget menu() {
     return Container(
-      color: Color(0xffF891A9),
+      color: Color(0xff272022),
       child: TabBar(
         labelColor: Colors.white,
         unselectedLabelColor: Colors.white70,
@@ -296,7 +297,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // backgroundColor: Colors.deepOrangeAccent,
           backgroundColor: Colors.white,
           // bottomNavigationBar: TabBar(tabs: myTabs,),
-          bottomNavigationBar: SizedBox(height: 75, child: menu()),
+          bottomNavigationBar: SizedBox(height: 65, child: menu()),
           // appBar: AppBar(
           //   // Here we take the value from the MyHomePage object that was created by
           //   // the App.build method, and use it to set our appbar title.
@@ -306,8 +307,8 @@ class _MyHomePageState extends State<MyHomePage> {
             // children: myTabs.map((Tab tab) {
             //   return Center(
             children: <Widget>[
-              const ProductPage(),
-              ImprovementPage(userUID: userUID),
+              const HomePage(),
+              ImprovementPage(),
               // Scaffold(
               //   backgroundColor: Colors.deepOrange,
               //   body: Center(

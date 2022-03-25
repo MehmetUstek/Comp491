@@ -39,6 +39,8 @@ def getUsernameByUID():
         'userUID': userUID
     }
     user = users_collection.find_one(filter=filter)
+    # if(user is None):
+    #     return parse_json({"": ""})
     user = parse_json(user)
 
     return user

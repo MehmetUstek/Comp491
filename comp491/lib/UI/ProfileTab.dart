@@ -34,7 +34,7 @@ class _ProfileTab extends State<ProfileTab> {
       body: Center(
           child: Container(
             width: MediaQuery.of(context).size.width,
-            color: Color(0xffFFB2C4),
+            color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
