@@ -1,24 +1,25 @@
 import 'package:comp491/UI/ChangePassword.dart';
+import 'package:comp491/modals/dbQueries.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../modals/User.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key? key, required this.user}) : super(key: key);
-  final UserData user;
+  ProfilePage({Key? key, required this.userUID}) : super(key: key);
+  final String? userUID;
 
   @override
-  _ProfileState createState() => _ProfileState(user);
+  _ProfileState createState() => _ProfileState(userUID!);
 }
 
 class _ProfileState extends State<ProfilePage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController roleController = TextEditingController();
-  late UserData user;
+  late String userUID;
 
-  _ProfileState(UserData _user) {
-    this.user = _user;
+  _ProfileState(String _userUID) {
+    userUID = _userUID;
   }
 
   void userChangeName(String text) async {
@@ -26,7 +27,7 @@ class _ProfileState extends State<ProfilePage> {
         context: context,
         builder: (BuildContext context) {
           return FutureBuilder(
-              future: user.userChangeName(text),
+              future: getUsername(userUID),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   // Show error
@@ -41,7 +42,7 @@ class _ProfileState extends State<ProfilePage> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text("OK",
+                        child: const Text("OK",
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white60,
@@ -51,7 +52,7 @@ class _ProfileState extends State<ProfilePage> {
                   );
                 } else {
                   // show spinning wheel
-                  return AlertDialog(
+                  return const AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     insetPadding: EdgeInsets.zero,
@@ -95,13 +96,17 @@ class _ProfileState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    emailController.text = user.userEmail!;
-    nameController.text = user.getUserName()!;
+    // emailController.text = user.userEmail!;
+    // nameController.text = user.getUserName()!;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+      ),
       body: Center(
         child: Container(
           decoration: BoxDecoration(
@@ -148,6 +153,7 @@ class _ProfileState extends State<ProfilePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+
                       Text(
                         'Mehmet Üstek',
                         style: TextStyle(fontSize: 12, color: Colors.black),
@@ -194,23 +200,23 @@ class _ProfileState extends State<ProfilePage> {
                   onPressed: () {},
                 ),
                 Padding(padding: EdgeInsets.only(top: 8)),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ChangePassword(
-                                user: user,
-                              )),
-                    );
-                  },
-                  child: Text('Change Password',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 13,
-                          color: Colors.white)),
-                ),
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => ChangePassword(
+                //                 user: user,
+                //               )),
+                //     );
+                //   },
+                //   child: Text('Change Password',
+                //       textAlign: TextAlign.right,
+                //       style: TextStyle(
+                //           fontWeight: FontWeight.normal,
+                //           fontSize: 13,
+                //           color: Colors.white)),
+                // ),
               ],
             ),
           ),

@@ -34,7 +34,7 @@ class _ProfileTab extends State<ProfileTab> {
       body: Center(
           child: Container(
             width: MediaQuery.of(context).size.width,
-            color: Color(0xffFFB2C4),
+            color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +43,85 @@ class _ProfileTab extends State<ProfileTab> {
                 ElevatedButton(onPressed: () {
                   var v = context.read<AuthenticationService>().signOut();
                   }
-                  ,child: Text("Sign Out"),)
+                  ,child: Text("Sign Out"),),
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          side: BorderSide(
+                              width: 0.0,
+                              color: Colors.white,
+                              style: BorderStyle.solid),
+                        ),
+                        fixedSize:
+                        Size(MediaQuery.of(context).size.width * 7/8, 52),
+                        primary: Colors.black87,
+                      ),
+                      child: const Text(
+                        'Edit Profile',
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>  ProfilePage(userUID: '',)),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          side: BorderSide(
+                              width: 0.0,
+                              color: Colors.white,
+                              style: BorderStyle.solid),
+                        ),
+                        fixedSize:
+                        Size(MediaQuery.of(context).size.width * 7/8, 52),
+                        primary: Colors.black87,
+                      ),
+                      child: const Text(
+                        'Lorem Ipsum',
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          side: BorderSide(
+                              width: 0.0,
+                              color: Colors.white,
+                              style: BorderStyle.solid),
+                        ),
+                        fixedSize:
+                        Size(MediaQuery.of(context).size.width * 7/8, 52),
+                        primary: Colors.black87,
+                      ),
+                      child: const Text(
+                        'Lorem Ipsum',
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
