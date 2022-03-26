@@ -304,11 +304,12 @@ class _MyHomePageState extends State<MyHomePage> {
           //   title: Text(widget.title),
           // ),
           body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
             // children: myTabs.map((Tab tab) {
             //   return Center(
             children: <Widget>[
               const HomePage(),
-              ImprovementPage(),
+              const ImprovementPage(),
               // Scaffold(
               //   backgroundColor: Colors.deepOrange,
               //   body: Center(
