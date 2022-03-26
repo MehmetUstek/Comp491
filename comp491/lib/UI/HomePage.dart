@@ -48,42 +48,43 @@ class _HomePage extends State<HomePage> {
                 padding: const EdgeInsets.only(top: 5.0),
                 // itemBuilder: (BuildContext context, int index) {  },
                 children: [
-                  OutlinedButton(onPressed: () { Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProductPage(
-                        )),
-                  ); },
-                  child:
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Image.asset(
-                        "assets/nike_blazer_mid_77.png",
-                        fit: BoxFit.scaleDown,
-                        height: 100,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5, top: 15),
-                        child: Text('Jordan Delta 2',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 12,
-                                color: Colors.black)),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5, top: 10),
-                        child: Text('3000,00 TL',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 13,
-                                color: Colors.black45)),
-                      ),
-                    ],
-                  ),
+                  OutlinedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProductPage()),
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Image.asset(
+                          "assets/nike_blazer_mid_77.png",
+                          fit: BoxFit.scaleDown,
+                          height: 100,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 5, top: 15),
+                          child: Text('Jordan Delta 2',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.black)),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 5, top: 10),
+                          child: Text('3000,00 TL',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 13,
+                                  color: Colors.black45)),
+                        ),
+                      ],
+                    ),
                   ),
 
                   // Padding(padding: EdgeInsets.only(left:10)),

@@ -32,8 +32,8 @@ def getUserUIDbyEmail():
 def parse_json(data):
     return json.loads(json_util.dumps(data))
 
-@app.route("/user/getUsernameByUID", methods= ['GET', 'POST'])
-def getUsernameByUID():
+@app.route("/user/getUserByUID", methods= ['GET', 'POST'])
+def getUserByUID():
     userUID = request.get_json()['userUID']
     filter = {
         'userUID': userUID
@@ -44,6 +44,32 @@ def getUsernameByUID():
     user = parse_json(user)
 
     return user
+
+@app.route("/user/getUsernameByUID", methods= ['GET', 'POST'])
+def getUsernameByUID():
+    userUID = request.get_json()['userUID']
+    filter = {
+        'userUID': userUID
+    }
+    user = users_collection.find_one(filter=filter)
+
+    user = parse_json(user)
+    username = user['username']
+
+    return username
+
+@app.route("/user/getUserEmailByUID", methods= ['GET', 'POST'])
+def getUserEmailByUID():
+    userUID = request.get_json()['userUID']
+    filter = {
+        'userUID': userUID
+    }
+    user = users_collection.find_one(filter=filter)
+
+    user = parse_json(user)
+    userEmail = user['userEmail']
+
+    return userEmail
 
 
 

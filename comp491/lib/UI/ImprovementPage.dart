@@ -17,6 +17,21 @@ class _ImprovementPage extends State<ImprovementPage> {
 
   double headerSize = 17;
   double slideItemWidth = 75;
+  void doNothing(BuildContext context) {
+    // Add listener if needed.
+    // Slidable.of(context)!.dismissGesture.addListener(() { print('dismissed'); });
+    Slidable.of(context)!.dismiss(
+        ResizeRequest(
+            const Duration(milliseconds: 20),
+                () {
+              print('Dismiss from Button');
+            }
+        ),
+        duration: const Duration(milliseconds: 20),
+    );
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,15 +76,20 @@ class _ImprovementPage extends State<ImprovementPage> {
                   shrinkWrap: true,
                   children: <Widget>[
                     Slidable(
-                      // key: const ValueKey(0),
+                      key: const ValueKey(0),
+
+
                       // The end action pane is the one at the right or the bottom side.
-                      endActionPane: const ActionPane(
+                      endActionPane:  ActionPane(
+                        // dismissible: DismissiblePane(onDismissed: () {}),
                         motion: ScrollMotion(),
                         children: [
                           SlidableAction(
                             flex:2,
                             //TODO: Write OnPressed.
-                            onPressed: null,
+                            onPressed: doNothing,
+                            autoClose: false,
+
                             backgroundColor: Colors.red,
                             foregroundColor: Colors.white,
                             icon: Icons.delete_rounded,
