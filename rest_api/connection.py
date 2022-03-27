@@ -25,8 +25,6 @@ def connectToDB():
         print("ERROR - Cannot connect to the database")
 
 
-
-
 db: Database = connectToDB()
 users_collection: Collection = db.get_collection('Users')
 
@@ -37,6 +35,33 @@ def getUserUIDbyEmail():
 
 def parse_json(data):
     return json.loads(json_util.dumps(data))
+
+@app.route("/user/crate_user", methods=['POST'])
+def create_user():
+    try:
+        print(request.data)
+        UID = request.json['userUID']
+        #print("bura")
+        name = request.json['username']
+        mail = request.json['userEmail']
+
+        users_collection.insert_one(
+            {'userUID':UID, 'username':name, 'userEmail':mail}
+        )
+        return Response(
+            response=json.dumps(
+                {"message": "user inserted"}),
+            status=200,
+            mimetype='applicaiton/json'
+        )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "user not inserted"}),
+            status=500,
+            mimetype='applicaiton/json'
+        )
 
 @app.route("/user/getUserByUID", methods= ['GET', 'POST'])
 def getUserByUID():
@@ -57,29 +82,47 @@ def getUserByUID():
 
 @app.route("/user/getUsernameByUID", methods= ['GET', 'POST'])
 def getUsernameByUID():
-    userUID = request.get_json()['userUID']
-    filter = {
-        'userUID': userUID
-    }
-    user = users_collection.find_one(filter=filter)
+    try:
+        userUID = request.get_json()['userUID']
+        filter = {
+            'userUID': userUID
+        }
+        user = users_collection.find_one(filter=filter)
 
-    user = parse_json(user)
-    username = user['username']
+        user = parse_json(user)
+        username = user['username']
 
-    return username
+        return username
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
 
 @app.route("/user/getUserEmailByUID", methods= ['GET', 'POST'])
 def getUserEmailByUID():
-    userUID = request.get_json()['userUID']
-    filter = {
-        'userUID': userUID
-    }
-    user = users_collection.find_one(filter=filter)
+    try:
+        userUID = request.get_json()['userUID']
+        filter = {
+            'userUID': userUID
+        }
+        user = users_collection.find_one(filter=filter)
 
-    user = parse_json(user)
-    userEmail = user['userEmail']
+        user = parse_json(user)
+        userEmail = user['userEmail']
 
-    return userEmail
+        return userEmail
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve email"}),
+            status=500,
+            mimetype='application/json'
+        )
 
 @app.route("/user/changeUsernameByUserId", methods= ['PATCH'])
 def changeUsernameByUserID():
@@ -103,12 +146,6 @@ def changeUsernameByUserID():
             status=500,
             mimetype='application/json'
         )
-
-
-
-
-
-
 
 
 
