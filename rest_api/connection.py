@@ -1,7 +1,7 @@
 import pymongo
-import dotenv
+#import dotenv
 from bson import json_util, objectid
-from flask import Flask, jsonify, request, json
+from flask import Flask, jsonify, request, json, Response
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from flask_pymongo.wrappers import Database, Collection
@@ -16,9 +16,15 @@ mongo = PyMongo(app)
 
 
 def connectToDB():
-    client = MongoClient(MONGO_URI)
-    db = client['comp491']
-    return db
+    try:
+        client = MongoClient(MONGO_URI)
+        db = client['comp491']
+        client.server_info() #trigger exception
+        return db
+    except:
+        print("ERROR - Cannot connect to the database")
+
+
 
 
 db: Database = connectToDB()
@@ -34,16 +40,20 @@ def parse_json(data):
 
 @app.route("/user/getUserByUID", methods= ['GET', 'POST'])
 def getUserByUID():
-    userUID = request.get_json()['userUID']
-    filter = {
-        'userUID': userUID
-    }
-    user = users_collection.find_one(filter=filter)
-    # if(user is None):
-    #     return parse_json({"": ""})
-    user = parse_json(user)
+    try:
+        userUID = request.get_json()['userUID']
+        filter = {
+            'userUID': userUID
+        }
+        user = users_collection.find_one(filter=filter)
+        # if(user is None):
+        #     return parse_json({"": ""})
+        user = parse_json(user)
 
-    return user
+        return user
+    except Exception as ex:
+        print(ex)
+
 
 @app.route("/user/getUsernameByUID", methods= ['GET', 'POST'])
 def getUsernameByUID():
@@ -70,6 +80,32 @@ def getUserEmailByUID():
     userEmail = user['userEmail']
 
     return userEmail
+
+@app.route("/user/changeUsernameByUserId", methods= ['PATCH'])
+def changeUsernameByUserID():
+    try:
+        uID = request.get_json()['userID']
+        users_collection.update_one(
+            {"userUID": uID},
+            {"$set":{"username":request.form["username"]}}
+        )
+        return Response(
+            response= json.dumps(
+                {"message":"username updated"}),
+            status=200,
+            mimetype='applicaiton/json'
+            )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response= json.dumps(
+                {"message":"Cannot update username"}),
+            status=500,
+            mimetype='application/json'
+        )
+
+
+
 
 
 
