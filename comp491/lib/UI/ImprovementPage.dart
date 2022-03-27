@@ -1,4 +1,4 @@
-import 'package:comp491/modals/ShoppingBag.dart';
+import 'package:comp491/modals/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -12,10 +12,12 @@ class ImprovementPage extends StatefulWidget {
 class _ImprovementPage extends State<ImprovementPage> {
   final shoppingBag = List.generate(
     20,
-    (i) => ShoppingBag(
+    (i) => Product(
+      'ProductId $i',
       'Item $i',
       'A description of what needs to be done for Todo $i',
-      '3000,00 TL $i'
+      '3000,00 TL $i',
+      'image$i'
     ),
   );
 
@@ -132,7 +134,7 @@ class _ImprovementPage extends State<ImprovementPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Image.asset(
-                                    "assets/nike_blazer_mid_77.png",
+                                    "../data_crawling/images/"+ shoppingBag[index].imageName+"sub1.png",
                                     fit: BoxFit.fitHeight,
                                   ),
                                   Column(

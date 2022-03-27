@@ -22,7 +22,7 @@ Future<DbCollection> getUsersCollection() async {
 
 Future<UserData> fetchUser(String uid) async {
   final queryParams = {
-    'userUID': 'dETjut6S7UhvU3fCXGCidh6LF8B3'
+    'userUID': uid
   };
   final response = await http
       .post(Uri.parse('http://10.0.2.2:9090/user/getUsernameByUID').replace(queryParameters: queryParams), headers: {
@@ -49,7 +49,7 @@ Future<UserData> fetchUser(String uid) async {
 }
 Future<String?> getUsername(String uid) async {
   final queryParams = {
-    'userUID': 'dETjut6S7UhvU3fCXGCidh6LF8B3'
+    'userUID': uid
   };
   final response = await http
       .post(Uri.parse('http://10.0.2.2:9090/user/getUsernameByUID').replace(queryParameters: queryParams), headers: {
@@ -77,7 +77,7 @@ Future<String?> getUsername(String uid) async {
 
 Future<String?> getUserEmail(String uid) async {
   final queryParams = {
-    'userUID': 'dETjut6S7UhvU3fCXGCidh6LF8B3'
+    'userUID': uid
   };
   final response = await http
       .post(Uri.parse('http://10.0.2.2:9090/user/getUserEmailByUID').replace(queryParameters: queryParams), headers: {
