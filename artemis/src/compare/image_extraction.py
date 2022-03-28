@@ -70,7 +70,6 @@ def compare(feature1, feature2, type="cosine"):
 
     if type == "l2":
         return np.linalg.norm(feature1 - feature2)
-
     return 1 - spatial.distance.cosine(feature1, feature2)
 
 
@@ -91,7 +90,7 @@ def extract_vgg16(img):
     # Need to research how to make this part programatic
     processed_image = vgg16.preprocess_input(image_batch.copy())
     feature_vector = vgg16_model.predict(processed_image)
-    return feature_vector
+    return feature_vector.flatten()
 
 
 @as_extractor("resnet50")
@@ -111,7 +110,7 @@ def extract_resnet(img):
     # Need to research how to make this part programatic
     processed_image = resnet50.preprocess_input(image_batch.copy())
     feature_vector = resnet50_model.predict(processed_image)
-    return feature_vector
+    return feature_vector.flatten()
 
 
 def extract(img, extractors=("all")):
