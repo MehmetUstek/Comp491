@@ -162,11 +162,44 @@ def getAllProducts():
     try:
         products = products_collection.find()
         product_list = parse_json(products)
-
-        # user = parse_json(user)
-        # username = user['username']
-
         return jsonify(product_list)
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
+@app.route("/product/getProductByPid", methods= ['GET', 'POST'])
+def getProductByPid():
+    try:
+        Pid = request.get_json()['Pid']
+        filter = {
+            'Pid': Pid
+        }
+        products = products_collection.find_one(filter=filter)
+        product = parse_json(products)
+        return product
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
+
+@app.route("/product/getProductNameByPid", methods= ['GET', 'POST'])
+def getProductNameByPid():
+    try:
+        Pid = request.get_json()['Pid']
+        filter = {
+            'Pid': Pid
+        }
+        products = products_collection.find_one(filter=filter)
+        product = parse_json(products)['Pname']
+        return product
     except Exception as ex:
         print(ex)
         return Response(

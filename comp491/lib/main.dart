@@ -130,14 +130,16 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: const [
           Icon(
-            CupertinoIcons.rocket,
+            CupertinoIcons.bag,
             color: Colors.white,
           ),
+          Padding(padding: EdgeInsets.only(left: 2),child:
           Text(
-            "Improvement",
-            style: TextStyle(fontSize: 12, color: Colors.white),
+            "Bag",
+            style: TextStyle(fontSize: 13, color: Colors.white),
+          ),
           ),
         ],
       ),
@@ -145,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Tab(
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: const [
           Icon(
             CupertinoIcons.profile_circled,
             color: Colors.white,

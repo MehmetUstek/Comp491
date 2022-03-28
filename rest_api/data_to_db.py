@@ -12,12 +12,12 @@ def put_to_db(collection: Collection, data_list):
     db_list = []
     for data in data_list:
         image_str = data[1]
-        image_id = image_str[-1:]
+        image_id = image_str[7:]
         price_with_dollars = data[2]
         price = price_with_dollars[1:]
         db_list.append({
+            "Pid": image_id,
             "Pname" : data[0],
-            "PimageId": image_id,
             "Pprice" : price,
             "Pdescription": data[3],
             "Pimages":
