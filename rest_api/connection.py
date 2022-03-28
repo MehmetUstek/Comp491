@@ -1,7 +1,7 @@
 import pymongo
-import dotenv
+#import dotenv
 from bson import json_util, objectid
-from flask import Flask, jsonify, request, json
+from flask import Flask, jsonify, request, json, Response
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from flask_pymongo.wrappers import Database, Collection
@@ -16,9 +16,13 @@ mongo = PyMongo(app)
 
 
 def connectToDB():
-    client = MongoClient(MONGO_URI)
-    db = client['comp491']
-    return db
+    try:
+        client = MongoClient(MONGO_URI)
+        db = client['comp491']
+        client.server_info() #trigger exception
+        return db
+    except:
+        print("ERROR - Cannot connect to the database")
 
 
 db: Database = connectToDB()
@@ -32,47 +36,125 @@ def getUserUIDbyEmail():
 def parse_json(data):
     return json.loads(json_util.dumps(data))
 
+@app.route("/user/create_user", methods=['POST'])
+def create_user():
+    try:
+        UID = request.json['userUID']
+        name = request.json['username']
+        mail = request.json['userEmail']
+
+        users_collection.insert_one(
+            {'userUID':UID, 'username':name, 'userEmail':mail}
+        )
+        return Response(
+            response=json.dumps(
+                {"message": "user inserted"}),
+            status=200,
+            mimetype='applicaiton/json'
+        )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "user not inserted. Please indicate "
+                            "userUID, username and userEmail"}),
+            status=500,
+            mimetype='applicaiton/json'
+        )
+
 @app.route("/user/getUserByUID", methods= ['GET', 'POST'])
 def getUserByUID():
-    userUID = request.get_json()['userUID']
-    filter = {
-        'userUID': userUID
-    }
-    user = users_collection.find_one(filter=filter)
-    # if(user is None):
-    #     return parse_json({"": ""})
-    user = parse_json(user)
+    try:
+        userUID = request.get_json()['userUID']
+        filter = {
+            'userUID': userUID
+        }
+        user = users_collection.find_one(filter=filter)
+        # if(user is None):
+        #     return parse_json({"": ""})
+        user = parse_json(user)
 
-    return user
+        return user
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "cannot retrieve user"}),
+            status=500,
+            mimetype='applicaiton/json'
+        )
+
 
 @app.route("/user/getUsernameByUID", methods= ['GET', 'POST'])
 def getUsernameByUID():
-    userUID = request.get_json()['userUID']
-    filter = {
-        'userUID': userUID
-    }
-    user = users_collection.find_one(filter=filter)
+    try:
+        userUID = request.get_json()['userUID']
+        filter = {
+            'userUID': userUID
+        }
+        user = users_collection.find_one(filter=filter)
 
-    user = parse_json(user)
-    username = user['username']
+        user = parse_json(user)
+        username = user['username']
 
-    return username
+        return username
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
 
 @app.route("/user/getUserEmailByUID", methods= ['GET', 'POST'])
 def getUserEmailByUID():
-    userUID = request.get_json()['userUID']
-    filter = {
-        'userUID': userUID
-    }
-    user = users_collection.find_one(filter=filter)
+    try:
+        userUID = request.get_json()['userUID']
+        filter = {
+            'userUID': userUID
+        }
+        user = users_collection.find_one(filter=filter)
 
-    user = parse_json(user)
-    userEmail = user['userEmail']
+        user = parse_json(user)
+        userEmail = user['userEmail']
 
-    return userEmail
+        return userEmail
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve email"}),
+            status=500,
+            mimetype='application/json'
+        )
 
-
-
+@app.route("/user/changeUsernameByUID", methods= ['PATCH'])
+def changeUsernameByUID():
+    try:
+        uID = request.get_json()['userUID']
+        filter = {
+            'userUID': uID
+        }
+        username = request.json["username"]
+        users_collection.update_one(
+            filter,
+            {"$set": {"username": username}}
+        )
+        return Response(
+            response= json.dumps(
+                {"message":"username updated"}),
+            status=200,
+            mimetype='applicaiton/json'
+            )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response= json.dumps(
+                {"message":"Cannot update username, please indicate UID and new username"}),
+            status=500,
+            mimetype='application/json'
+        )
 
 
 
