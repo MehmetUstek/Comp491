@@ -36,12 +36,10 @@ def getUserUIDbyEmail():
 def parse_json(data):
     return json.loads(json_util.dumps(data))
 
-@app.route("/user/crate_user", methods=['POST'])
+@app.route("/user/create_user", methods=['POST'])
 def create_user():
     try:
-        print(request.data)
         UID = request.json['userUID']
-        #print("bura")
         name = request.json['username']
         mail = request.json['userEmail']
 
@@ -58,7 +56,8 @@ def create_user():
         print(ex)
         return Response(
             response=json.dumps(
-                {"message": "user not inserted"}),
+                {"message": "user not inserted. Please indicate "
+                            "userUID, username and userEmail"}),
             status=500,
             mimetype='applicaiton/json'
         )
@@ -78,6 +77,12 @@ def getUserByUID():
         return user
     except Exception as ex:
         print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "cannot retrieve user"}),
+            status=500,
+            mimetype='applicaiton/json'
+        )
 
 
 @app.route("/user/getUsernameByUID", methods= ['GET', 'POST'])
@@ -124,13 +129,17 @@ def getUserEmailByUID():
             mimetype='application/json'
         )
 
-@app.route("/user/changeUsernameByUserId", methods= ['PATCH'])
-def changeUsernameByUserID():
+@app.route("/user/changeUsernameByUID", methods= ['PATCH'])
+def changeUsernameByUID():
     try:
-        uID = request.get_json()['userID']
+        uID = request.get_json()['userUID']
+        filter = {
+            'userUID': uID
+        }
+        username = request.json["username"]
         users_collection.update_one(
-            {"userUID": uID},
-            {"$set":{"username":request.form["username"]}}
+            filter,
+            {"$set": {"username": username}}
         )
         return Response(
             response= json.dumps(
@@ -142,7 +151,7 @@ def changeUsernameByUserID():
         print(ex)
         return Response(
             response= json.dumps(
-                {"message":"Cannot update username"}),
+                {"message":"Cannot update username, please indicate UID and new username"}),
             status=500,
             mimetype='application/json'
         )
