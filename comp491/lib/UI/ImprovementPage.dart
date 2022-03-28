@@ -152,7 +152,8 @@ class _ImprovementPage extends State<ImprovementPage> {
                               Product product = snapshot.data;
                               String title = product.title;
                               String price = product.price;
-                              var img1Name = ref.child('images/'+product.image2+'.png');
+                              var img1Name = ref
+                                  .child('images/' + product.image2 + '.png');
                               String url = "";
                               img1Name
                                   .getDownloadURL()
@@ -179,8 +180,7 @@ class _ImprovementPage extends State<ImprovementPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         FutureBuilder(
-                                            future: img1Name
-                                                .getDownloadURL(),
+                                            future: img1Name.getDownloadURL(),
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<dynamic>
                                                     snapshot1) {
@@ -190,7 +190,8 @@ class _ImprovementPage extends State<ImprovementPage> {
                                                     "Error Occurred while downloading user data");
                                               }
                                               if (snapshot1.hasData) {
-                                                return Image.network(snapshot1.data,
+                                                return Image.network(
+                                                    snapshot1.data,
                                                     fit: BoxFit.fitHeight);
                                               } else {
                                                 return const CircularProgressIndicator();

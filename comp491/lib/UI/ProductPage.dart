@@ -8,12 +8,20 @@ class ProductPage extends StatefulWidget {
   @override
   _ProductPage createState() => _ProductPage();
 }
-
+enum OptionChecked { first, second, third, fourth }
 class _ProductPage extends State<ProductPage> {
   @override
   void initState() {
     super.initState();
   }
+  Color tickedColor = const Color(0xffB20029);
+  Color untickedColor = const Color(0xff000000).withOpacity(0.77);
+  Color radio1 = const Color(0xffB20029);
+  Color radio2 = const Color(0xff000000).withOpacity(0.77);
+  Color radio3 = const Color(0xff000000).withOpacity(0.77);
+  Color radio4 = const Color(0xff000000).withOpacity(0.77);
+  OptionChecked? _optionChecked = OptionChecked.first;
+
 
   double headerSize = 17;
   double slideItemWidth = 75;
@@ -84,10 +92,45 @@ class _ProductPage extends State<ProductPage> {
                     height: 10,
                     color: Color(0xffB20029),
                     child: ElevatedButton(
+                    // RadioListTile(value: OptionChecked.first, onChanged: (OptionChecked? value) {
+                    //   setState(() {
+                    //     _optionChecked = value;
+                    //   });
+                    // }, groupValue: _optionChecked
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xffB20029),
+                          primary: radio1,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _optionChecked = OptionChecked.first;
+                            radio1 = tickedColor;
+                            radio2 = untickedColor;
+                            radio3 = untickedColor;
+                            radio4 = untickedColor;
+
+                          });
+                        },
+                        child: null),
+                  // ),
+                  ),
+                  Container(
+                    width: slideItemWidth,
+                    height: 10,
+                    color: Color(0xff000000).withOpacity(0.77),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: radio2,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _optionChecked = OptionChecked.second;
+                            radio1 = untickedColor;
+                            radio2 = tickedColor;
+                            radio3 = untickedColor;
+                            radio4 = untickedColor;
+
+                          });
+                        },
                         child: null),
                   ),
                   Container(
@@ -96,9 +139,18 @@ class _ProductPage extends State<ProductPage> {
                     color: Color(0xff000000).withOpacity(0.77),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xff000000).withOpacity(0.77),
+                          primary: radio3,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _optionChecked = OptionChecked.third;
+                            radio1 = untickedColor;
+                            radio2 = untickedColor;
+                            radio3 = tickedColor;
+                            radio4 = untickedColor;
+
+                          });
+                        },
                         child: null),
                   ),
                   Container(
@@ -107,20 +159,18 @@ class _ProductPage extends State<ProductPage> {
                     color: Color(0xff000000).withOpacity(0.77),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xff000000).withOpacity(0.77),
+                          primary: radio4,
                         ),
-                        onPressed: () {},
-                        child: null),
-                  ),
-                  Container(
-                    width: slideItemWidth,
-                    height: 10,
-                    color: Color(0xff000000).withOpacity(0.77),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xff000000).withOpacity(0.77),
-                        ),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _optionChecked = OptionChecked.fourth;
+                            radio1 = untickedColor;
+                            radio2 = untickedColor;
+                            radio3 = untickedColor;
+                            radio4 = tickedColor;
+
+                          });
+                        },
                         child: null),
                   ),
                 ],
