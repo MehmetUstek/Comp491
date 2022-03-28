@@ -3,7 +3,7 @@ class Product {
   final String title;
   final String description;
   final String price;
-  final String imageName;
+  final String imageId;
 
-  const Product(this.productId,this.title, this.description, this.price, this.imageName);
+  const Product(this.productId,this.title, this.description, this.price, this.imageId);
 }

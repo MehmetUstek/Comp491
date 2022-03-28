@@ -27,6 +27,7 @@ def connectToDB():
 
 db: Database = connectToDB()
 users_collection: Collection = db.get_collection('Users')
+products_collection: Collection = db.get_collection('Products')
 
 
 @app.route("/user/getUserUIDbyEmail")
@@ -50,7 +51,7 @@ def create_user():
             response=json.dumps(
                 {"message": "user inserted"}),
             status=200,
-            mimetype='applicaiton/json'
+            mimetype='application/json'
         )
     except Exception as ex:
         print(ex)
@@ -59,7 +60,7 @@ def create_user():
                 {"message": "user not inserted. Please indicate "
                             "userUID, username and userEmail"}),
             status=500,
-            mimetype='applicaiton/json'
+            mimetype='application/json'
         )
 
 @app.route("/user/getUserByUID", methods= ['GET', 'POST'])
@@ -81,7 +82,7 @@ def getUserByUID():
             response=json.dumps(
                 {"message": "cannot retrieve user"}),
             status=500,
-            mimetype='applicaiton/json'
+            mimetype='application/json'
         )
 
 
@@ -145,7 +146,7 @@ def changeUsernameByUID():
             response= json.dumps(
                 {"message":"username updated"}),
             status=200,
-            mimetype='applicaiton/json'
+            mimetype='application/json'
             )
     except Exception as ex:
         print(ex)
@@ -156,7 +157,24 @@ def changeUsernameByUID():
             mimetype='application/json'
         )
 
+@app.route("/product/getAllProducts", methods= ['GET'])
+def getAllProducts():
+    try:
+        products = products_collection.find()
+        product_list = parse_json(products)
 
+        # user = parse_json(user)
+        # username = user['username']
+
+        return jsonify(product_list)
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
 
 if __name__ == '__main__':
     app.run(debug=True, port=9090)
