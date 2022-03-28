@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:comp491/modals/Product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -10,6 +10,17 @@ class ImprovementPage extends StatefulWidget {
 }
 
 class _ImprovementPage extends State<ImprovementPage> {
+  final shoppingBag = List.generate(
+    20,
+    (i) => Product(
+      'ProductId $i',
+      'Item $i',
+      'A description of what needs to be done for Todo $i',
+      '3000,00 TL $i',
+      'image$i'
+    ),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -17,20 +28,14 @@ class _ImprovementPage extends State<ImprovementPage> {
 
   double headerSize = 17;
   double slideItemWidth = 75;
+
   void doNothing(BuildContext context) {
     // Add listener if needed.
     // Slidable.of(context)!.dismissGesture.addListener(() { print('dismissed'); });
     Slidable.of(context)!.dismiss(
-        ResizeRequest(
-            const Duration(milliseconds: 20),
-                () {
-              print('Dismiss from Button');
-            }
-        ),
-        duration: const Duration(milliseconds: 20),
+      ResizeRequest(const Duration(milliseconds: 20), () {}),
+      duration: const Duration(milliseconds: 20),
     );
-
-
   }
 
   @override
@@ -68,94 +73,101 @@ class _ImprovementPage extends State<ImprovementPage> {
                 width: MediaQuery.of(context).size.width,
                 //TODO: Change later.
                 height: MediaQuery.of(context).size.height * 4 / 7,
-                child: ListView(
-                  padding: EdgeInsets.only(left: 5, right: 5),
-                  scrollDirection: Axis.vertical,
-                  addAutomaticKeepAlives: false,
-                  cacheExtent: 100,
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    Slidable(
-                      key: const ValueKey(0),
+                child: ListView.builder(
+                    //TODO: Change later.
+                    // itemCount: todos.length,
+                    itemCount: 1,
+                    padding: const EdgeInsets.only(left: 5, right: 5),
+                    scrollDirection: Axis.vertical,
+                    addAutomaticKeepAlives: false,
+                    cacheExtent: 100,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Slidable(
+                        key: const ValueKey(0),
 
+                        // The end action pane is the one at the right or the bottom side.
+                        endActionPane: ActionPane(
+                          // dismissible: DismissiblePane(onDismissed: () {}),
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              flex: 2,
+                              //TODO: Write OnPressed.
+                              onPressed: doNothing,
+                              autoClose: false,
 
-                      // The end action pane is the one at the right or the bottom side.
-                      endActionPane:  ActionPane(
-                        // dismissible: DismissiblePane(onDismissed: () {}),
-                        motion: ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            flex:2,
-                            //TODO: Write OnPressed.
-                            onPressed: doNothing,
-                            autoClose: false,
-
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.white,
-                            icon: Icons.delete_rounded,
-                            label: 'Delete',
-                          ),
-                          SlidableAction(
-                            flex:2,
-                            onPressed: null,
-                            backgroundColor: Colors.black45,
-                            foregroundColor: Colors.white,
-                            icon: Icons.close,
-                            label: 'Close',
-                          ),
-                        ],
-                      ),
-                      child: SizedBox(
-                        height: 100,
-                        // width: 100,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            side: const BorderSide(
-                              color: Colors.black12,
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete_rounded,
+                              label: 'Delete',
                             ),
-                          ),
-                          semanticContainer: true,
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          elevation: 10,
-                          shadowColor: Colors.black,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 10, right: 30),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Image.asset(
-                                  "assets/nike_blazer_mid_77.png",
-                                  fit: BoxFit.fitHeight,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const <Widget>[
-                                    Text('Jordan Delta 2',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 12,
-                                            color: Colors.black)),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Text('3000,00 TL',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
+                            const SlidableAction(
+                              flex: 2,
+                              onPressed: null,
+                              backgroundColor: Colors.black45,
+                              foregroundColor: Colors.white,
+                              icon: Icons.close,
+                              label: 'Close',
+                            ),
+                          ],
+                        ),
+                        child: SizedBox(
+                          height: 100,
+                          // width: 100,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              side: const BorderSide(
+                                color: Colors.black12,
+                              ),
+                            ),
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            elevation: 10,
+                            shadowColor: Colors.black,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 30),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Image.asset(
+                                    "../data_crawling/images/"+ shoppingBag[index].imageName+"sub1.png",
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children:  <Widget>[
+                                      Text(shoppingBag[index].title,
+                                          textAlign: TextAlign.left,
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.normal,
-                                              fontSize: 13,
-                                              color: Colors.black45)),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                              fontSize: 12,
+                                              color: Colors.black)),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(shoppingBag[index].price,
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 13,
+                                                color: Colors.black45)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      );
+                    }
+                    // children: <Widget>[
+
+                    // ],
                     ),
-                  ],
-                ),
               ),
               Center(
                 child: Container(
@@ -165,7 +177,7 @@ class _ImprovementPage extends State<ImprovementPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const <Widget>[
@@ -186,7 +198,7 @@ class _ImprovementPage extends State<ImprovementPage> {
                     ]),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 child: Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -199,7 +211,7 @@ class _ImprovementPage extends State<ImprovementPage> {
                       ),
                       fixedSize:
                           Size(MediaQuery.of(context).size.width * 3 / 4, 30),
-                      primary: Color(0xff272022),
+                      primary: const Color(0xff272022),
                     ),
                     child: const Text(
                       'Continue to payment',

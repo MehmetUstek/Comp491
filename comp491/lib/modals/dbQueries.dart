@@ -22,7 +22,7 @@ Future<DbCollection> getUsersCollection() async {
 
 Future<UserData> fetchUser(String uid) async {
   final queryParams = {
-    'userUID': 'dETjut6S7UhvU3fCXGCidh6LF8B3'
+    'userUID': uid
   };
   final response = await http
       .post(Uri.parse('http://10.0.2.2:9090/user/getUsernameByUID').replace(queryParameters: queryParams), headers: {
@@ -47,9 +47,9 @@ Future<UserData> fetchUser(String uid) async {
     throw Exception('Failed to load user');
   }
 }
-Future<String> getUsername(String uid) async {
+Future<String?> getUsername(String uid) async {
   final queryParams = {
-    'userUID': 'dETjut6S7UhvU3fCXGCidh6LF8B3'
+    'userUID': uid
   };
   final response = await http
       .post(Uri.parse('http://10.0.2.2:9090/user/getUsernameByUID').replace(queryParameters: queryParams), headers: {
@@ -66,8 +66,36 @@ Future<String> getUsername(String uid) async {
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    String username = jsonDecode(response.body);
+    String? username = response.body;
     return username;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load user');
+  }
+}
+
+Future<String?> getUserEmail(String uid) async {
+  final queryParams = {
+    'userUID': uid
+  };
+  final response = await http
+      .post(Uri.parse('http://10.0.2.2:9090/user/getUserEmailByUID').replace(queryParameters: queryParams), headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  }, body: jsonEncode(queryParams));
+  // final uri =
+  // Uri.http('10.0.2.2:9090', '/user/getUsernameByUID', queryParams);
+  // final response = await http.get(uri, headers: {
+  //   HttpHeaders.contentTypeHeader: 'application/json',
+  // });
+  // final uri = Uri.http('10.0.2.2:9090', '/user/getUsernameByUID', queryParams);
+  // final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+  // final response = await http.get(uri, headers: headers);
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    String? userEmail = response.body;
+    return userEmail;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.

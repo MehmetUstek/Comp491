@@ -68,7 +68,7 @@ class _ProfileTab extends State<ProfileTab> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>  ProfilePage(userUID: '',)),
+                              builder: (context) =>  ProfilePage(userUID: userUID,)),
                         );
                       },
                     ),

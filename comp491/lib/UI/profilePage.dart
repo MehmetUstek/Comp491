@@ -2,14 +2,13 @@ import 'package:comp491/UI/ChangePassword.dart';
 import 'package:comp491/modals/dbQueries.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../modals/User.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key? key, required this.userUID}) : super(key: key);
-  final String? userUID;
+  const ProfilePage({Key? key, required this.userUID}) : super(key: key);
+  final String userUID;
 
   @override
-  _ProfileState createState() => _ProfileState(userUID!);
+  _ProfileState createState() => _ProfileState(userUID);
 }
 
 class _ProfileState extends State<ProfilePage> {
@@ -108,20 +107,6 @@ class _ProfileState extends State<ProfilePage> {
         foregroundColor: Colors.black,
       ),
       body: Center(
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.topRight,
-            stops: [
-              0.5,
-              0.9,
-            ],
-            colors: [
-              Color(0xffA9C7F2),
-              Color(0xff8DB5EE),
-            ],
-          )),
           child: Container(
             width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.only(left: 50.0, right: 50.0),
@@ -129,18 +114,7 @@ class _ProfileState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(padding: EdgeInsets.only(top: 170)),
-                // IconButton(
-                //   onPressed: () {},
-                //     icon: Icon(
-                //       CupertinoIcons.person_alt_circle,
-                //       color: Colors.white,
-                //
-                //     ),
-                //   color: Colors.white,
-                //   iconSize: 100,
-                //
-                // ),
+                const Padding(padding: EdgeInsets.only(top: 170)),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     //TODO: Cancel the button animations.
@@ -148,29 +122,44 @@ class _ProfileState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     fixedSize: Size(MediaQuery.of(context).size.width, 45),
-                    primary: Color(0xffE4EDFB),
+                    primary: Colors.black54,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-
-                      Text(
-                        'Mehmet Üstek',
-                        style: TextStyle(fontSize: 12, color: Colors.black),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          CupertinoIcons.pencil,
-                          color: Colors.black,
-                        ),
-                        color: Colors.white,
-                      ),
-                    ],
+                  child: FutureBuilder(
+                    future: getUsername(userUID),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasError) {
+                        // Show error
+                        return const Text(
+                            "Error Occurred while downloading user data");
+                      }
+                      if (snapshot.hasData) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              snapshot.data,
+                              style:
+                                  const TextStyle(fontSize: 12, color: Colors.white),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                CupertinoIcons.pencil,
+                                color: Colors.white,
+                              ),
+                              color: Colors.white,
+                            ),
+                          ],
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    },
                   ),
                   onPressed: () {},
                 ),
-                Padding(padding: EdgeInsets.only(top: 15)),
+                const Padding(padding: EdgeInsets.only(top: 15)),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     //TODO: Cancel the button animations.
@@ -178,28 +167,44 @@ class _ProfileState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     fixedSize: Size(MediaQuery.of(context).size.width, 45),
-                    primary: Color(0xffE4EDFB),
+                    primary: Colors.black54,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'mustek17@ku.edu.tr',
-                        style: TextStyle(fontSize: 12, color: Colors.black),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          CupertinoIcons.pencil,
-                          color: Colors.black,
-                        ),
-                        color: Colors.white,
-                      ),
-                    ],
+                  child: FutureBuilder(
+                    future: getUserEmail(userUID),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasError) {
+                        // Show error
+                        return const Text(
+                            "Error Occurred while downloading user data");
+                      }
+                      if (snapshot.hasData) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              snapshot.data,
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.white),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                CupertinoIcons.pencil,
+                                color: Colors.white,
+                              ),
+                              color: Colors.white,
+                            ),
+                          ],
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    },
                   ),
                   onPressed: () {},
                 ),
-                Padding(padding: EdgeInsets.only(top: 8)),
+                const Padding(padding: EdgeInsets.only(top: 8)),
                 // TextButton(
                 //   onPressed: () {
                 //     Navigator.push(
@@ -219,7 +224,6 @@ class _ProfileState extends State<ProfilePage> {
                 // ),
               ],
             ),
-          ),
         ),
       ),
       // body: Center(
