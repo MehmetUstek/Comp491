@@ -1,9 +1,13 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../modals/Product.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({Key? key}) : super(key: key);
+  final Product product;
+
+  const ProductPage({Key? key, required this.product}) : super(key: key);
 
   @override
   _ProductPage createState() => _ProductPage();
@@ -14,6 +18,8 @@ class _ProductPage extends State<ProductPage> {
   void initState() {
     super.initState();
   }
+  final ref = FirebaseStorage.instance.ref();
+
   Color tickedColor = const Color(0xffB20029);
   Color untickedColor = const Color(0xff000000).withOpacity(0.77);
   Color radio1 = const Color(0xffB20029);
@@ -28,6 +34,15 @@ class _ProductPage extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    Product product = widget.product;
+    var img1Name = ref
+        .child('images/' + product.image1 + '.png');
+    var img2Name = ref
+        .child('images/' + product.image2 + '.png');
+    var img3Name = ref
+        .child('images/' + product.image3 + '.png');
+    var img4Name = ref
+        .child('images/' + product.image4 + '.png');
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -49,10 +64,10 @@ class _ProductPage extends State<ProductPage> {
                 padding: const EdgeInsets.only(left: 25, right: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
+                  children: <Widget>[
                     SizedBox(
-                      height: 25,
-                      child: Text('Jordan Delta 2',
+                      height: 22,
+                      child: Text(product.title,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
@@ -61,7 +76,7 @@ class _ProductPage extends State<ProductPage> {
                     ),
                     SizedBox(
                       height: 12,
-                      child: Text('3000,00 TL',
+                      child: Text(product.price+" \$",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
@@ -79,8 +94,26 @@ class _ProductPage extends State<ProductPage> {
                 child: SizedBox(
                   height: 130,
                   width: MediaQuery.of(context).size.width,
-                  child: Image.asset("assets/nike_blazer_mid_77.png",
-                      fit: BoxFit.fitHeight),
+                  child:
+                  FutureBuilder(
+                      future: img1Name.getDownloadURL(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic>
+                          snapshot1) {
+                        if (snapshot1.hasError) {
+                          // Show error
+                          return const Text(
+                              "Error Occurred while downloading user data");
+                        }
+                        if (snapshot1.hasData) {
+                          return Image.network(
+                            snapshot1.data,
+                            fit: BoxFit.scaleDown,
+                            height: 100,);
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      }),
                 ),
               ),
               const Padding(padding: EdgeInsets.only(top: 25)),

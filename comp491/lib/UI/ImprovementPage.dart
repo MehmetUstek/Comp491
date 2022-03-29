@@ -140,7 +140,7 @@ class _ImprovementPage extends State<ImprovementPage> {
                           ],
                         ),
                         child: FutureBuilder(
-                          future: getProductByPid("0"),
+                          future: getProductByPid("100"),
                           builder: (BuildContext context,
                               AsyncSnapshot<dynamic> snapshot) {
                             if (snapshot.hasError) {
@@ -153,11 +153,7 @@ class _ImprovementPage extends State<ImprovementPage> {
                               String title = product.title;
                               String price = product.price;
                               var img1Name = ref
-                                  .child('images/' + product.image2 + '.png');
-                              String url = "";
-                              img1Name
-                                  .getDownloadURL()
-                                  .then((value) => url = value);
+                                  .child('images/' + product.image1 + '.png');
                               return SizedBox(
                                 height: 100,
                                 // width: 100,
@@ -205,17 +201,22 @@ class _ImprovementPage extends State<ImprovementPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
+                                            SizedBox(
+                                              child:
                                             Text(title,
-                                                textAlign: TextAlign.left,
+                                                textAlign: TextAlign.center,
+
                                                 style: const TextStyle(
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     fontSize: 12,
                                                     color: Colors.black)),
+                                              width: 150,
+                                            ),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 10),
-                                              child: Text(price,
+                                              child: Text(price+" \$",
                                                   textAlign: TextAlign.center,
                                                   style: const TextStyle(
                                                       fontWeight:

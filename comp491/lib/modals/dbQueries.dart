@@ -80,16 +80,26 @@ Future<String?> getUserEmail(String uid) async {
   }
 }
 
-Future<String?> getAllProducts() async {
+Future<List<Product>> getAllProducts() async {
   final response = await http
-      .get(Uri.parse('http://10.0.2.2:9090/user/getAllProducts'), headers: {
+      .get(Uri.parse('http://10.0.2.2:9090/product/getAllProducts'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+  HttpHeaders.connectionHeader: 'keep-alive',
+  'keep-alive': "timeout=100, max=10000",
   });
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    String? userEmail = response.body;
-    return userEmail;
+    // var product_list = jsonDecode(response.body);
+    // for(Product product in product_list){
+    //
+    // }
+    // for
+    // Product product =Product.fromJson(jsonDecode(response.body));
+    // return product;
+    Iterable l = json.decode(response.body);
+    List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
+    return products;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
