@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,25 @@ class ProductPage extends StatefulWidget {
 }
 enum OptionChecked { first, second, third, fourth }
 class _ProductPage extends State<ProductPage> {
+  late Product product;
+  var img1Name;
+  var img2Name;
+  var img3Name;
+  var img4Name;
+  var future;
   @override
   void initState() {
     super.initState();
+    product = widget.product;
+    img1Name = ref
+        .child('images/' + product.image1 + '.png');
+    img2Name = ref
+        .child('images/' + product.image2 + '.png');
+    img3Name = ref
+        .child('images/' + product.image3 + '.png');
+    img4Name = ref
+        .child('images/' + product.image4 + '.png');
+    future = img1Name.getDownloadURL();
   }
   final ref = FirebaseStorage.instance.ref();
 
@@ -34,15 +51,8 @@ class _ProductPage extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    Product product = widget.product;
-    var img1Name = ref
-        .child('images/' + product.image1 + '.png');
-    var img2Name = ref
-        .child('images/' + product.image2 + '.png');
-    var img3Name = ref
-        .child('images/' + product.image3 + '.png');
-    var img4Name = ref
-        .child('images/' + product.image4 + '.png');
+
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -96,7 +106,7 @@ class _ProductPage extends State<ProductPage> {
                   width: MediaQuery.of(context).size.width,
                   child:
                   FutureBuilder(
-                      future: img1Name.getDownloadURL(),
+                      future: future,
                       builder: (BuildContext context,
                           AsyncSnapshot<dynamic>
                           snapshot1) {
@@ -106,8 +116,10 @@ class _ProductPage extends State<ProductPage> {
                               "Error Occurred while downloading user data");
                         }
                         if (snapshot1.hasData) {
-                          return Image.network(
-                            snapshot1.data,
+                          return CachedNetworkImage(
+                            imageUrl: snapshot1.data,
+                            placeholder: (context, url) => CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
                             fit: BoxFit.scaleDown,
                             height: 100,);
                         } else {
@@ -140,6 +152,7 @@ class _ProductPage extends State<ProductPage> {
                             radio2 = untickedColor;
                             radio3 = untickedColor;
                             radio4 = untickedColor;
+                            future = img1Name.getDownloadURL();
 
                           });
                         },
@@ -161,6 +174,8 @@ class _ProductPage extends State<ProductPage> {
                             radio2 = tickedColor;
                             radio3 = untickedColor;
                             radio4 = untickedColor;
+                            future = img2Name.getDownloadURL();
+
 
                           });
                         },
@@ -181,6 +196,8 @@ class _ProductPage extends State<ProductPage> {
                             radio2 = untickedColor;
                             radio3 = tickedColor;
                             radio4 = untickedColor;
+                            future = img3Name.getDownloadURL();
+
 
                           });
                         },
@@ -201,6 +218,8 @@ class _ProductPage extends State<ProductPage> {
                             radio2 = untickedColor;
                             radio3 = untickedColor;
                             radio4 = tickedColor;
+                            future = img4Name.getDownloadURL();
+
 
                           });
                         },

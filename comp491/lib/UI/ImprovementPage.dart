@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comp491/modals/Product.dart';
 import 'package:comp491/modals/dbQueries.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -186,8 +187,10 @@ class _ImprovementPage extends State<ImprovementPage> {
                                                     "Error Occurred while downloading user data");
                                               }
                                               if (snapshot1.hasData) {
-                                                return Image.network(
-                                                    snapshot1.data,
+                                                return  CachedNetworkImage(
+                                                    imageUrl: snapshot1.data,
+                                                    placeholder: (context, url) => CircularProgressIndicator(),
+                                                    errorWidget: (context, url, error) => Icon(Icons.error),
                                                     fit: BoxFit.fitHeight);
                                               } else {
                                                 return const CircularProgressIndicator();

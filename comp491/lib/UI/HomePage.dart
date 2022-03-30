@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comp491/modals/dbQueries.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,9 +16,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
+  var future;
   @override
   void initState() {
     super.initState();
+    future = getAllProducts();
   }
   final ref = FirebaseStorage.instance.ref();
 
@@ -39,7 +42,7 @@ class _HomePage extends State<HomePage> {
             child: Padding(
               padding: const EdgeInsets.only(left: 30, right: 30, top: 100),
               child: FutureBuilder(
-                  future: getAllProducts(),
+                  future: future,
                   builder: (BuildContext context,
                       AsyncSnapshot<dynamic>
                       snapshot1) {
@@ -52,6 +55,7 @@ class _HomePage extends State<HomePage> {
                       List<Product> products = snapshot1.data;
 
                       return GridView.builder(
+                        cacheExtent: 100,
                         // crossAxisCount: 2,
                         // childAspectRatio: 0.8,
                         // crossAxisSpacing: 30,
@@ -95,10 +99,17 @@ class _HomePage extends State<HomePage> {
                                             "Error Occurred while downloading user data");
                                       }
                                       if (snapshot1.hasData) {
-                                        return Image.network(
-                                            snapshot1.data,
-                                            fit: BoxFit.scaleDown,
-                                        height: 100,);
+                                        return CachedNetworkImage(
+                                          imageUrl: snapshot1.data,
+                                          placeholder: (context, url) => CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) => Icon(Icons.error),
+                                          fit: BoxFit.scaleDown,
+                                          height: 100,
+                                        );
+                                      //   return Image.network(
+                                      //       snapshot1.data,
+                                      //       fit: BoxFit.scaleDown,
+                                      //   height: 100,);
                                       } else {
                                         return const CircularProgressIndicator();
                                       }
