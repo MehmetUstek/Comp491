@@ -84,6 +84,9 @@ class _HomePage extends State<HomePage> {
                                     builder: (context) => ProductPage(product: products[index],)),
                               );
                             },
+                            // style: OutlinedButton.styleFrom(
+                            //   side: BorderSide(width: 1, color: Colors.transparent)
+                            // ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,10 +109,6 @@ class _HomePage extends State<HomePage> {
                                           fit: BoxFit.scaleDown,
                                           height: 100,
                                         );
-                                      //   return Image.network(
-                                      //       snapshot1.data,
-                                      //       fit: BoxFit.scaleDown,
-                                      //   height: 100,);
                                       } else {
                                         return const CircularProgressIndicator();
                                       }

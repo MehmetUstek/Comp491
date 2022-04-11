@@ -21,6 +21,11 @@ class _ProductPage extends State<ProductPage> {
   var img3Name;
   var img4Name;
   var future;
+  var temp1;
+  var temp2;
+  var temp3;
+  var temp4;
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +39,15 @@ class _ProductPage extends State<ProductPage> {
     img4Name = ref
         .child('images/' + product.image4 + '.png');
     future = img1Name.getDownloadURL();
+
+    temp1 = ref
+        .child('images/image97sub1.png').getDownloadURL();
+    temp2 = ref
+        .child('images/image102sub1.png').getDownloadURL();
+    temp3 = ref
+        .child('images/image103sub1.png').getDownloadURL();
+    temp4 = ref
+        .child('images/image104sub1.png').getDownloadURL();
   }
   final ref = FirebaseStorage.instance.ref();
 
@@ -85,12 +99,12 @@ class _ProductPage extends State<ProductPage> {
                               color: Color(0xff272022))),
                     ),
                     SizedBox(
-                      height: 12,
+                      height: 18,
                       child: Text(product.price+" \$",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: 13,
+                              fontSize: 15,
                               color: Color(0xff272022))),
                     ),
                   ],
@@ -298,13 +312,30 @@ class _ProductPage extends State<ProductPage> {
                                   )),
                             ),
                           ),
-                          Image.asset(
-                            "assets/nike_blazer_mid_77.png",
-                            fit: BoxFit.scaleDown,
-                          ),
+                          FutureBuilder(
+                              future: temp3,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic>
+                                  snapshot_temp) {
+                                if (snapshot_temp.hasError) {
+                                  // Show error
+                                  return const Text(
+                                      "Error Occurred while downloading user data");
+                                }
+                                if (snapshot_temp.hasData) {
+                                  return CachedNetworkImage(
+                                    imageUrl: snapshot_temp.data,
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                    fit: BoxFit.scaleDown,
+                                    height: 80,);
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              }),
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 15),
-                            child: Text('Jordan Delta 2',
+                            child: Text('Nike SB Shane',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -313,7 +344,7 @@ class _ProductPage extends State<ProductPage> {
                           ),
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 10),
-                            child: Text('3000,00 TL',
+                            child: Text('85 \$',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -342,7 +373,7 @@ class _ProductPage extends State<ProductPage> {
                             ),
                             child: const FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: Text('99%',
+                              child: Text('92%',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -351,14 +382,31 @@ class _ProductPage extends State<ProductPage> {
                                   )),
                             ),
                           ),
-                          Image.asset(
-                            "assets/nike_blazer_mid_77.png",
-                            fit: BoxFit.scaleDown,
-                          ),
+                          FutureBuilder(
+                              future: temp4,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic>
+                                  snapshot_temp) {
+                                if (snapshot_temp.hasError) {
+                                  // Show error
+                                  return const Text(
+                                      "Error Occurred while downloading user data");
+                                }
+                                if (snapshot_temp.hasData) {
+                                  return CachedNetworkImage(
+                                    imageUrl: snapshot_temp.data,
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                    fit: BoxFit.scaleDown,
+                                    height: 80,);
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              }),
 
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 15),
-                            child: Text('Jordan Delta 2',
+                            child: Text('Jordan Air NFH',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -367,7 +415,7 @@ class _ProductPage extends State<ProductPage> {
                           ),
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 10),
-                            child: Text('3000,00 TL',
+                            child: Text('110 \$',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -396,7 +444,7 @@ class _ProductPage extends State<ProductPage> {
                             ),
                             child: const FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: Text('99%',
+                              child: Text('85%',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -405,14 +453,31 @@ class _ProductPage extends State<ProductPage> {
                                   )),
                             ),
                           ),
-                          Image.asset(
-                            "assets/nike_blazer_mid_77.png",
-                            fit: BoxFit.scaleDown,
-                          ),
+                          FutureBuilder(
+                              future: temp2,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic>
+                                  snapshot_temp) {
+                                if (snapshot_temp.hasError) {
+                                  // Show error
+                                  return const Text(
+                                      "Error Occurred while downloading user data");
+                                }
+                                if (snapshot_temp.hasData) {
+                                  return CachedNetworkImage(
+                                    imageUrl: snapshot_temp.data,
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                    fit: BoxFit.scaleDown,
+                                    height: 80,);
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              }),
 
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 15),
-                            child: Text('Jordan Delta 2',
+                            child: Text('Nike Run Swift 2',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -421,7 +486,7 @@ class _ProductPage extends State<ProductPage> {
                           ),
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 10),
-                            child: Text('3000,00 TL',
+                            child: Text('70 \$',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
