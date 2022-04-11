@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comp491/modals/Product.dart';
+import 'package:comp491/modals/dbQueries.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -10,16 +13,41 @@ class ImprovementPage extends StatefulWidget {
 }
 
 class _ImprovementPage extends State<ImprovementPage> {
+  final ref = FirebaseStorage.instance.ref();
   final shoppingBag = List.generate(
     20,
     (i) => Product(
-      'ProductId $i',
-      'Item $i',
-      'A description of what needs to be done for Todo $i',
-      '3000,00 TL $i',
-      'image$i'
+      oid: "1",
+      productId: "1",
+      title: "1",
+      description: "1",
+      price: "1",
+      image1: "image0sub1",
+      image2: "image0sub2",
+      image3: "image0sub3",
+      image4: "image0sub4",
     ),
   );
+
+  // FutureBuilder(
+  // future: getAllProducts(),
+  // builder: (BuildContext context,
+  //     AsyncSnapshot<dynamic> snapshot) {
+  // if (snapshot.hasError) {
+  // // Show error
+  // return const Text(
+  // "Error Occurred while downloading user data");
+  // }
+  // if (snapshot.hasData) {
+  // return Image.asset(
+  // "../data_crawling/images/image"+ shoppingBag[index].imageId+"sub1.png",
+  // fit: BoxFit.fitHeight,
+  // );
+  // } else {
+  // return const CircularProgressIndicator();
+  // }
+  // },
+  // ),
 
   @override
   void initState() {
@@ -112,55 +140,104 @@ class _ImprovementPage extends State<ImprovementPage> {
                             ),
                           ],
                         ),
-                        child: SizedBox(
-                          height: 100,
-                          // width: 100,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              side: const BorderSide(
-                                color: Colors.black12,
-                              ),
-                            ),
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            elevation: 10,
-                            shadowColor: Colors.black,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 30),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Image.asset(
-                                    "../data_crawling/images/"+ shoppingBag[index].imageName+"sub1.png",
-                                    fit: BoxFit.fitHeight,
+                        child: FutureBuilder(
+                          future: getProductByPid("100"),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<dynamic> snapshot) {
+                            if (snapshot.hasError) {
+                              // Show error
+                              return const Text(
+                                  "Error Occurred while downloading user data");
+                            }
+                            if (snapshot.hasData) {
+                              Product product = snapshot.data;
+                              String title = product.title;
+                              String price = product.price;
+                              var img1Name = ref
+                                  .child('images/' + product.image1 + '.png');
+                              return SizedBox(
+                                height: 100,
+                                // width: 100,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    side: const BorderSide(
+                                      color: Colors.black12,
+                                    ),
                                   ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children:  <Widget>[
-                                      Text(shoppingBag[index].title,
-                                          textAlign: TextAlign.left,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 12,
-                                              color: Colors.black)),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Text(shoppingBag[index].price,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 13,
-                                                color: Colors.black45)),
-                                      ),
-                                    ],
+                                  semanticContainer: true,
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  elevation: 10,
+                                  shadowColor: Colors.black,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 30),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        FutureBuilder(
+                                            future: img1Name.getDownloadURL(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<dynamic>
+                                                    snapshot1) {
+                                              if (snapshot1.hasError) {
+                                                // Show error
+                                                return const Text(
+                                                    "Error Occurred while downloading user data");
+                                              }
+                                              if (snapshot1.hasData) {
+                                                return  CachedNetworkImage(
+                                                    imageUrl: snapshot1.data,
+                                                    placeholder: (context, url) => CircularProgressIndicator(),
+                                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                                    fit: BoxFit.fitHeight);
+                                              } else {
+                                                return const CircularProgressIndicator();
+                                              }
+                                            }),
+                                        // Image.asset(
+                                        //   "../data_crawling/images/image"+ shoppingBag[index].imageId+"sub1.png",
+                                        //   fit: BoxFit.fitHeight,
+                                        // ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            SizedBox(
+                                              child:
+                                            Text(title,
+                                                textAlign: TextAlign.center,
+
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: 12,
+                                                    color: Colors.black)),
+                                              width: 150,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10),
+                                              child: Text(price+" \$",
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontSize: 13,
+                                                      color: Colors.black45)),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
+                                ),
+                              );
+                            } else {
+                              return const CircularProgressIndicator();
+                            }
+                          },
                         ),
                       );
                     }

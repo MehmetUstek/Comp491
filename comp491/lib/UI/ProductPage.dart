@@ -1,25 +1,72 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../modals/Product.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({Key? key}) : super(key: key);
+  final Product product;
+
+  const ProductPage({Key? key, required this.product}) : super(key: key);
 
   @override
   _ProductPage createState() => _ProductPage();
 }
-
+enum OptionChecked { first, second, third, fourth }
 class _ProductPage extends State<ProductPage> {
+  late Product product;
+  var img1Name;
+  var img2Name;
+  var img3Name;
+  var img4Name;
+  var future;
+  var temp1;
+  var temp2;
+  var temp3;
+  var temp4;
+
   @override
   void initState() {
     super.initState();
+    product = widget.product;
+    img1Name = ref
+        .child('images/' + product.image1 + '.png');
+    img2Name = ref
+        .child('images/' + product.image2 + '.png');
+    img3Name = ref
+        .child('images/' + product.image3 + '.png');
+    img4Name = ref
+        .child('images/' + product.image4 + '.png');
+    future = img1Name.getDownloadURL();
+
+    temp1 = ref
+        .child('images/image97sub1.png').getDownloadURL();
+    temp2 = ref
+        .child('images/image102sub1.png').getDownloadURL();
+    temp3 = ref
+        .child('images/image103sub1.png').getDownloadURL();
+    temp4 = ref
+        .child('images/image104sub1.png').getDownloadURL();
   }
+  final ref = FirebaseStorage.instance.ref();
+
+  Color tickedColor = const Color(0xffB20029);
+  Color untickedColor = const Color(0xff000000).withOpacity(0.77);
+  Color radio1 = const Color(0xffB20029);
+  Color radio2 = const Color(0xff000000).withOpacity(0.77);
+  Color radio3 = const Color(0xff000000).withOpacity(0.77);
+  Color radio4 = const Color(0xff000000).withOpacity(0.77);
+  OptionChecked? _optionChecked = OptionChecked.first;
+
 
   double headerSize = 17;
   double slideItemWidth = 75;
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -41,10 +88,10 @@ class _ProductPage extends State<ProductPage> {
                 padding: const EdgeInsets.only(left: 25, right: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
+                  children: <Widget>[
                     SizedBox(
-                      height: 25,
-                      child: Text('Jordan Delta 2',
+                      height: 22,
+                      child: Text(product.title,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
@@ -52,12 +99,12 @@ class _ProductPage extends State<ProductPage> {
                               color: Color(0xff272022))),
                     ),
                     SizedBox(
-                      height: 12,
-                      child: Text('3000,00 TL',
+                      height: 18,
+                      child: Text(product.price+" \$",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              fontSize: 13,
+                              fontSize: 15,
                               color: Color(0xff272022))),
                     ),
                   ],
@@ -71,8 +118,28 @@ class _ProductPage extends State<ProductPage> {
                 child: SizedBox(
                   height: 130,
                   width: MediaQuery.of(context).size.width,
-                  child: Image.asset("assets/nike_blazer_mid_77.png",
-                      fit: BoxFit.fitHeight),
+                  child:
+                  FutureBuilder(
+                      future: future,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic>
+                          snapshot1) {
+                        if (snapshot1.hasError) {
+                          // Show error
+                          return const Text(
+                              "Error Occurred while downloading user data");
+                        }
+                        if (snapshot1.hasData) {
+                          return CachedNetworkImage(
+                            imageUrl: snapshot1.data,
+                            placeholder: (context, url) => CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                            fit: BoxFit.scaleDown,
+                            height: 100,);
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      }),
                 ),
               ),
               const Padding(padding: EdgeInsets.only(top: 25)),
@@ -84,10 +151,48 @@ class _ProductPage extends State<ProductPage> {
                     height: 10,
                     color: Color(0xffB20029),
                     child: ElevatedButton(
+                    // RadioListTile(value: OptionChecked.first, onChanged: (OptionChecked? value) {
+                    //   setState(() {
+                    //     _optionChecked = value;
+                    //   });
+                    // }, groupValue: _optionChecked
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xffB20029),
+                          primary: radio1,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _optionChecked = OptionChecked.first;
+                            radio1 = tickedColor;
+                            radio2 = untickedColor;
+                            radio3 = untickedColor;
+                            radio4 = untickedColor;
+                            future = img1Name.getDownloadURL();
+
+                          });
+                        },
+                        child: null),
+                  // ),
+                  ),
+                  Container(
+                    width: slideItemWidth,
+                    height: 10,
+                    color: Color(0xff000000).withOpacity(0.77),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: radio2,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _optionChecked = OptionChecked.second;
+                            radio1 = untickedColor;
+                            radio2 = tickedColor;
+                            radio3 = untickedColor;
+                            radio4 = untickedColor;
+                            future = img2Name.getDownloadURL();
+
+
+                          });
+                        },
                         child: null),
                   ),
                   Container(
@@ -96,9 +201,20 @@ class _ProductPage extends State<ProductPage> {
                     color: Color(0xff000000).withOpacity(0.77),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xff000000).withOpacity(0.77),
+                          primary: radio3,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _optionChecked = OptionChecked.third;
+                            radio1 = untickedColor;
+                            radio2 = untickedColor;
+                            radio3 = tickedColor;
+                            radio4 = untickedColor;
+                            future = img3Name.getDownloadURL();
+
+
+                          });
+                        },
                         child: null),
                   ),
                   Container(
@@ -107,20 +223,20 @@ class _ProductPage extends State<ProductPage> {
                     color: Color(0xff000000).withOpacity(0.77),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xff000000).withOpacity(0.77),
+                          primary: radio4,
                         ),
-                        onPressed: () {},
-                        child: null),
-                  ),
-                  Container(
-                    width: slideItemWidth,
-                    height: 10,
-                    color: Color(0xff000000).withOpacity(0.77),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xff000000).withOpacity(0.77),
-                        ),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            _optionChecked = OptionChecked.fourth;
+                            radio1 = untickedColor;
+                            radio2 = untickedColor;
+                            radio3 = untickedColor;
+                            radio4 = tickedColor;
+                            future = img4Name.getDownloadURL();
+
+
+                          });
+                        },
                         child: null),
                   ),
                 ],
@@ -196,13 +312,30 @@ class _ProductPage extends State<ProductPage> {
                                   )),
                             ),
                           ),
-                          Image.asset(
-                            "assets/nike_blazer_mid_77.png",
-                            fit: BoxFit.scaleDown,
-                          ),
+                          FutureBuilder(
+                              future: temp3,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic>
+                                  snapshot_temp) {
+                                if (snapshot_temp.hasError) {
+                                  // Show error
+                                  return const Text(
+                                      "Error Occurred while downloading user data");
+                                }
+                                if (snapshot_temp.hasData) {
+                                  return CachedNetworkImage(
+                                    imageUrl: snapshot_temp.data,
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                    fit: BoxFit.scaleDown,
+                                    height: 80,);
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              }),
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 15),
-                            child: Text('Jordan Delta 2',
+                            child: Text('Nike SB Shane',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -211,7 +344,7 @@ class _ProductPage extends State<ProductPage> {
                           ),
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 10),
-                            child: Text('3000,00 TL',
+                            child: Text('85 \$',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -240,7 +373,7 @@ class _ProductPage extends State<ProductPage> {
                             ),
                             child: const FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: Text('99%',
+                              child: Text('92%',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -249,14 +382,31 @@ class _ProductPage extends State<ProductPage> {
                                   )),
                             ),
                           ),
-                          Image.asset(
-                            "assets/nike_blazer_mid_77.png",
-                            fit: BoxFit.scaleDown,
-                          ),
+                          FutureBuilder(
+                              future: temp4,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic>
+                                  snapshot_temp) {
+                                if (snapshot_temp.hasError) {
+                                  // Show error
+                                  return const Text(
+                                      "Error Occurred while downloading user data");
+                                }
+                                if (snapshot_temp.hasData) {
+                                  return CachedNetworkImage(
+                                    imageUrl: snapshot_temp.data,
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                    fit: BoxFit.scaleDown,
+                                    height: 80,);
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              }),
 
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 15),
-                            child: Text('Jordan Delta 2',
+                            child: Text('Jordan Air NFH',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -265,7 +415,7 @@ class _ProductPage extends State<ProductPage> {
                           ),
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 10),
-                            child: Text('3000,00 TL',
+                            child: Text('110 \$',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -294,7 +444,7 @@ class _ProductPage extends State<ProductPage> {
                             ),
                             child: const FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: Text('99%',
+                              child: Text('85%',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -303,14 +453,31 @@ class _ProductPage extends State<ProductPage> {
                                   )),
                             ),
                           ),
-                          Image.asset(
-                            "assets/nike_blazer_mid_77.png",
-                            fit: BoxFit.scaleDown,
-                          ),
+                          FutureBuilder(
+                              future: temp2,
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<dynamic>
+                                  snapshot_temp) {
+                                if (snapshot_temp.hasError) {
+                                  // Show error
+                                  return const Text(
+                                      "Error Occurred while downloading user data");
+                                }
+                                if (snapshot_temp.hasData) {
+                                  return CachedNetworkImage(
+                                    imageUrl: snapshot_temp.data,
+                                    placeholder: (context, url) => const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                    fit: BoxFit.scaleDown,
+                                    height: 80,);
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              }),
 
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 15),
-                            child: Text('Jordan Delta 2',
+                            child: Text('Nike Run Swift 2',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
@@ -319,7 +486,7 @@ class _ProductPage extends State<ProductPage> {
                           ),
                           const Padding(
                             padding: EdgeInsets.only(left: 5, top: 10),
-                            child: Text('3000,00 TL',
+                            child: Text('70 \$',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
