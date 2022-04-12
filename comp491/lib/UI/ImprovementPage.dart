@@ -6,13 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ImprovementPage extends StatefulWidget {
-  const ImprovementPage({Key? key}) : super(key: key);
+  final String? userUID;
+  const ImprovementPage({Key? key, required this.userUID}) : super(key: key);
 
   @override
   _ImprovementPage createState() => _ImprovementPage();
 }
 
 class _ImprovementPage extends State<ImprovementPage> {
+  var future;
+  late String? userUID;
   final ref = FirebaseStorage.instance.ref();
   final shoppingBag = List.generate(
     20,
@@ -52,14 +55,17 @@ class _ImprovementPage extends State<ImprovementPage> {
   @override
   void initState() {
     super.initState();
+    userUID = widget.userUID;
+    future = getUserBagByUserUID(userUID!);
   }
 
   double headerSize = 17;
   double slideItemWidth = 75;
 
-  void doNothing(BuildContext context) {
+  void deleteProduct(BuildContext context, Pid) {
     // Add listener if needed.
     // Slidable.of(context)!.dismissGesture.addListener(() { print('dismissed'); });
+    deleteProductFromUserBagByUserUIDandPid(userUID, Pid);
     Slidable.of(context)!.dismiss(
       ResizeRequest(const Duration(milliseconds: 20), () {}),
       duration: const Duration(milliseconds: 20),
@@ -101,150 +107,185 @@ class _ImprovementPage extends State<ImprovementPage> {
                 width: MediaQuery.of(context).size.width,
                 //TODO: Change later.
                 height: MediaQuery.of(context).size.height * 4 / 7,
-                child: ListView.builder(
-                    //TODO: Change later.
-                    // itemCount: todos.length,
-                    itemCount: 1,
-                    padding: const EdgeInsets.only(left: 5, right: 5),
-                    scrollDirection: Axis.vertical,
-                    addAutomaticKeepAlives: false,
-                    cacheExtent: 100,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Slidable(
-                        key: const ValueKey(0),
+                child:
+                FutureBuilder(
+                  future: future,
+                builder: (BuildContext context,
+                AsyncSnapshot<dynamic>
+                snapshot2) {
+                  if (snapshot2.hasError) {
+                    // Show error
+                    return const Text(
+                        "Error Occurred while downloading user bag data");
+                  }
+                  if (snapshot2.hasData) {
+                    List<Product> product_list = snapshot2.data;
+                    return
+                      ListView.builder(
+                        //TODO: Change later.
+                        // itemCount: todos.length,
+                          itemCount: product_list.length,
+                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          scrollDirection: Axis.vertical,
+                          addAutomaticKeepAlives: false,
+                          cacheExtent: 100,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Slidable(
+                              key: const ValueKey(0),
 
-                        // The end action pane is the one at the right or the bottom side.
-                        endActionPane: ActionPane(
-                          // dismissible: DismissiblePane(onDismissed: () {}),
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              flex: 2,
-                              //TODO: Write OnPressed.
-                              onPressed: doNothing,
-                              autoClose: false,
+                              // The end action pane is the one at the right or the bottom side.
+                              endActionPane: ActionPane(
+                                // dismissible: DismissiblePane(onDismissed: () {}),
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    flex: 2,
+                                    //TODO: Write OnPressed.
+                                    onPressed: (BuildContext context) {
+                                      deleteProduct(context, product_list[index].productId);
+                                    },
+                                    autoClose: false,
 
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete_rounded,
-                              label: 'Delete',
-                            ),
-                            const SlidableAction(
-                              flex: 2,
-                              onPressed: null,
-                              backgroundColor: Colors.black45,
-                              foregroundColor: Colors.white,
-                              icon: Icons.close,
-                              label: 'Close',
-                            ),
-                          ],
-                        ),
-                        child: FutureBuilder(
-                          future: getProductByPid("100"),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<dynamic> snapshot) {
-                            if (snapshot.hasError) {
-                              // Show error
-                              return const Text(
-                                  "Error Occurred while downloading user data");
-                            }
-                            if (snapshot.hasData) {
-                              Product product = snapshot.data;
-                              String title = product.title;
-                              String price = product.price;
-                              var img1Name = ref
-                                  .child('images/' + product.image1 + '.png');
-                              return SizedBox(
-                                height: 100,
-                                // width: 100,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    side: const BorderSide(
-                                      color: Colors.black12,
-                                    ),
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete_rounded,
+                                    label: 'Delete',
                                   ),
-                                  semanticContainer: true,
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  elevation: 10,
-                                  shadowColor: Colors.black,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 30),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        FutureBuilder(
-                                            future: img1Name.getDownloadURL(),
-                                            builder: (BuildContext context,
-                                                AsyncSnapshot<dynamic>
-                                                    snapshot1) {
-                                              if (snapshot1.hasError) {
-                                                // Show error
-                                                return const Text(
-                                                    "Error Occurred while downloading user data");
-                                              }
-                                              if (snapshot1.hasData) {
-                                                return  CachedNetworkImage(
-                                                    imageUrl: snapshot1.data,
-                                                    placeholder: (context, url) => CircularProgressIndicator(),
-                                                    errorWidget: (context, url, error) => Icon(Icons.error),
-                                                    fit: BoxFit.fitHeight);
-                                              } else {
-                                                return const CircularProgressIndicator();
-                                              }
-                                            }),
-                                        // Image.asset(
-                                        //   "../data_crawling/images/image"+ shoppingBag[index].imageId+"sub1.png",
-                                        //   fit: BoxFit.fitHeight,
-                                        // ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            SizedBox(
-                                              child:
-                                            Text(title,
-                                                textAlign: TextAlign.center,
-
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 12,
-                                                    color: Colors.black)),
-                                              width: 150,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10),
-                                              child: Text(price+" \$",
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: 13,
-                                                      color: Colors.black45)),
-                                            ),
-                                          ],
+                                  const SlidableAction(
+                                    flex: 2,
+                                    onPressed: null,
+                                    backgroundColor: Colors.black45,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.close,
+                                    label: 'Close',
+                                  ),
+                                ],
+                              ),
+                              child: FutureBuilder(
+                                future: getProductByPid(product_list[index].productId),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  if (snapshot.hasError) {
+                                    // Show error
+                                    return const Text(
+                                        "Error Occurred while downloading user data");
+                                  }
+                                  if (snapshot.hasData) {
+                                    Product product = snapshot.data;
+                                    String title = product.title;
+                                    String price = product.price;
+                                    var img1Name = ref
+                                        .child(
+                                        'images/' + product.image1 + '.png');
+                                    return SizedBox(
+                                      height: 100,
+                                      // width: 100,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              5),
+                                          side: const BorderSide(
+                                            color: Colors.black12,
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                          },
-                        ),
-                      );
-                    }
-                    // children: <Widget>[
+                                        semanticContainer: true,
+                                        clipBehavior: Clip
+                                            .antiAliasWithSaveLayer,
+                                        elevation: 10,
+                                        shadowColor: Colors.black,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 30),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              FutureBuilder(
+                                                  future: img1Name
+                                                      .getDownloadURL(),
+                                                  builder: (
+                                                      BuildContext context,
+                                                      AsyncSnapshot<dynamic>
+                                                      snapshot1) {
+                                                    if (snapshot1.hasError) {
+                                                      // Show error
+                                                      return const Text(
+                                                          "Error Occurred while downloading user data");
+                                                    }
+                                                    if (snapshot1.hasData) {
+                                                      return CachedNetworkImage(
+                                                          imageUrl: snapshot1
+                                                              .data,
+                                                          placeholder: (context,
+                                                              url) =>
+                                                              CircularProgressIndicator(),
+                                                          errorWidget: (context,
+                                                              url, error) =>
+                                                              Icon(Icons.error),
+                                                          fit: BoxFit
+                                                              .fitHeight);
+                                                    } else {
+                                                      return const CircularProgressIndicator();
+                                                    }
+                                                  }),
+                                              // Image.asset(
+                                              //   "../data_crawling/images/image"+ shoppingBag[index].imageId+"sub1.png",
+                                              //   fit: BoxFit.fitHeight,
+                                              // ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                    child:
+                                                    Text(title,
+                                                        textAlign: TextAlign
+                                                            .center,
 
-                    // ],
-                    ),
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                            FontWeight.normal,
+                                                            fontSize: 12,
+                                                            color: Colors
+                                                                .black)),
+                                                    width: 150,
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .only(
+                                                        top: 10),
+                                                    child: Text(price + " \$",
+                                                        textAlign: TextAlign
+                                                            .center,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                            FontWeight.normal,
+                                                            fontSize: 13,
+                                                            color: Colors
+                                                                .black45)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
+                                },
+                              ),
+                            );
+                          }
+                      );
+                  }
+                  else {
+                    return const CircularProgressIndicator();
+                  }
+                }
+              ),
               ),
               Center(
                 child: Container(

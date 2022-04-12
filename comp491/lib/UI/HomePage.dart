@@ -9,18 +9,21 @@ import '../modals/Product.dart';
 import 'ProductPage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String? userUID;
+  const HomePage({Key? key, required this.userUID}) : super(key: key);
 
   @override
   _HomePage createState() => _HomePage();
 }
 
 class _HomePage extends State<HomePage> {
+  late String? userUID;
   var future;
   @override
   void initState() {
     super.initState();
     future = getAllProducts();
+    userUID = widget.userUID;
   }
   final ref = FirebaseStorage.instance.ref();
 
@@ -81,7 +84,7 @@ class _HomePage extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ProductPage(product: products[index],)),
+                                    builder: (context) => ProductPage(product: products[index],userUID: userUID,)),
                               );
                             },
                             // style: OutlinedButton.styleFrom(

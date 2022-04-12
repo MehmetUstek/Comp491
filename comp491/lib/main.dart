@@ -310,8 +310,8 @@ class _MyHomePageState extends State<MyHomePage> {
             // children: myTabs.map((Tab tab) {
             //   return Center(
             children: <Widget>[
-              const HomePage(),
-              const ImprovementPage(),
+              HomePage(userUID: userUID,),
+              ImprovementPage(userUID: userUID),
               // Scaffold(
               //   backgroundColor: Colors.deepOrange,
               //   body: Center(

@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../modals/Product.dart';
+import '../modals/dbQueries.dart';
 
 class ProductPage extends StatefulWidget {
   final Product product;
+  final String? userUID;
 
-  const ProductPage({Key? key, required this.product}) : super(key: key);
+  const ProductPage({Key? key, required this.product, required this.userUID}) : super(key: key);
 
   @override
   _ProductPage createState() => _ProductPage();
@@ -16,6 +18,7 @@ class ProductPage extends StatefulWidget {
 enum OptionChecked { first, second, third, fourth }
 class _ProductPage extends State<ProductPage> {
   late Product product;
+  late String? userUID;
   var img1Name;
   var img2Name;
   var img3Name;
@@ -30,6 +33,7 @@ class _ProductPage extends State<ProductPage> {
   void initState() {
     super.initState();
     product = widget.product;
+    userUID = widget.userUID;
     img1Name = ref
         .child('images/' + product.image1 + '.png');
     img2Name = ref
@@ -260,7 +264,9 @@ class _ProductPage extends State<ProductPage> {
                     'Add to bag',
                     style: TextStyle(fontSize: 15, color: Colors.white),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    addToUserBagByUserUIDandPid(userUID, product.productId);
+                  },
                 ),
               ),
               const Padding(padding: EdgeInsets.only(top: 20)),

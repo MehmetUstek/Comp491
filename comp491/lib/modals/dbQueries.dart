@@ -150,3 +150,69 @@ Future<String?> getProductNameByPid(String Pid) async {
     throw Exception('Failed to load product');
   }
 }
+
+/////BAG
+Future<List<Product>> getUserBagByUserUID(String userUID) async {
+  final queryParams = {
+    'userUID': userUID
+  };
+  final response = await http
+      .post(Uri.parse('http://10.0.2.2:9090/bag/getUserBagByUserUID').replace(queryParameters: queryParams), headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.connectionHeader: 'keep-alive',
+    'keep-alive': "timeout=100, max=10000",
+  }, body: jsonEncode(queryParams));
+  if (response.statusCode == 200) {
+    Iterable l = json.decode(response.body);
+    List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
+    return products;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load user bag');
+  }
+}
+
+Future<String> addToUserBagByUserUIDandPid(String? userUID, String Pid) async {
+  final queryParams = {
+    'userUID': userUID,
+    'Pid': Pid
+  };
+  final response = await http
+      .put(Uri.parse('http://10.0.2.2:9090/bag/addToUserBagByUserUIDandPid').replace(queryParameters: queryParams), headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.connectionHeader: 'keep-alive',
+    'keep-alive': "timeout=100, max=10000",
+  }, body: jsonEncode(queryParams));
+  if (response.statusCode == 200) {
+    Iterable l = json.decode(response.body);
+    List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
+    return "OK";
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load user bag');
+  }
+}
+
+Future<String> deleteProductFromUserBagByUserUIDandPid(String? userUID, String Pid) async {
+  final queryParams = {
+    'userUID': userUID,
+    'Pid': Pid
+  };
+  final response = await http
+      .put(Uri.parse('http://10.0.2.2:9090/bag/deleteProductFromUserBagByUserUIDandPid').replace(queryParameters: queryParams), headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.connectionHeader: 'keep-alive',
+    'keep-alive': "timeout=100, max=10000",
+  }, body: jsonEncode(queryParams));
+  if (response.statusCode == 200) {
+    Iterable l = json.decode(response.body);
+    List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
+    return "OK";
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load user bag');
+  }
+}

@@ -211,7 +211,7 @@ def getProductNameByPid():
         )
 
  # BAG
-@app.route("/bag/addToUserBagByUserUIDandPid", methods=['GET'])
+@app.route("/bag/addToUserBagByUserUIDandPid", methods=['PUT'])
 def addToUserBagByUserUIDandPid():
     try:
         userUID = request.get_json()['userUID']
@@ -235,8 +235,32 @@ def addToUserBagByUserUIDandPid():
             mimetype='application/json'
         )
 
+@app.route("/bag/deleteProductFromUserBagByUserUIDandPid", methods=['PUT'])
+def deleteProductFromUserBagByUserUIDandPid():
+    try:
+        userUID = request.get_json()['userUID']
+        Pid = request.get_json()['Pid']
+        filter = {
+            'userUID': userUID
+        }
+        bags_collection.update_one(filter=filter, update={'$pull': {"ProductIds": Pid}})
+        return Response(
+            response=json.dumps(
+                {"message": "user updated bag"}),
+            status=200,
+            mimetype='application/json'
+        )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
 
-@app.route("/bag/getUserBagByUserUID", methods= ['GET'])
+
+@app.route("/bag/getUserBagByUserUID", methods= ['GET', 'POST'])
 def getUserBagByUserUID():
     try:
         userUID = request.get_json()['userUID']
