@@ -5,3 +5,4 @@ rest_api/.env
 *.iml
 *.xml
 *.pyc
+*.json
