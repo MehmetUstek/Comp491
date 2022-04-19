@@ -28,6 +28,9 @@ from tensorflow.keras.applications import (
     mobilenet,
     inception_v3
 )
+
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 """
   Globals
 """
@@ -70,7 +73,7 @@ def compare(feature1, feature2, type="cosine"):
 
     if type == "l2":
         return np.linalg.norm(feature1 - feature2)
-    return 1 - spatial.distance.cosine(feature1, feature2)
+    return 1 - spatial.distance.cosine(feature1.flatten(), feature2.flatten())
 
 
 @as_extractor("vgg16")
@@ -110,10 +113,10 @@ def extract_resnet(img):
     # Need to research how to make this part programatic
     processed_image = resnet50.preprocess_input(image_batch.copy())
     feature_vector = resnet50_model.predict(processed_image)
-    return feature_vector.flatten()
+    return feature_vector
 
 
-def extract(img, extractors=("all")):
+def extract(img, extractors=None):
     """Returns an dictionary of vectors, where keys are feature type and values are feature vectors
 
     If argument methods is not passed, all is assumed. 'all' implies every avaliable method will be
@@ -125,9 +128,11 @@ def extract(img, extractors=("all")):
     extractors: tuple of methods to cretae feature vectors
 
     """
+    if extractors is None:
+        extractors = ["all"]
     features = dict()
 
-    if "all" in methods:
+    if "all" in extractors:
         for name, extractor in methods:
             features[name] = extractor(img)
         return features

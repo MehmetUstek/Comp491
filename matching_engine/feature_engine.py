@@ -9,9 +9,9 @@ from tensorflow.keras.applications import (
         mobilenet,
         inception_v3
     )
-
+import os
 import tensorflow as tf
-print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 
 def extract_features_with_vgg16(path):
@@ -24,6 +24,4 @@ def extract_features_with_vgg16(path):
     image_batch = np.expand_dims(numpy_img, axis=0)
     processed_image = vgg16.preprocess_input(image_batch.copy())
     return model.predict(processed_image)
-
-extract_features_with_vgg16("C:/Users/Berkay Akbulut/Desktop/Ders/COMP Bitirme/Comp491/rest_api/sub1/image0sub1.png")
 

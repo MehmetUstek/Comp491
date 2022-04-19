@@ -4,12 +4,14 @@ import numpy as np
 from flask_pymongo.wrappers import Collection
 import bson
 import pickle
+from tensorflow.keras.preprocessing.image import load_img
 
 import sys
-sys.path.insert(0, "C:/Users/Berkay Akbulut/Desktop/Ders/COMP Bitirme/Comp491/matching_engine")
-import os
+sys.path.insert(0, "C:/Users/Berkay Akbulut/Desktop/Ders/COMP Bitirme/Comp491/artemis/src/compare")
+sys.path.insert(0, "C:/Users/Berkay Akbulut/Desktop/Ders/COMP Bitirme/Comp491/color_histogram")
 
-import feature_engine as eng
+import image_extraction as ex
+import color_histogram as clr
 import os
 import connection as cn
 
@@ -19,7 +21,7 @@ def read_data():
     return data_list
 
 def get_names():
-    return [img for img in os.listdir("./sub1")]
+    return [img for img in os.listdir("./sub1_out")]
 
 def put_to_db(collection: Collection, data_list):
     db_list = []
@@ -27,24 +29,22 @@ def put_to_db(collection: Collection, data_list):
     for i in range(len(data_list)):
         data = data_list[i]
         img = img_names[i]
+        img = load_img(f"./sub1_out/{img}", target_size = (224, 224))
+        vector = ex.extract_resnet(img)
+        colour, perc = clr.get_image_color_features(img)
         print(i)
-        vector = eng.extract_features_with_vgg16(f"./sub1/{img}")
         image_str = data[1]
         image_id = image_str[7:]
         price_with_dollars = data[2]
         price = price_with_dollars[1:]
         db_list.append({
-            "Pid": image_id,
+            "Pid": "image" + image_id + "sub1",
             "Pname" : data[0],
             "Pprice" : price,
             "Pdescription": data[3],
-            "Pimage_vectors":
-                {
-                    "image" + image_id + "sub1": {"vgg16": pickle.dumps(vector, protocol=2), "resnet" : "boş"},
-                    "image" + image_id + "sub2": "boş",
-                    "image" + image_id + "sub3": "boş",
-                    "image" + image_id + "sub4": "boş"
-                }
+            "vgg16": bson.binary.Binary(pickle.dumps(vector)),
+            "color": bson.binary.Binary(pickle.dumps(colour)),
+            "percentage": bson.binary.Binary(pickle.dumps(perc))
         })
     collection.insert_many(db_list)
 

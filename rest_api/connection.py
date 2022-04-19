@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request, json, Response
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from flask_pymongo.wrappers import Database, Collection
+import pickle
 
 # Local
 MONGO_URI = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB+Compass&directConnection=true&ssl=false'
@@ -98,7 +99,6 @@ def getUsernameByUID():
 
         user = parse_json(user)
         username = user['username']
-
         return username
     except Exception as ex:
         print(ex)
