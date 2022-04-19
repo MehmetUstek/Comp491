@@ -28,6 +28,7 @@ def connectToDB():
 db: Database = connectToDB()
 users_collection: Collection = db.get_collection('Users')
 products_collection: Collection = db.get_collection('Products')
+bags_collection: Collection = db.get_collection("Bags")
 
 
 @app.route("/user/getUserUIDbyEmail")
@@ -162,10 +163,6 @@ def getAllProducts():
     try:
         products = products_collection.find()
         product_list = parse_json(products)
-
-        # user = parse_json(user)
-        # username = user['username']
-
         return jsonify(product_list)
     except Exception as ex:
         print(ex)
@@ -175,6 +172,123 @@ def getAllProducts():
             status=500,
             mimetype='application/json'
         )
+@app.route("/product/getProductByPid", methods= ['GET', 'POST'])
+def getProductByPid():
+    try:
+        Pid = request.get_json()['Pid']
+        filter = {
+            'Pid': Pid
+        }
+        products = products_collection.find_one(filter=filter)
+        product = parse_json(products)
+        return product
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
+
+@app.route("/product/getProductNameByPid", methods= ['GET', 'POST'])
+def getProductNameByPid():
+    try:
+        Pid = request.get_json()['Pid']
+        filter = {
+            'Pid': Pid
+        }
+        products = products_collection.find_one(filter=filter)
+        product = parse_json(products)['Pname']
+        return product
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
+
+ # BAG
+@app.route("/bag/addToUserBagByUserUIDandPid", methods=['PUT'])
+def addToUserBagByUserUIDandPid():
+    try:
+        userUID = request.get_json()['userUID']
+        Pid = request.get_json()['Pid']
+        filter = {
+            'userUID': userUID
+        }
+        bags_collection.update_one(filter=filter, update={'$push': {"ProductIds": Pid}}, upsert=True)
+        return Response(
+            response=json.dumps(
+                {"message": "user updated bag"}),
+            status=200,
+            mimetype='application/json'
+        )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
+
+@app.route("/bag/deleteProductFromUserBagByUserUIDandPid", methods=['PUT'])
+def deleteProductFromUserBagByUserUIDandPid():
+    try:
+        userUID = request.get_json()['userUID']
+        Pid = request.get_json()['Pid']
+        filter = {
+            'userUID': userUID
+        }
+        bags_collection.update_one(filter=filter, update={'$pull': {"ProductIds": Pid}})
+        return Response(
+            response=json.dumps(
+                {"message": "user updated bag"}),
+            status=200,
+            mimetype='application/json'
+        )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
+
+
+@app.route("/bag/getUserBagByUserUID", methods= ['GET', 'POST'])
+def getUserBagByUserUID():
+    try:
+        userUID = request.get_json()['userUID']
+        filter = {
+            'userUID': userUID
+        }
+        bag = bags_collection.find_one(filter=filter)
+        products = bag["ProductIds"]
+        product_list = []
+        for productId in products:
+            product_filter = {
+                "Pid" : productId
+            }
+            product_list.append(products_collection.find_one(filter=product_filter))
+        product_list = parse_json(product_list)
+        return jsonify(product_list)
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=9090)
