@@ -216,3 +216,25 @@ Future<String> deleteProductFromUserBagByUserUIDandPid(String? userUID, String P
     throw Exception('Failed to load user bag');
   }
 }
+
+// Suggestions
+Future<List<Product>> getSuggestedProductsByPid(String pid) async {
+  final queryParams = {
+    'Pid': pid
+  };
+  final response = await http
+      .post(Uri.parse('http://10.0.2.2:9090/product/getSuggestedProductsByPid').replace(queryParameters: queryParams), headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.connectionHeader: 'keep-alive',
+    'keep-alive': "timeout=100, max=10000",
+  }, body: jsonEncode(queryParams));
+  if (response.statusCode == 200) {
+    Iterable l = json.decode(response.body);
+    List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
+    return products;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load user bag');
+  }
+}
