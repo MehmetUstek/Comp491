@@ -29,7 +29,7 @@ def put_to_db(collection: Collection, data_list):
     for i in range(len(data_list)):
         data = data_list[i]
         img = img_names[i]
-        img = load_img(f"./sub1_out/{img}", target_size = (224, 224))
+        img = load_img(f"./sub1_out/{img}", target_size=(1280,660))
         vector = ex.extract_resnet(img)
         colour, perc = clr.get_image_color_features(img)
         print(i)
