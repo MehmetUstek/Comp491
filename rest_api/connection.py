@@ -286,8 +286,32 @@ def getUserBagByUserUID():
             mimetype='application/json'
         )
 
+@app.route("/product/getSuggestedProductsByPid", methods= ['GET', 'POST'])
+def getSuggestedProductsByPid():
+    try:
+        Pid = request.get_json()['Pid']
 
+        #####
+        ##TODO: Do the ML operation and return new products that are similar.
 
+        ######
+        lst = ["0","1","2","3"]
+
+        filter = {
+            'Pid': {"$in": lst}
+        }
+
+        products = products_collection.find(filter=filter)
+        product_list = parse_json(products)
+        return jsonify(product_list)
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
 
 
 if __name__ == '__main__':

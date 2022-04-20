@@ -10,12 +10,15 @@ class ProductPage extends StatefulWidget {
   final Product product;
   final String? userUID;
 
-  const ProductPage({Key? key, required this.product, required this.userUID}) : super(key: key);
+  const ProductPage({Key? key, required this.product, required this.userUID})
+      : super(key: key);
 
   @override
   _ProductPage createState() => _ProductPage();
 }
+
 enum OptionChecked { first, second, third, fourth }
+
 class _ProductPage extends State<ProductPage> {
   late Product product;
   late String? userUID;
@@ -34,25 +37,18 @@ class _ProductPage extends State<ProductPage> {
     super.initState();
     product = widget.product;
     userUID = widget.userUID;
-    img1Name = ref
-        .child('images/' + product.image1 + '.png');
-    img2Name = ref
-        .child('images/' + product.image2 + '.png');
-    img3Name = ref
-        .child('images/' + product.image3 + '.png');
-    img4Name = ref
-        .child('images/' + product.image4 + '.png');
+    img1Name = ref.child('images/' + product.image1 + '.png');
+    img2Name = ref.child('images/' + product.image2 + '.png');
+    img3Name = ref.child('images/' + product.image3 + '.png');
+    img4Name = ref.child('images/' + product.image4 + '.png');
     future = img1Name.getDownloadURL();
 
-    temp1 = ref
-        .child('images/image97sub1.png').getDownloadURL();
-    temp2 = ref
-        .child('images/image102sub1.png').getDownloadURL();
-    temp3 = ref
-        .child('images/image103sub1.png').getDownloadURL();
-    temp4 = ref
-        .child('images/image104sub1.png').getDownloadURL();
+    temp1 = ref.child('images/image97sub1.png').getDownloadURL();
+    temp2 = ref.child('images/image102sub1.png').getDownloadURL();
+    temp3 = ref.child('images/image103sub1.png').getDownloadURL();
+    temp4 = ref.child('images/image104sub1.png').getDownloadURL();
   }
+
   final ref = FirebaseStorage.instance.ref();
 
   Color tickedColor = const Color(0xffB20029);
@@ -63,14 +59,11 @@ class _ProductPage extends State<ProductPage> {
   Color radio4 = const Color(0xff000000).withOpacity(0.77);
   OptionChecked? _optionChecked = OptionChecked.first;
 
-
   double headerSize = 17;
   double slideItemWidth = 75;
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -104,7 +97,7 @@ class _ProductPage extends State<ProductPage> {
                     ),
                     SizedBox(
                       height: 18,
-                      child: Text(product.price+" \$",
+                      child: Text(product.price + " \$",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.normal,
@@ -122,12 +115,10 @@ class _ProductPage extends State<ProductPage> {
                 child: SizedBox(
                   height: 130,
                   width: MediaQuery.of(context).size.width,
-                  child:
-                  FutureBuilder(
+                  child: FutureBuilder(
                       future: future,
                       builder: (BuildContext context,
-                          AsyncSnapshot<dynamic>
-                          snapshot1) {
+                          AsyncSnapshot<dynamic> snapshot1) {
                         if (snapshot1.hasError) {
                           // Show error
                           return const Text(
@@ -136,10 +127,13 @@ class _ProductPage extends State<ProductPage> {
                         if (snapshot1.hasData) {
                           return CachedNetworkImage(
                             imageUrl: snapshot1.data,
-                            placeholder: (context, url) => CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => Icon(Icons.error),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                             fit: BoxFit.scaleDown,
-                            height: 100,);
+                            height: 100,
+                          );
                         } else {
                           return const CircularProgressIndicator();
                         }
@@ -155,11 +149,11 @@ class _ProductPage extends State<ProductPage> {
                     height: 10,
                     color: Color(0xffB20029),
                     child: ElevatedButton(
-                    // RadioListTile(value: OptionChecked.first, onChanged: (OptionChecked? value) {
-                    //   setState(() {
-                    //     _optionChecked = value;
-                    //   });
-                    // }, groupValue: _optionChecked
+                        // RadioListTile(value: OptionChecked.first, onChanged: (OptionChecked? value) {
+                        //   setState(() {
+                        //     _optionChecked = value;
+                        //   });
+                        // }, groupValue: _optionChecked
                         style: ElevatedButton.styleFrom(
                           primary: radio1,
                         ),
@@ -171,11 +165,10 @@ class _ProductPage extends State<ProductPage> {
                             radio3 = untickedColor;
                             radio4 = untickedColor;
                             future = img1Name.getDownloadURL();
-
                           });
                         },
                         child: null),
-                  // ),
+                    // ),
                   ),
                   Container(
                     width: slideItemWidth,
@@ -193,8 +186,6 @@ class _ProductPage extends State<ProductPage> {
                             radio3 = untickedColor;
                             radio4 = untickedColor;
                             future = img2Name.getDownloadURL();
-
-
                           });
                         },
                         child: null),
@@ -215,8 +206,6 @@ class _ProductPage extends State<ProductPage> {
                             radio3 = tickedColor;
                             radio4 = untickedColor;
                             future = img3Name.getDownloadURL();
-
-
                           });
                         },
                         child: null),
@@ -237,8 +226,6 @@ class _ProductPage extends State<ProductPage> {
                             radio3 = untickedColor;
                             radio4 = tickedColor;
                             future = img4Name.getDownloadURL();
-
-
                           });
                         },
                         child: null),
@@ -286,224 +273,251 @@ class _ProductPage extends State<ProductPage> {
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 height: 165,
-                child: ListView(
-                  padding: EdgeInsets.only(left: 10),
-                  scrollDirection: Axis.horizontal,
-                  addAutomaticKeepAlives: false,
-                  cacheExtent: 100,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 70,
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            width: 35,
-                            height: 20,
-                            margin: const EdgeInsets.only(left: 90),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff272022),
-                              borderRadius: BorderRadius.circular(5),
+                child: FutureBuilder(
+                    future: getSuggestedProductsByPid("0"),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<Product>> snapshotSuggestions) {
+                      if (snapshotSuggestions.hasError) {
+                        // Show error
+                        return const Text(
+                            "Error Occurred while downloading user data");
+                      }
+                      if (snapshotSuggestions.hasData) {
+                        List<Product>? products = snapshotSuggestions.data;
+                        return ListView(
+                          padding: EdgeInsets.only(left: 10),
+                          scrollDirection: Axis.horizontal,
+                          addAutomaticKeepAlives: false,
+                          cacheExtent: 100,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 70,
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    width: 35,
+                                    height: 20,
+                                    margin: const EdgeInsets.only(left: 90),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff272022),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: const FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text('99%',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 11,
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                  ),
+                                  FutureBuilder(
+                                      future: temp3,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<dynamic>
+                                              snapshot_temp) {
+                                        if (snapshot_temp.hasError) {
+                                          // Show error
+                                          return const Text(
+                                              "Error Occurred while downloading user data");
+                                        }
+                                        if (snapshot_temp.hasData) {
+                                          return CachedNetworkImage(
+                                            imageUrl: snapshot_temp.data,
+                                            placeholder: (context, url) =>
+                                                const CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                            fit: BoxFit.scaleDown,
+                                            height: 80,
+                                          );
+                                        } else {
+                                          return const CircularProgressIndicator();
+                                        }
+                                      }),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 5, top: 15),
+                                    child: Text('Nike SB Shane',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 12,
+                                            color: Colors.black)),
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 5, top: 10),
+                                    child: Text('85 \$',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 13,
+                                            color: Colors.black45)),
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: const FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text('99%',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                    color: Colors.white,
-                                  )),
-                            ),
-                          ),
-                          FutureBuilder(
-                              future: temp3,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<dynamic>
-                                  snapshot_temp) {
-                                if (snapshot_temp.hasError) {
-                                  // Show error
-                                  return const Text(
-                                      "Error Occurred while downloading user data");
-                                }
-                                if (snapshot_temp.hasData) {
-                                  return CachedNetworkImage(
-                                    imageUrl: snapshot_temp.data,
-                                    placeholder: (context, url) => const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => Icon(Icons.error),
-                                    fit: BoxFit.scaleDown,
-                                    height: 80,);
-                                } else {
-                                  return const CircularProgressIndicator();
-                                }
-                              }),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 5, top: 15),
-                            child: Text('Nike SB Shane',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12,
-                                    color: Colors.black)),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 5, top: 10),
-                            child: Text('85 \$',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 13,
-                                    color: Colors.black45)),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 30)),
-                    SizedBox(
-                      height: 70,
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          // const Padding(padding: EdgeInsets.only(left: 10)),
-                          Container(
-                            width: 35,
-                            height: 20,
-                            margin: const EdgeInsets.only(left: 90),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff272022),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: const FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text('92%',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                    color: Colors.white,
-                                  )),
-                            ),
-                          ),
-                          FutureBuilder(
-                              future: temp4,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<dynamic>
-                                  snapshot_temp) {
-                                if (snapshot_temp.hasError) {
-                                  // Show error
-                                  return const Text(
-                                      "Error Occurred while downloading user data");
-                                }
-                                if (snapshot_temp.hasData) {
-                                  return CachedNetworkImage(
-                                    imageUrl: snapshot_temp.data,
-                                    placeholder: (context, url) => const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => Icon(Icons.error),
-                                    fit: BoxFit.scaleDown,
-                                    height: 80,);
-                                } else {
-                                  return const CircularProgressIndicator();
-                                }
-                              }),
+                            const Padding(padding: EdgeInsets.only(left: 30)),
+                            SizedBox(
+                              height: 70,
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  // const Padding(padding: EdgeInsets.only(left: 10)),
+                                  Container(
+                                    width: 35,
+                                    height: 20,
+                                    margin: const EdgeInsets.only(left: 90),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff272022),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: const FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text('92%',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 11,
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                  ),
+                                  FutureBuilder(
+                                      future: temp4,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<dynamic>
+                                              snapshot_temp) {
+                                        if (snapshot_temp.hasError) {
+                                          // Show error
+                                          return const Text(
+                                              "Error Occurred while downloading user data");
+                                        }
+                                        if (snapshot_temp.hasData) {
+                                          return CachedNetworkImage(
+                                            imageUrl: snapshot_temp.data,
+                                            placeholder: (context, url) =>
+                                                const CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                            fit: BoxFit.scaleDown,
+                                            height: 80,
+                                          );
+                                        } else {
+                                          return const CircularProgressIndicator();
+                                        }
+                                      }),
 
-                          const Padding(
-                            padding: EdgeInsets.only(left: 5, top: 15),
-                            child: Text('Jordan Air NFH',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12,
-                                    color: Colors.black)),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 5, top: 10),
-                            child: Text('110 \$',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 13,
-                                    color: Colors.black45)),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 30)),
-                    SizedBox(
-                      height: 70,
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          // const Padding(padding: EdgeInsets.only(left: 10)),
-                          Container(
-                            width: 35,
-                            height: 20,
-                            margin: const EdgeInsets.only(left: 90),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff272022),
-                              borderRadius: BorderRadius.circular(5),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 5, top: 15),
+                                    child: Text('Jordan Air NFH',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 12,
+                                            color: Colors.black)),
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 5, top: 10),
+                                    child: Text('110 \$',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 13,
+                                            color: Colors.black45)),
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: const FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text('85%',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                    color: Colors.white,
-                                  )),
-                            ),
-                          ),
-                          FutureBuilder(
-                              future: temp2,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<dynamic>
-                                  snapshot_temp) {
-                                if (snapshot_temp.hasError) {
-                                  // Show error
-                                  return const Text(
-                                      "Error Occurred while downloading user data");
-                                }
-                                if (snapshot_temp.hasData) {
-                                  return CachedNetworkImage(
-                                    imageUrl: snapshot_temp.data,
-                                    placeholder: (context, url) => const CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => Icon(Icons.error),
-                                    fit: BoxFit.scaleDown,
-                                    height: 80,);
-                                } else {
-                                  return const CircularProgressIndicator();
-                                }
-                              }),
+                            const Padding(padding: EdgeInsets.only(left: 30)),
+                            SizedBox(
+                              height: 70,
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  // const Padding(padding: EdgeInsets.only(left: 10)),
+                                  Container(
+                                    width: 35,
+                                    height: 20,
+                                    margin: const EdgeInsets.only(left: 90),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff272022),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: const FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text('85%',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 11,
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                  ),
+                                  FutureBuilder(
+                                      future: temp2,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<dynamic>
+                                              snapshot_temp) {
+                                        if (snapshot_temp.hasError) {
+                                          // Show error
+                                          return const Text(
+                                              "Error Occurred while downloading user data");
+                                        }
+                                        if (snapshot_temp.hasData) {
+                                          return CachedNetworkImage(
+                                            imageUrl: snapshot_temp.data,
+                                            placeholder: (context, url) =>
+                                                const CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                            fit: BoxFit.scaleDown,
+                                            height: 80,
+                                          );
+                                        } else {
+                                          return const CircularProgressIndicator();
+                                        }
+                                      }),
 
-                          const Padding(
-                            padding: EdgeInsets.only(left: 5, top: 15),
-                            child: Text('Nike Run Swift 2',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12,
-                                    color: Colors.black)),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 5, top: 10),
-                            child: Text('70 \$',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 13,
-                                    color: Colors.black45)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 5, top: 15),
+                                    child: Text('Nike Run Swift 2',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 12,
+                                            color: Colors.black)),
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 5, top: 10),
+                                    child: Text('70 \$',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 13,
+                                            color: Colors.black45)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    }),
               ),
             ],
           ),
