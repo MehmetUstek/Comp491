@@ -290,7 +290,7 @@ def getUserBagByUserUID():
 @app.route("/product/getSuggestedProductsByPid", methods= ['GET', 'POST'])
 def getSuggestedProductsByPid():
     try:
-        Pid = request.get_json()['Pid']
+        Pid = int(request.get_json()['Pid'])
 
         #####
         ##TODO: Do the ML operation and return new products that are similar.
@@ -319,7 +319,6 @@ def addPimagesToDB():
     products = products_collection.find(projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False})
     product_list = parse_json(products)
     for product in product_list:
-        print(x)
         # Update Pimages
         products_collection.update_one(filter={"Pid": product['Pid']}, update={'$set': {
             "Pimages": {

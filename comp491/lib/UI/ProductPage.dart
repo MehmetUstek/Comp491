@@ -283,7 +283,7 @@ class _ProductPage extends State<ProductPage> {
                 width: MediaQuery.of(context).size.width,
                 height: 180,
                 child: FutureBuilder(
-                    future: getSuggestedProductsByPid("0"),
+                    future: getSuggestedProductsByPid(product.productId.toString()),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<Product>> snapshotSuggestions) {
                       if (snapshotSuggestions.hasError) {

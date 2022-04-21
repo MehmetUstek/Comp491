@@ -210,7 +210,7 @@ Future<List<Product>> getSuggestedProductsByPid(String pid) async {
     'Pid': pid
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/product/getSuggestedProductsByPid').replace(queryParameters: queryParams), headers: {
+      .post(Uri.parse('http://10.0.2.2:9090/product/getSuggestedProductsByPid'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.connectionHeader: 'keep-alive',
     'keep-alive': "timeout=100, max=10000",
