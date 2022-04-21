@@ -4,7 +4,7 @@ import numpy as np
 from flask_pymongo.wrappers import Collection
 import bson
 import pickle
-from tensorflow.keras.preprocessing.image import load_img
+from tensorflow.keras.preprocessing.image import img_to_array
 
 import sys
 sys.path.insert(0, "C:/Users/Berkay Akbulut/Desktop/Ders/COMP Bitirme/Comp491/artemis/src/compare")
@@ -15,6 +15,7 @@ import color_histogram as clr
 import os
 import connection as cn
 from PIL import Image
+import cv2
 
 
 def read_data():
@@ -27,10 +28,12 @@ def get_names():
 def put_to_db(collection: Collection, data_list):
     db_list = []
     img_names = get_names()
-    for i in range(1):
+    for i in range(len(data_list)):
         data = data_list[i]
         img = img_names[i]
-        img = Image.open(f"./sub1_out/{img}")
+        img2 = Image.open(f"./sub1_out/{img}")
+        img3 = img_to_array(img2)
+        img = crop_image(img3)
         vector = ex.extract_resnet(img)
         colour, perc = clr.get_image_color_features(img)
         print(i)
@@ -48,6 +51,15 @@ def put_to_db(collection: Collection, data_list):
             "percentage": bson.binary.Binary(pickle.dumps(perc))
         })
     collection.insert_many(db_list)
+
+
+def crop_image(img):
+    h = 750
+    w = 1244
+    x = 42
+    y = 450
+    #img = cv2.imread(img)
+    return img[y:y + h, x:x + w]
 
 
 
