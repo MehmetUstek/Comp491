@@ -6,6 +6,7 @@ from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from flask_pymongo.wrappers import Database, Collection
 import pickle
+import data_usage as dat
 
 # Local
 MONGO_URI = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB+Compass&directConnection=true&ssl=false'
@@ -295,7 +296,7 @@ def getSuggestedProductsByPid():
         ##TODO: Do the ML operation and return new products that are similar.
 
         ######
-        lst = ["0","1","2","3"]
+        lst = dat.best_ones_ids("19")
 
         filter = {
             'Pid': {"$in": lst}
