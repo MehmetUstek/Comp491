@@ -219,7 +219,7 @@ class _ImprovementPage extends State<ImprovementPage> {
                                                               .data,
                                                           placeholder: (context,
                                                               url) =>
-                                                              CircularProgressIndicator(),
+                                                              const CircularProgressIndicator(),
                                                           errorWidget: (context,
                                                               url, error) =>
                                                               Icon(Icons.error),

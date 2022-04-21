@@ -88,15 +88,6 @@ Future<List<Product>> getAllProducts() async {
   'keep-alive': "timeout=100, max=10000",
   });
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    // var product_list = jsonDecode(response.body);
-    // for(Product product in product_list){
-    //
-    // }
-    // for
-    // Product product =Product.fromJson(jsonDecode(response.body));
-    // return product;
     Iterable l = json.decode(response.body);
     List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
     return products;
@@ -185,8 +176,6 @@ Future<String> addToUserBagByUserUIDandPid(String? userUID, String Pid) async {
     'keep-alive': "timeout=100, max=10000",
   }, body: jsonEncode(queryParams));
   if (response.statusCode == 200) {
-    Iterable l = json.decode(response.body);
-    List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
     return "OK";
   } else {
     // If the server did not return a 200 OK response,
@@ -207,8 +196,6 @@ Future<String> deleteProductFromUserBagByUserUIDandPid(String? userUID, String P
     'keep-alive': "timeout=100, max=10000",
   }, body: jsonEncode(queryParams));
   if (response.statusCode == 200) {
-    Iterable l = json.decode(response.body);
-    List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
     return "OK";
   } else {
     // If the server did not return a 200 OK response,

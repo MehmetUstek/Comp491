@@ -10,45 +10,43 @@ import 'ProductPage.dart';
 
 class HomePage extends StatefulWidget {
   final String? userUID;
+
   const HomePage({Key? key, required this.userUID}) : super(key: key);
 
   @override
   _HomePage createState() => _HomePage();
 }
 
-class _HomePage extends State<HomePage> {
+class _HomePage extends State<HomePage>
+    with AutomaticKeepAliveClientMixin<HomePage> {
   late String? userUID;
   var future;
+
   @override
   void initState() {
     super.initState();
     future = getAllProducts();
     userUID = widget.userUID;
   }
+
   final ref = FirebaseStorage.instance.ref();
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Center(
         child: Container(
           color: Colors.white,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           child: SizedBox(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30, top: 100),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 100),
               child: FutureBuilder(
                   future: future,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<dynamic>
-                      snapshot1) {
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot1) {
                     if (snapshot1.hasError) {
                       // Show error
                       return const Text(
@@ -59,12 +57,8 @@ class _HomePage extends State<HomePage> {
 
                       return GridView.builder(
                         cacheExtent: 100,
-                        // crossAxisCount: 2,
-                        // childAspectRatio: 0.8,
-                        // crossAxisSpacing: 30,
-
-                        // For real builder:
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 0.8,
                           crossAxisSpacing: 30,
@@ -77,28 +71,40 @@ class _HomePage extends State<HomePage> {
                         padding: const EdgeInsets.only(top: 5.0),
                         // itemBuilder: (BuildContext context, int index) {  },
                         itemBuilder: (BuildContext context, int index) {
-                          var img1Name = ref
-                              .child('images/' + products[index].image1 + '.png');
+                          var img1Name = ref.child(
+                              'images/' + products[index].image1 + '.png');
                           return OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(
+                                  color: Colors.black12,
+                                ),
+                              ),
+                              // backgroundColor: Colors.black12,
+                            ),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ProductPage(product: products[index],userUID: userUID,)),
+                                    builder: (context) => ProductPage(
+                                          product: products[index],
+                                          userUID: userUID,
+                                        )),
                               );
                             },
                             // style: OutlinedButton.styleFrom(
                             //   side: BorderSide(width: 1, color: Colors.transparent)
                             // ),
                             child: Column(
+                              mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 FutureBuilder(
                                     future: img1Name.getDownloadURL(),
                                     builder: (BuildContext context,
-                                        AsyncSnapshot<dynamic>
-                                        snapshot1) {
+                                        AsyncSnapshot<dynamic> snapshot1) {
                                       if (snapshot1.hasError) {
                                         // Show error
                                         return const Text(
@@ -107,10 +113,12 @@ class _HomePage extends State<HomePage> {
                                       if (snapshot1.hasData) {
                                         return CachedNetworkImage(
                                           imageUrl: snapshot1.data,
-                                          placeholder: (context, url) => CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) => Icon(Icons.error),
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
                                           fit: BoxFit.scaleDown,
-                                          height: 100,
+                                          height: 130,
                                         );
                                       } else {
                                         return const CircularProgressIndicator();
@@ -122,19 +130,21 @@ class _HomePage extends State<HomePage> {
                                 //   height: 100,
                                 // ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 5, top: 15),
+                                  padding:
+                                      const EdgeInsets.only(left: 5, top: 15),
                                   child: Text(products[index].title,
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 12,
                                           color: Colors.black)),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 5, top: 10),
-                                  child: Text(products[index].price+" \$",
+                                  padding:
+                                      const EdgeInsets.only(left: 5, top: 10),
+                                  child: Text(products[index].price + " \$",
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 13,
                                           color: Colors.black45)),
@@ -143,18 +153,20 @@ class _HomePage extends State<HomePage> {
                             ),
                           );
                         },
-
+                      );
+                    } else {
+                      return const CircularProgressIndicator(
+                        color: Color(0xffB20029),
                       );
                     }
-                    else {
-                      return const CircularProgressIndicator(color: const Color(0xffB20029),);
-                    }
-                  }
-              ),
+                  }),
             ),
           ),
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true; // ** and here
 }
