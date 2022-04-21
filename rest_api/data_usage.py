@@ -2,24 +2,33 @@ import base64
 
 from flask_pymongo.wrappers import Collection
 import pickle
-import connection as cn
 from flask import json
 from bson import json_util
+from pymongo import MongoClient
 import sys
-sys.path.insert(0, "C:/Users/Berkay Akbulut/Desktop/Ders/COMP Bitirme/Comp491/artemis/src/compare")
-sys.path.insert(0, "C:/Users/Berkay Akbulut/Desktop/Ders/COMP Bitirme/Comp491/color_histogram")
+sys.path.insert(0, "../artemis/src/compare")
+sys.path.insert(0, "../color_histogram")
 
 import image_extraction as ex
 import color_histogram as clr
-from tensorflow.keras.preprocessing.image import load_img
 import numpy as np
 
+
+MONGO_URI = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB+Compass&directConnection=true&ssl=false'
+def connectToDB():
+    try:
+        client = MongoClient(MONGO_URI)
+        db = client['comp491']
+        client.server_info() #trigger exception
+        return db
+    except:
+        print("ERROR - Cannot connect to the database")
 
 def parse_json(data):
     return json.loads(json_util.dumps(data))
 
 def getProductsIdWithResnetandColorVector():
-    db = cn.connectToDB()
+    db = connectToDB()
     arr1 = []
     arr2 = []
     products_collection: Collection = db.get_collection('Products')
@@ -89,7 +98,7 @@ def normalize_arrays_and_weighted_avg(vector1, vector2):
     return ans
 
 def get_k_min(scores, k):
-    proper_form = b = np.array(scores,dtype=[('id', 'U10'), ('distance', 'f8')])
+    proper_form = b = np.array(scores,dtype=[('id', 'int32'), ('distance', 'f8')])
     return np.sort(
         proper_form[proper_form.argpartition(k,order = ['distance'])[0:k]],
         order = ['distance'], axis = 0)
@@ -97,13 +106,13 @@ def get_k_min(scores, k):
 def best_ones_ids(id):
     resnet_scores, color_scores = getResNetandColorScores(id)
     arr = normalize_arrays_and_weighted_avg(resnet_scores, color_scores)
-    new = get_k_min(arr, 10)
+    new = get_k_min(arr, 5)
     ret = []
     for item in new:
-        ret.append(item[0])
+        ret.append(item[0].item())
     return ret
 
-print(best_ones_ids("19"))
+# print(best_ones_ids("19"))
 
 
 

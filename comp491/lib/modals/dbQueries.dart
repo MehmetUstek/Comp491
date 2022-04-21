@@ -97,7 +97,7 @@ Future<List<Product>> getAllProducts() async {
     throw Exception('Failed to load user');
   }
 }
-Future<Product?> getProductByPid(String Pid) async {
+Future<Product?> getProductByPid(int Pid) async {
   final queryParams = {
     'Pid': Pid
   };
@@ -164,7 +164,7 @@ Future<List<Product>> getUserBagByUserUID(String userUID) async {
   }
 }
 
-Future<String> addToUserBagByUserUIDandPid(String? userUID, String Pid) async {
+Future<String> addToUserBagByUserUIDandPid(String? userUID, int Pid) async {
   final queryParams = {
     'userUID': userUID,
     'Pid': Pid

@@ -20,8 +20,7 @@ class _ImprovementPage extends State<ImprovementPage> {
   final shoppingBag = List.generate(
     20,
     (i) => Product(
-      oid: "1",
-      productId: "1",
+      productId: 1,
       title: "1",
       description: "1",
       price: "1",

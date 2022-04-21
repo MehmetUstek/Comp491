@@ -1,5 +1,4 @@
 from collections import Counter
-from skimage import io
 import numpy as np
 import matplotlib.pyplot as plt
 import PIL
