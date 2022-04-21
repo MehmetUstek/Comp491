@@ -16,7 +16,8 @@ class HomePage extends StatefulWidget {
   _HomePage createState() => _HomePage();
 }
 
-class _HomePage extends State<HomePage> {
+class _HomePage extends State<HomePage> with
+    AutomaticKeepAliveClientMixin<HomePage>{
   late String? userUID;
   var future;
   @override
@@ -29,6 +30,7 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Center(
         child: Container(
@@ -107,8 +109,8 @@ class _HomePage extends State<HomePage> {
                                       if (snapshot1.hasData) {
                                         return CachedNetworkImage(
                                           imageUrl: snapshot1.data,
-                                          placeholder: (context, url) => CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) => Icon(Icons.error),
+                                          placeholder: (context, url) => const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) => const Icon(Icons.error),
                                           fit: BoxFit.scaleDown,
                                           height: 100,
                                         );
@@ -122,19 +124,19 @@ class _HomePage extends State<HomePage> {
                                 //   height: 100,
                                 // ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 5, top: 15),
+                                  padding: const EdgeInsets.only(left: 5, top: 15),
                                   child: Text(products[index].title,
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 12,
                                           color: Colors.black)),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 5, top: 10),
+                                  padding: const EdgeInsets.only(left: 5, top: 10),
                                   child: Text(products[index].price+" \$",
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 13,
                                           color: Colors.black45)),
@@ -147,7 +149,7 @@ class _HomePage extends State<HomePage> {
                       );
                     }
                     else {
-                      return const CircularProgressIndicator(color: const Color(0xffB20029),);
+                      return const CircularProgressIndicator(color: Color(0xffB20029),);
                     }
                   }
               ),
@@ -157,4 +159,7 @@ class _HomePage extends State<HomePage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true; // ** and here
 }
