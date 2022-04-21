@@ -14,6 +14,7 @@ import image_extraction as ex
 import color_histogram as clr
 import os
 import connection as cn
+from PIL import Image
 
 
 def read_data():
@@ -26,10 +27,10 @@ def get_names():
 def put_to_db(collection: Collection, data_list):
     db_list = []
     img_names = get_names()
-    for i in range(len(data_list)):
+    for i in range(1):
         data = data_list[i]
         img = img_names[i]
-        img = load_img(f"./sub1_out/{img}", target_size=(1280,660))
+        img = Image.open(f"./sub1_out/{img}")
         vector = ex.extract_resnet(img)
         colour, perc = clr.get_image_color_features(img)
         print(i)
@@ -38,11 +39,11 @@ def put_to_db(collection: Collection, data_list):
         price_with_dollars = data[2]
         price = price_with_dollars[1:]
         db_list.append({
-            "Pid": "image" + image_id + "sub1",
+            "Pid": str(image_id),
             "Pname" : data[0],
             "Pprice" : price,
             "Pdescription": data[3],
-            "vgg16": bson.binary.Binary(pickle.dumps(vector)),
+            "resnet50": bson.binary.Binary(pickle.dumps(vector)),
             "color": bson.binary.Binary(pickle.dumps(colour)),
             "percentage": bson.binary.Binary(pickle.dumps(perc))
         })
