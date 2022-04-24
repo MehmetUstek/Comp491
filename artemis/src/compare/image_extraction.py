@@ -128,7 +128,7 @@ def extract_resnet(img):
 
     """
     # Prepare image as an input
-    numpy_img = img_to_array(img)
+    numpy_img = img[:,:,:3]
     image_batch = np.expand_dims(numpy_img, axis=0)
 
     # preprocess the img, based on pre-trained model's procedure

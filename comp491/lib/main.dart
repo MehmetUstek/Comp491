@@ -1,5 +1,5 @@
 import 'package:comp491/UI/HomePage.dart';
-import 'package:comp491/UI/ImprovementPage.dart';
+import 'package:comp491/UI/BagPage.dart';
 import 'package:comp491/modals/authentication_service.dart';
 import 'package:comp491/UI/signIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
