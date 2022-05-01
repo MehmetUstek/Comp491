@@ -1,14 +1,14 @@
-import pymongo
 #import dotenv
-from bson import json_util, objectid
+from bson import json_util
 from flask import Flask, jsonify, request, json, Response
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from flask_pymongo.wrappers import Database, Collection
-import pickle
-import data_usage as dat
+# import data_usage as dat
 
 # Local
+from rest_api.data_usage import best_ones_ids
+
 MONGO_URI = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB+Compass&directConnection=true&ssl=false'
 # Atlas, Remote DB
 # MONGO_URI = dotenv.get_key("./.env", "MONGODB_URI")
@@ -146,7 +146,7 @@ def changeUsernameByUID():
         )
         return Response(
             response= json.dumps(
-                {"message":"username updated"}),
+                {"message":username}),
             status=200,
             mimetype='application/json'
             )
@@ -162,7 +162,7 @@ def changeUsernameByUID():
 @app.route("/product/getAllProducts", methods= ['GET'])
 def getAllProducts():
     try:
-        products = products_collection.find()
+        products = products_collection.find(projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False})
         product_list = parse_json(products)
         return jsonify(product_list)
     except Exception as ex:
@@ -180,7 +180,7 @@ def getProductByPid():
         filter = {
             'Pid': Pid
         }
-        products = products_collection.find_one(filter=filter)
+        products = products_collection.find_one(filter=filter,projection={'resnet50':False, 'color':False, 'percentage':False, '_id':False})
         product = parse_json(products)
         return product
     except Exception as ex:
@@ -199,7 +199,7 @@ def getProductNameByPid():
         filter = {
             'Pid': Pid
         }
-        products = products_collection.find_one(filter=filter)
+        products = products_collection.find_one(filter=filter,projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False})
         product = parse_json(products)['Pname']
         return product
     except Exception as ex:
@@ -275,7 +275,7 @@ def getUserBagByUserUID():
             product_filter = {
                 "Pid" : productId
             }
-            product_list.append(products_collection.find_one(filter=product_filter))
+            product_list.append(products_collection.find_one(filter=product_filter,projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False}))
         product_list = parse_json(product_list)
         return jsonify(product_list)
     except Exception as ex:
@@ -290,19 +290,20 @@ def getUserBagByUserUID():
 @app.route("/product/getSuggestedProductsByPid", methods= ['GET', 'POST'])
 def getSuggestedProductsByPid():
     try:
-        Pid = request.get_json()['Pid']
+        Pid = int(request.get_json()['Pid'])
 
         #####
         ##TODO: Do the ML operation and return new products that are similar.
 
         ######
-        lst = dat.best_ones_ids("19")
+        lst = best_ones_ids(Pid)
+        # lst = [0,1]
 
         filter = {
             'Pid': {"$in": lst}
         }
 
-        products = products_collection.find(filter=filter)
+        products = products_collection.find(filter=filter,projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False})
         product_list = parse_json(products)
         return jsonify(product_list)
     except Exception as ex:
@@ -314,6 +315,25 @@ def getSuggestedProductsByPid():
             mimetype='application/json'
         )
 
+def addPimagesToDB():
+    products = products_collection.find(projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False})
+    product_list = parse_json(products)
+    for product in product_list:
+        # Update Pimages
+        products_collection.update_one(filter={"Pid": product['Pid']}, update={'$set': {
+            "Pimages": {
+                "image1": "image"+product['Pid']+"sub1",
+                "image2": "image" + product['Pid'] + "sub2",
+                "image3": "image" + product['Pid'] + "sub3",
+                "image4": "image" + product['Pid'] + "sub4",
 
+            }
+        }})
+        # Update Pids from string to int.
+        products_collection.update_one(filter={"Pid":product['Pid']}, update={'$set': {
+            "Pid": int(product['Pid'])
+        }})
+
+# addPimagesToDB()
 if __name__ == '__main__':
     app.run(debug=True, port=9090)

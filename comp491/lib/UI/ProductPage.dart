@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import '../modals/Product.dart';
-import '../modals/dbQueries.dart';
+import '../view/Product.dart';
+import '../view/dbQueries.dart';
 
 class ProductPage extends StatefulWidget {
   final Product product;
@@ -137,14 +137,24 @@ class _ProductPage extends State<ProductPage> {
                           return CachedNetworkImage(
                             imageUrl: snapshot1.data,
                             placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
+                            const FittedBox(fit: BoxFit.scaleDown,
+                              child:CircularProgressIndicator(
+                                color: Color(0xffB20029),
+
+                              ),
+                            ),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                             fit: BoxFit.scaleDown,
                             height: 100,
                           );
                         } else {
-                          return const CircularProgressIndicator();
+                          return const FittedBox(fit: BoxFit.scaleDown,
+                            child:CircularProgressIndicator(
+                              color: Color(0xffB20029),
+
+                            ),
+                          );
                         }
                       }),
                 ),
@@ -283,7 +293,7 @@ class _ProductPage extends State<ProductPage> {
                 width: MediaQuery.of(context).size.width,
                 height: 180,
                 child: FutureBuilder(
-                    future: getSuggestedProductsByPid("0"),
+                    future: getSuggestedProductsByPid(product.productId.toString()),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<Product>> snapshotSuggestions) {
                       if (snapshotSuggestions.hasError) {
@@ -355,7 +365,12 @@ class _ProductPage extends State<ProductPage> {
                                             return CachedNetworkImage(
                                               imageUrl: snapshotTemp.data,
                                               placeholder: (context, url) =>
-                                                  const CircularProgressIndicator(),
+                                              const FittedBox(fit: BoxFit.scaleDown,
+                                                child:CircularProgressIndicator(
+                                                  color: Color(0xffB20029),
+
+                                                ),
+                                              ),
                                               errorWidget:
                                                   (context, url, error) =>
                                                       Icon(Icons.error),
@@ -363,7 +378,12 @@ class _ProductPage extends State<ProductPage> {
                                               height: 80,
                                             );
                                           } else {
-                                            return const CircularProgressIndicator();
+                                            return const FittedBox(fit: BoxFit.scaleDown,
+                                              child:CircularProgressIndicator(
+                                                color: Color(0xffB20029),
+
+                                              ),
+                                            );
                                           }
                                         }),
                                     Padding(
@@ -395,7 +415,12 @@ class _ProductPage extends State<ProductPage> {
                               );
                             });
                       } else {
-                        return const CircularProgressIndicator();
+                        return const FittedBox(fit: BoxFit.scaleDown,
+                          child:CircularProgressIndicator(
+                            color: Color(0xffB20029),
+
+                          ),
+                        );
                       }
                     }),
               ),

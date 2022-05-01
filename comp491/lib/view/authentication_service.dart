@@ -1,4 +1,4 @@
-import 'package:comp491/modals/dbQueries.dart';
+import 'package:comp491/view/dbQueries.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mongo_dart/mongo_dart.dart';

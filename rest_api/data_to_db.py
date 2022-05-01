@@ -7,8 +7,8 @@ import pickle
 from tensorflow.keras.preprocessing.image import img_to_array
 
 import sys
-sys.path.insert(0, "C:/Users/Berkay Akbulut/Desktop/Ders/COMP Bitirme/Comp491/artemis/src/compare")
-sys.path.insert(0, "C:/Users/Berkay Akbulut/Desktop/Ders/COMP Bitirme/Comp491/color_histogram")
+sys.path.insert(0, "../artemis/src/compare")
+sys.path.insert(0, "../color_histogram")
 
 import image_extraction as ex
 import color_histogram as clr

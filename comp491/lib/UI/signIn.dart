@@ -1,4 +1,4 @@
-import 'package:comp491/modals/authentication_service.dart';
+import 'package:comp491/view/authentication_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

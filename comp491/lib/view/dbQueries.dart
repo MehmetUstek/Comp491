@@ -60,6 +60,27 @@ Future<String?> getUsername(String uid) async {
   }
 }
 
+Future<String?> changeUsername(String uid, String username) async {
+  final queryParams = {
+    'userUID': uid,
+    'username': username
+  };
+  final response = await http
+      .patch(Uri.parse('http://10.0.2.2:9090/user/changeUsernameByUID').replace(queryParameters: queryParams), headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  }, body: jsonEncode(queryParams));
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    String? username = response.body;
+    return username;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load user');
+  }
+}
+
 Future<String?> getUserEmail(String uid) async {
   final queryParams = {
     'userUID': uid
@@ -97,7 +118,7 @@ Future<List<Product>> getAllProducts() async {
     throw Exception('Failed to load user');
   }
 }
-Future<Product?> getProductByPid(String Pid) async {
+Future<Product?> getProductByPid(int Pid) async {
   final queryParams = {
     'Pid': Pid
   };
@@ -164,7 +185,7 @@ Future<List<Product>> getUserBagByUserUID(String userUID) async {
   }
 }
 
-Future<String> addToUserBagByUserUIDandPid(String? userUID, String Pid) async {
+Future<String> addToUserBagByUserUIDandPid(String? userUID, int Pid) async {
   final queryParams = {
     'userUID': userUID,
     'Pid': Pid
@@ -210,7 +231,7 @@ Future<List<Product>> getSuggestedProductsByPid(String pid) async {
     'Pid': pid
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/product/getSuggestedProductsByPid').replace(queryParameters: queryParams), headers: {
+      .post(Uri.parse('http://10.0.2.2:9090/product/getSuggestedProductsByPid'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.connectionHeader: 'keep-alive',
     'keep-alive': "timeout=100, max=10000",
