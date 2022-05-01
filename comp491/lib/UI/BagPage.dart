@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:comp491/modals/Product.dart';
-import 'package:comp491/modals/dbQueries.dart';
+import 'package:comp491/view/Product.dart';
+import 'package:comp491/view/dbQueries.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -218,14 +218,24 @@ class _ImprovementPage extends State<ImprovementPage> {
                                                               .data,
                                                           placeholder: (context,
                                                               url) =>
-                                                              const CircularProgressIndicator(),
+                                                          const FittedBox(fit: BoxFit.scaleDown,
+                                                            child:CircularProgressIndicator(
+                                                              color: Color(0xffB20029),
+
+                                                            ),
+                                                          ),
                                                           errorWidget: (context,
                                                               url, error) =>
                                                               Icon(Icons.error),
                                                           fit: BoxFit
                                                               .fitHeight);
                                                     } else {
-                                                      return const CircularProgressIndicator();
+                                                      return const FittedBox(fit: BoxFit.scaleDown,
+                                                        child:CircularProgressIndicator(
+                                                          color: Color(0xffB20029),
+
+                                                        ),
+                                                      );
                                                     }
                                                   }),
                                               // Image.asset(
@@ -272,7 +282,12 @@ class _ImprovementPage extends State<ImprovementPage> {
                                       ),
                                     );
                                   } else {
-                                    return const CircularProgressIndicator();
+                                    return const FittedBox(fit: BoxFit.scaleDown,
+                                      child:CircularProgressIndicator(
+                                        color: Color(0xffB20029),
+
+                                      ),
+                                    );
                                   }
                                 },
                               ),
@@ -281,7 +296,12 @@ class _ImprovementPage extends State<ImprovementPage> {
                       );
                   }
                   else {
-                    return const CircularProgressIndicator();
+                    return const FittedBox(fit: BoxFit.scaleDown,
+                      child:CircularProgressIndicator(
+                        color: Color(0xffB20029),
+
+                      ),
+                    );
                   }
                 }
               ),

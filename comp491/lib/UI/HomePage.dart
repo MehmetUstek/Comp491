@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:comp491/modals/dbQueries.dart';
+import 'package:comp491/view/dbQueries.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../modals/Product.dart';
+import '../view/Product.dart';
 import 'ProductPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -114,14 +114,24 @@ class _HomePage extends State<HomePage>
                                         return CachedNetworkImage(
                                           imageUrl: snapshot1.data,
                                           placeholder: (context, url) =>
-                                              const CircularProgressIndicator(),
+                                          const FittedBox(fit: BoxFit.scaleDown,
+                                            child:CircularProgressIndicator(
+                                              color: Color(0xffB20029),
+
+                                            ),
+                                          ),
                                           errorWidget: (context, url, error) =>
                                               const Icon(Icons.error),
                                           fit: BoxFit.scaleDown,
                                           height: 130,
                                         );
                                       } else {
-                                        return const CircularProgressIndicator();
+                                        return const FittedBox(fit: BoxFit.scaleDown,
+                                          child:CircularProgressIndicator(
+                                            color: Color(0xffB20029),
+
+                                          ),
+                                        );
                                       }
                                     }),
                                 // Image.asset(
@@ -155,8 +165,11 @@ class _HomePage extends State<HomePage>
                         },
                       );
                     } else {
-                      return const CircularProgressIndicator(
+                      return const FittedBox(fit: BoxFit.scaleDown,
+                      child:CircularProgressIndicator(
                         color: Color(0xffB20029),
+
+                      ),
                       );
                     }
                   }),

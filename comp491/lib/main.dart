@@ -1,6 +1,6 @@
 import 'package:comp491/UI/HomePage.dart';
 import 'package:comp491/UI/BagPage.dart';
-import 'package:comp491/modals/authentication_service.dart';
+import 'package:comp491/view/authentication_service.dart';
 import 'package:comp491/UI/signIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,8 +10,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'UI/ProductPage.dart';
 import 'UI/ProfileTab.dart';
-import 'modals/User.dart';
-import 'modals/dbQueries.dart';
+import 'view/User.dart';
+import 'view/dbQueries.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");

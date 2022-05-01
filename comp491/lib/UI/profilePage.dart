@@ -1,5 +1,5 @@
 import 'package:comp491/UI/ChangePassword.dart';
-import 'package:comp491/modals/dbQueries.dart';
+import 'package:comp491/view/dbQueries.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +12,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfilePage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController roleController = TextEditingController();
   late String userUID;
+  bool isEnabled = false;
+  bool isEnabledPass = false;
+  late Future usernameFuture;
+  late Future futureEmail;
 
   _ProfileState(String _userUID) {
     userUID = _userUID;
@@ -26,7 +27,7 @@ class _ProfileState extends State<ProfilePage> {
         context: context,
         builder: (BuildContext context) {
           return FutureBuilder(
-              future: getUsername(userUID),
+              future: changeUsername(userUID, text),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   // Show error
@@ -68,35 +69,15 @@ class _ProfileState extends State<ProfilePage> {
                 }
               });
         });
-    // await user.userChangeName(text).then((value) => () {
-    //       //TODO: Not showing dialog.
-    //       showDialog(
-    //         context: context,
-    //         builder: (context) => AlertDialog(
-    //           title: Text("Profile is updated successfully!"),
-    //           backgroundColor: Colors.deepOrange,
-    //           actions: [
-    //             TextButton(
-    //               onPressed: () {
-    //                 Navigator.of(context).pop();
-    //               },
-    //               child: Text("OK",
-    //                   style: TextStyle(
-    //                     fontSize: 18,
-    //                     color: Colors.white60,
-    //                   )),
-    //             ),
-    //           ],
-    //         ),
-    //       );
-    //     });
   }
 
   @override
   void initState() {
     super.initState();
-    // emailController.text = user.userEmail!;
-    // nameController.text = user.getUserName()!;
+    usernameFuture = getUsername(userUID);
+    futureEmail = getUserEmail(userUID);
+
+
   }
 
   @override
@@ -109,7 +90,7 @@ class _ProfileState extends State<ProfilePage> {
       body: Center(
           child: Container(
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.only(left: 50.0, right: 50.0),
+            margin: const EdgeInsets.only(left: 50.0, right: 50.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +106,7 @@ class _ProfileState extends State<ProfilePage> {
                     primary: Colors.black54,
                   ),
                   child: FutureBuilder(
-                    future: getUsername(userUID),
+                    future: usernameFuture,
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
                       if (snapshot.hasError) {
@@ -134,16 +115,30 @@ class _ProfileState extends State<ProfilePage> {
                             "Error Occurred while downloading user data");
                       }
                       if (snapshot.hasData) {
+                        TextEditingController _controller =
+                        TextEditingController(text: snapshot.data);
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              snapshot.data,
-                              style:
-                                  const TextStyle(fontSize: 12, color: Colors.white),
+                            SizedBox(
+                              width:100,
+                              child:
+                              TextField(
+                                controller: _controller,
+                                enabled: isEnabled,
+                                style:
+                                    const TextStyle(fontSize: 12, color: Colors.white),
+                                onEditingComplete: (){
+                                  userChangeName(_controller.text);
+                                },
+                              ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  isEnabled = true;
+                                });
+                              },
                               icon: const Icon(
                                 CupertinoIcons.pencil,
                                 color: Colors.white,
@@ -153,11 +148,20 @@ class _ProfileState extends State<ProfilePage> {
                           ],
                         );
                       } else {
-                        return const CircularProgressIndicator();
+                        return const FittedBox(fit: BoxFit.scaleDown,
+                          child:CircularProgressIndicator(
+                            color: Color(0xffB20029),
+                          ),
+                        );
                       }
                     },
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      isEnabled = true;
+                    });
+
+                  },
                 ),
                 const Padding(padding: EdgeInsets.only(top: 15)),
                 ElevatedButton(
@@ -170,7 +174,7 @@ class _ProfileState extends State<ProfilePage> {
                     primary: Colors.black54,
                   ),
                   child: FutureBuilder(
-                    future: getUserEmail(userUID),
+                    future: futureEmail,
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
                       if (snapshot.hasError) {
@@ -179,16 +183,27 @@ class _ProfileState extends State<ProfilePage> {
                             "Error Occurred while downloading user data");
                       }
                       if (snapshot.hasData) {
+                        TextEditingController _controller =
+                        TextEditingController(text: snapshot.data);
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              snapshot.data,
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
+                            SizedBox(
+                              width:200,
+                              child:
+                              TextField(
+                                controller: _controller,
+                                enabled: isEnabled,
+                                style:
+                                const TextStyle(fontSize: 12, color: Colors.white),
+                              ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  isEnabledPass = true;
+                                });
+                              },
                               icon: const Icon(
                                 CupertinoIcons.pencil,
                                 color: Colors.white,
@@ -198,11 +213,20 @@ class _ProfileState extends State<ProfilePage> {
                           ],
                         );
                       } else {
-                        return const CircularProgressIndicator();
+                        return const FittedBox(fit: BoxFit.scaleDown,
+                          child:CircularProgressIndicator(
+                            color: Color(0xffB20029),
+
+                          ),
+                        );
                       }
                     },
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      isEnabledPass = true;
+                    });
+                  },
                 ),
                 const Padding(padding: EdgeInsets.only(top: 8)),
                 // TextButton(

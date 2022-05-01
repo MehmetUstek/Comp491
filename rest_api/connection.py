@@ -146,7 +146,7 @@ def changeUsernameByUID():
         )
         return Response(
             response= json.dumps(
-                {"message":"username updated"}),
+                {"message":username}),
             status=200,
             mimetype='application/json'
             )
