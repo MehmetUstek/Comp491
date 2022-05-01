@@ -28,6 +28,10 @@ from tensorflow.keras.applications import (
     mobilenet,
     inception_v3
 )
+from keras.utils import np_utils
+from keras.models import Model, Sequential, load_model
+from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Reshape, Dropout
+
 
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
@@ -40,7 +44,25 @@ methods = dict()
 # Init vgg16, load imagenet pretrained weights
 vgg16_model = vgg16.VGG16(weights='imagenet', include_top=False)
 # Init resnet50
-resnet50_model = resnet50.ResNet50(weights='imagenet', include_top=False)
+resnet50_model = resnet50.ResNet50(weights='imagenet', include_top=True)
+
+
+# Make all layers non-trainable
+for layer in resnet50_model.layers[:]:
+    layer.trainable = False
+
+# Add fully connected layer which have 1024 neuron to ResNet-50 model
+output = resnet50_model.get_layer('avg_pool').output
+output = Flatten(name='new_flatten')(output)
+output = Dense(units=1024, activation='relu', name='new_fc')(output)
+output = Dense(units=10, activation='softmax')(output)
+resnet50_model = Model(resnet50_model.input, output)
+
+
+# Compile ResNet-50 model
+resnet50_model.compile(
+    optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+# resnet_model.summary()
 
 
 def as_extractor(method_name):
