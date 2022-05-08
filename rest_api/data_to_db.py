@@ -23,7 +23,7 @@ def read_data():
 
 def put_to_db(collection: Collection, data_list):
     db_list = []
-    for i in range(20):
+    for i in range(len(data_list)):
         print(i)
         data = data_list[i]
         image_str = data[1]

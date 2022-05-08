@@ -85,13 +85,13 @@ def get_k_min(scores, k):
 def best_ones_ids(id):
     color_scores = getResNetandColorScores(id)
     arr = normalize_arrays_and_weighted_avg(color_scores)
-    new = get_k_min(arr, 5)
+    new = get_k_min(arr, 10)
     ret = []
     for item in new:
         ret.append(item[0])
     return ret
 
-print(best_ones_ids("0"))
+print(best_ones_ids("526"))
 
 
 
