@@ -44,25 +44,7 @@ methods = dict()
 # Init vgg16, load imagenet pretrained weights
 vgg16_model = vgg16.VGG16(weights='imagenet', include_top=False)
 # Init resnet50
-resnet50_model = resnet50.ResNet50(weights='imagenet', include_top=True)
-
-
-# Make all layers non-trainable
-for layer in resnet50_model.layers[:]:
-    layer.trainable = False
-
-# Add fully connected layer which have 1024 neuron to ResNet-50 model
-output = resnet50_model.get_layer('avg_pool').output
-output = Flatten(name='new_flatten')(output)
-output = Dense(units=1024, activation='relu', name='new_fc')(output)
-output = Dense(units=10, activation='softmax')(output)
-resnet50_model = Model(resnet50_model.input, output)
-
-
-# Compile ResNet-50 model
-resnet50_model.compile(
-    optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-# resnet_model.summary()
+resnet50_model = resnet50.ResNet50(weights='imagenet', include_top=False)
 
 
 def as_extractor(method_name):
@@ -128,7 +110,7 @@ def extract_resnet(img):
 
     """
     # Prepare image as an input
-    numpy_img = img[:,:,:3]
+    numpy_img = img[:, :, :3]
     image_batch = np.expand_dims(numpy_img, axis=0)
 
     # preprocess the img, based on pre-trained model's procedure
