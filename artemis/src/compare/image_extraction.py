@@ -90,7 +90,8 @@ def extract_vgg16(img):
 
     """
     # Prepare image as an input
-    numpy_img = img_to_array(img)
+    resized = img.resize((224, 224))
+    numpy_img = img_to_array(resized)
     image_batch = np.expand_dims(numpy_img, axis=0)
 
     # preprocess the img, based on pre-trained model's procedure
@@ -110,7 +111,10 @@ def extract_resnet(img):
 
     """
     # Prepare image as an input
-    numpy_img = img[:, :, :3]
+
+    resized = img.resize((224, 224))
+    numpy_img = img_to_array(resized)
+    numpy_img = numpy_img[:, :, :3]
     image_batch = np.expand_dims(numpy_img, axis=0)
 
     # preprocess the img, based on pre-trained model's procedure
