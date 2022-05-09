@@ -1,14 +1,14 @@
+import pymongo
 #import dotenv
-from bson import json_util
+from bson import json_util, objectid
 from flask import Flask, jsonify, request, json, Response
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from flask_pymongo.wrappers import Database, Collection
-# import data_usage as dat
-
-# Local
+import pickle
+#import data_usage as dat
 from rest_api.data_usage import best_ones_ids
-
+# Local
 MONGO_URI = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB+Compass&directConnection=true&ssl=false'
 # Atlas, Remote DB
 # MONGO_URI = dotenv.get_key("./.env", "MONGODB_URI")
@@ -146,7 +146,7 @@ def changeUsernameByUID():
         )
         return Response(
             response= json.dumps(
-                {"message":username}),
+                {"message":"username updated"}),
             status=200,
             mimetype='application/json'
             )
@@ -162,7 +162,7 @@ def changeUsernameByUID():
 @app.route("/product/getAllProducts", methods= ['GET'])
 def getAllProducts():
     try:
-        products = products_collection.find(projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False})
+        products = products_collection.find()
         product_list = parse_json(products)
         return jsonify(product_list)
     except Exception as ex:
@@ -180,7 +180,7 @@ def getProductByPid():
         filter = {
             'Pid': Pid
         }
-        products = products_collection.find_one(filter=filter,projection={'resnet50':False, 'color':False, 'percentage':False, '_id':False})
+        products = products_collection.find_one(filter=filter)
         product = parse_json(products)
         return product
     except Exception as ex:
@@ -199,7 +199,7 @@ def getProductNameByPid():
         filter = {
             'Pid': Pid
         }
-        products = products_collection.find_one(filter=filter,projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False})
+        products = products_collection.find_one(filter=filter)
         product = parse_json(products)['Pname']
         return product
     except Exception as ex:
@@ -275,9 +275,28 @@ def getUserBagByUserUID():
             product_filter = {
                 "Pid" : productId
             }
-            product_list.append(products_collection.find_one(filter=product_filter,projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False}))
+            product_list.append(products_collection.find_one(filter=product_filter))
         product_list = parse_json(product_list)
         return jsonify(product_list)
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {"message": "Cannot retrieve the username"}),
+            status=500,
+            mimetype='application/json'
+        )
+
+@app.route("/bag/getUserBagItemsByUserUID", methods= ['GET', 'POST'])
+def getUserBagItemsByUserUID():
+    try:
+        userUID = request.get_json()['userUID']
+        filter = {
+            'userUID': userUID
+        }
+        bag = bags_collection.find_one(filter=filter)
+        products = bag["ProductIds"]
+        return products
     except Exception as ex:
         print(ex)
         return Response(
@@ -297,13 +316,12 @@ def getSuggestedProductsByPid():
 
         ######
         lst = best_ones_ids(Pid)
-        # lst = [0,1]
 
         filter = {
             'Pid': {"$in": lst}
         }
 
-        products = products_collection.find(filter=filter,projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False})
+        products = products_collection.find(filter=filter)
         product_list = parse_json(products)
         return jsonify(product_list)
     except Exception as ex:
@@ -318,6 +336,7 @@ def getSuggestedProductsByPid():
 def addPimagesToDB():
     products = products_collection.find(projection={'resnet50':False, 'color':False, 'percentage':False,'_id':False})
     product_list = parse_json(products)
+    index = 0
     for product in product_list:
         # Update Pimages
         products_collection.update_one(filter={"Pid": product['Pid']}, update={'$set': {
@@ -333,7 +352,10 @@ def addPimagesToDB():
         products_collection.update_one(filter={"Pid":product['Pid']}, update={'$set': {
             "Pid": int(product['Pid'])
         }})
+        print(index)
+        index += 1
 
 # addPimagesToDB()
+
 if __name__ == '__main__':
     app.run(debug=True, port=9090)

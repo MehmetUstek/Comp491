@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:comp491/UI/ProductWeights.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../view/Product.dart';
@@ -8,18 +9,22 @@ class ProductPage extends StatefulWidget {
   final Product product;
   final String? userUID;
 
-  const ProductPage({Key? key, required this.product, required this.userUID})
+  final double? colorWeight;
+
+  final double? shapeWeight;
+
+  const ProductPage({Key? key, required this.product, required this.userUID, this.colorWeight, this.shapeWeight})
       : super(key: key);
 
   @override
   _ProductPage createState() => _ProductPage();
 }
 
-enum OptionChecked { first, second, third, fourth }
-
 class _ProductPage extends State<ProductPage> {
   late Product product;
   late String? userUID;
+  late double? colorWeight;
+  late double? shapeWeight;
   var img1Name;
   var img2Name;
   var img3Name;
@@ -39,6 +44,8 @@ class _ProductPage extends State<ProductPage> {
     super.initState();
     product = widget.product;
     userUID = widget.userUID;
+    colorWeight = widget.colorWeight;
+    shapeWeight = widget.shapeWeight;
     img1Name = ref.child('images/' + product.image1 + '.png');
     img2Name = ref.child('images/' + product.image2 + '.png');
     img3Name = ref.child('images/' + product.image3 + '.png');
@@ -48,11 +55,6 @@ class _ProductPage extends State<ProductPage> {
     img3dUrl = img3Name.getDownloadURL();
     img4dUrl = img4Name.getDownloadURL();
     future = img1dUrl;
-
-    temp1 = ref.child('images/image97sub1.png').getDownloadURL();
-    temp2 = ref.child('images/image102sub1.png').getDownloadURL();
-    temp3 = ref.child('images/image103sub1.png').getDownloadURL();
-    temp4 = ref.child('images/image104sub1.png').getDownloadURL();
   }
 
   final ref = FirebaseStorage.instance.ref();
@@ -63,7 +65,6 @@ class _ProductPage extends State<ProductPage> {
   Color radio2 = const Color(0xff000000).withOpacity(0.77);
   Color radio3 = const Color(0xff000000).withOpacity(0.77);
   Color radio4 = const Color(0xff000000).withOpacity(0.77);
-  OptionChecked? _optionChecked = OptionChecked.first;
 
   double headerSize = 17;
   double slideItemWidth = 75;
@@ -97,12 +98,12 @@ class _ProductPage extends State<ProductPage> {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(product.title,
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 22,
-                              color: Color(0xff272022))),
-                    ),
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 22,
+                                color: Color(0xff272022))),
+                      ),
                     ),
                     SizedBox(
                       height: 18,
@@ -116,7 +117,7 @@ class _ProductPage extends State<ProductPage> {
                   ],
                 ),
               ),
-              const Padding(padding: EdgeInsets.only(top: 40)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
               Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
@@ -136,11 +137,10 @@ class _ProductPage extends State<ProductPage> {
                         if (snapshot1.hasData) {
                           return CachedNetworkImage(
                             imageUrl: snapshot1.data,
-                            placeholder: (context, url) =>
-                            const FittedBox(fit: BoxFit.scaleDown,
-                              child:CircularProgressIndicator(
+                            placeholder: (context, url) => const FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: CircularProgressIndicator(
                                 color: Color(0xffB20029),
-
                               ),
                             ),
                             errorWidget: (context, url, error) =>
@@ -149,10 +149,10 @@ class _ProductPage extends State<ProductPage> {
                             height: 100,
                           );
                         } else {
-                          return const FittedBox(fit: BoxFit.scaleDown,
-                            child:CircularProgressIndicator(
+                          return const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: CircularProgressIndicator(
                               color: Color(0xffB20029),
-
                             ),
                           );
                         }
@@ -166,7 +166,7 @@ class _ProductPage extends State<ProductPage> {
                   Container(
                     width: slideItemWidth,
                     height: 10,
-                    color: Color(0xffB20029),
+                    color: const Color(0xffB20029),
                     child: ElevatedButton(
                         // RadioListTile(value: OptionChecked.first, onChanged: (OptionChecked? value) {
                         //   setState(() {
@@ -178,7 +178,6 @@ class _ProductPage extends State<ProductPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            _optionChecked = OptionChecked.first;
                             radio1 = tickedColor;
                             radio2 = untickedColor;
                             radio3 = untickedColor;
@@ -199,7 +198,6 @@ class _ProductPage extends State<ProductPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            _optionChecked = OptionChecked.second;
                             radio1 = untickedColor;
                             radio2 = tickedColor;
                             radio3 = untickedColor;
@@ -212,14 +210,13 @@ class _ProductPage extends State<ProductPage> {
                   Container(
                     width: slideItemWidth,
                     height: 10,
-                    color: Color(0xff000000).withOpacity(0.77),
+                    color: const Color(0xff000000).withOpacity(0.77),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: radio3,
                         ),
                         onPressed: () {
                           setState(() {
-                            _optionChecked = OptionChecked.third;
                             radio1 = untickedColor;
                             radio2 = untickedColor;
                             radio3 = tickedColor;
@@ -239,7 +236,6 @@ class _ProductPage extends State<ProductPage> {
                         ),
                         onPressed: () {
                           setState(() {
-                            _optionChecked = OptionChecked.fourth;
                             radio1 = untickedColor;
                             radio2 = untickedColor;
                             radio3 = untickedColor;
@@ -251,7 +247,7 @@ class _ProductPage extends State<ProductPage> {
                   ),
                 ],
               ),
-              const Padding(padding: EdgeInsets.only(top: 40)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -264,7 +260,7 @@ class _ProductPage extends State<ProductPage> {
                     ),
                     fixedSize:
                         Size(MediaQuery.of(context).size.width * 3 / 4, 52),
-                    primary: Color(0xff272022),
+                    primary: const Color(0xff272022),
                   ),
                   child: const Text(
                     'Add to bag',
@@ -275,7 +271,44 @@ class _ProductPage extends State<ProductPage> {
                   },
                 ),
               ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
+              const Padding(padding: EdgeInsets.only(top: 10)),
+              Center(
+                child: SizedBox(
+                  height: 45,
+                  child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                    TextButton(onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductWeights(
+                              product: product,
+                              userUID: userUID,
+                            )),
+                      );
+                    }, child:
+                    const Text('Product Preferences',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                            color: Colors.black)),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductWeights(
+                                  product: product,
+                                  userUID: userUID,
+                                )),
+                          );
+                        }, icon: const Icon(Icons.chevron_right))
+                  ]),
+                ),
+              ),
+              const Padding(padding: EdgeInsets.only(top: 10)),
               const Center(
                 child: SizedBox(
                   height: 25,
@@ -293,7 +326,8 @@ class _ProductPage extends State<ProductPage> {
                 width: MediaQuery.of(context).size.width,
                 height: 180,
                 child: FutureBuilder(
-                    future: getSuggestedProductsByPid(product.productId.toString()),
+                    future:
+                        getSuggestedProductsByPid(product.productId.toString()),
                     builder: (BuildContext context,
                         AsyncSnapshot<List<Product>> snapshotSuggestions) {
                       if (snapshotSuggestions.hasError) {
@@ -312,113 +346,118 @@ class _ProductPage extends State<ProductPage> {
                             itemCount: products?.length,
                             itemBuilder: (BuildContext context, int index) {
                               Product productSuggested = products![index];
-                              var imgName = ref
-                                  .child(
+                              var imgName = ref.child(
                                   'images/' + productSuggested.image1 + '.png');
-                              return OutlinedButton(onPressed: (){
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProductPage(product: productSuggested,userUID: userUID,)),
-                                );
-
-                              },
-                                child:
-                                SizedBox(
-                                // height: 70,
-                                width: MediaQuery.of(context).size.width / 3,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      width: 35,
-                                      height: 20,
-                                      margin: const EdgeInsets.only(left: 90),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xff272022),
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: Text('99%',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 11,
-                                              color: Colors.white,
+                              return OutlinedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProductPage(
+                                              product: productSuggested,
+                                              userUID: userUID,
                                             )),
+                                  );
+                                },
+                                child: SizedBox(
+                                  // height: 70,
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        width: 35,
+                                        height: 20,
+                                        margin: const EdgeInsets.only(left: 90),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff272022),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: const FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text('99%',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 11,
+                                                color: Colors.white,
+                                              )),
+                                        ),
                                       ),
-                                    ),
-                                    FutureBuilder(
-                                        future: imgName
-                                            .getDownloadURL(),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<dynamic>
-                                                snapshotTemp) {
-                                          if (snapshotTemp.hasError) {
-                                            // Show error
-                                            return const Text(
-                                                "Error Occurred while downloading user data");
-                                          }
-                                          if (snapshotTemp.hasData) {
-                                            return CachedNetworkImage(
-                                              imageUrl: snapshotTemp.data,
-                                              placeholder: (context, url) =>
-                                              const FittedBox(fit: BoxFit.scaleDown,
-                                                child:CircularProgressIndicator(
-                                                  color: Color(0xffB20029),
-
+                                      FutureBuilder(
+                                          future: imgName.getDownloadURL(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<dynamic>
+                                                  snapshotTemp) {
+                                            if (snapshotTemp.hasError) {
+                                              // Show error
+                                              return const Text(
+                                                  "Error Occurred while downloading user data");
+                                            }
+                                            if (snapshotTemp.hasData) {
+                                              return CachedNetworkImage(
+                                                imageUrl: snapshotTemp.data,
+                                                placeholder: (context, url) =>
+                                                    const FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Color(0xffB20029),
+                                                  ),
                                                 ),
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      Icon(Icons.error),
-                                              fit: BoxFit.scaleDown,
-                                              height: 80,
-                                            );
-                                          } else {
-                                            return const FittedBox(fit: BoxFit.scaleDown,
-                                              child:CircularProgressIndicator(
-                                                color: Color(0xffB20029),
-
-                                              ),
-                                            );
-                                          }
-                                        }),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 5, top: 15),
-                                      child: Text(productSuggested.title,
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                                fit: BoxFit.scaleDown,
+                                                height: 80,
+                                              );
+                                            } else {
+                                              return const FittedBox(
+                                                fit: BoxFit.scaleDown,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: Color(0xffB20029),
+                                                ),
+                                              );
+                                            }
+                                          }),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 5, top: 15),
+                                        child: Text(
+                                          productSuggested.title,
                                           textAlign: TextAlign.left,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.normal,
                                               fontSize: 12,
                                               color: Colors.black),
                                           // maxLines: 1
+                                        ),
                                       ),
-
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 5, top: 10),
-                                      child: Text(productSuggested.price+' \$',
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 13,
-                                              color: Colors.black45)),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 5, top: 10),
+                                        child: Text(
+                                            productSuggested.price + ' \$',
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 13,
+                                                color: Colors.black45)),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
                               );
                             });
                       } else {
-                        return const FittedBox(fit: BoxFit.scaleDown,
-                          child:CircularProgressIndicator(
+                        return const FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: CircularProgressIndicator(
                             color: Color(0xffB20029),
-
                           ),
                         );
                       }

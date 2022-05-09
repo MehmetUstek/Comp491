@@ -185,23 +185,57 @@ Future<List<Product>> getUserBagByUserUID(String userUID) async {
   }
 }
 
-Future<String> addToUserBagByUserUIDandPid(String? userUID, int Pid) async {
+Future<List<int>> getUserBagItemsByUserUID(String userUID) async {
   final queryParams = {
-    'userUID': userUID,
-    'Pid': Pid
+    'userUID': userUID
   };
   final response = await http
-      .put(Uri.parse('http://10.0.2.2:9090/bag/addToUserBagByUserUIDandPid').replace(queryParameters: queryParams), headers: {
+      .post(Uri.parse('http://10.0.2.2:9090/bag/getUserBagItemsByUserUID').replace(queryParameters: queryParams), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.connectionHeader: 'keep-alive',
     'keep-alive': "timeout=100, max=10000",
   }, body: jsonEncode(queryParams));
   if (response.statusCode == 200) {
-    return "OK";
+    Iterable l = json.decode(response.body);
+    List<int> products = List<int>.from(l.map((model)=> model));
+    return products;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
     throw Exception('Failed to load user bag');
+  }
+}
+
+Future<String> addToUserBagByUserUIDandPid(String? userUID, int Pid) async {
+  bool flag = false;
+  final queryParams = {
+    'userUID': userUID,
+    'Pid': Pid
+  };
+  getUserBagItemsByUserUID(userUID!).then((value) => {
+    if(!value.contains(Pid)){
+      flag = true
+    }
+  });
+
+  if(flag) {
+    final response = await http
+        .put(Uri.parse('http://10.0.2.2:9090/bag/addToUserBagByUserUIDandPid'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.connectionHeader: 'keep-alive',
+          'keep-alive': "timeout=100, max=10000",
+        }, body: jsonEncode(queryParams));
+    if (response.statusCode == 200) {
+      return "OK";
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load user bag');
+    }
+  }
+  else{
+    return "Same product exists";
   }
 }
 
@@ -211,7 +245,7 @@ Future<String> deleteProductFromUserBagByUserUIDandPid(String? userUID, String P
     'Pid': Pid
   };
   final response = await http
-      .put(Uri.parse('http://10.0.2.2:9090/bag/deleteProductFromUserBagByUserUIDandPid').replace(queryParameters: queryParams), headers: {
+      .put(Uri.parse('http://10.0.2.2:9090/bag/deleteProductFromUserBagByUserUIDandPid'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.connectionHeader: 'keep-alive',
     'keep-alive': "timeout=100, max=10000",
