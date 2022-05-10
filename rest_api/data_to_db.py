@@ -4,7 +4,6 @@ import numpy as np
 from flask_pymongo.wrappers import Collection
 import bson
 import pickle
-from tensorflow.keras.preprocessing.image import img_to_array
 
 import sys
 sys.path.insert(0, "../artemis/src/compare")
@@ -22,23 +21,18 @@ def read_data():
     data_list = np.genfromtxt("data.csv", delimiter=",", dtype='U')
     return data_list
 
-def get_names():
-    return [img for img in os.listdir("./sub1_out")]
-
 def put_to_db(collection: Collection, data_list):
     db_list = []
-    img_names = get_names()
     for i in range(len(data_list)):
-        data = data_list[i]
-        img = img_names[i]
-        img2 = Image.open(f"./sub1_out/{img}")
-        img3 = img_to_array(img2)
-        img = crop_image(img3)
-        vector = ex.extract_resnet(img)
-        colour, perc = clr.get_image_color_features(img)
         print(i)
+        data = data_list[i]
         image_str = data[1]
         image_id = image_str[7:]
+        img = Image.open(f"./sub1_out/image{image_id}sub1.png")
+        img2 = np.asarray(img)
+        img2 = crop_image(img2)
+        #vector = ex.extract_resnet(img2)
+        colour, perc = clr.get_image_color_features(img2)
         price_with_dollars = data[2]
         price = price_with_dollars[1:]
         db_list.append({
@@ -46,7 +40,7 @@ def put_to_db(collection: Collection, data_list):
             "Pname" : data[0],
             "Pprice" : price,
             "Pdescription": data[3],
-            "resnet50": bson.binary.Binary(pickle.dumps(vector)),
+            #"resnet50": bson.binary.Binary(pickle.dumps(vector)),
             "color": bson.binary.Binary(pickle.dumps(colour)),
             "percentage": bson.binary.Binary(pickle.dumps(perc))
         })
