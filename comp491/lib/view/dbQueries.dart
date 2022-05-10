@@ -26,7 +26,7 @@ Future<UserData> fetchUser(String uid) async {
     'userUID': uid
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/user/getUsernameByUID').replace(queryParameters: queryParams), headers: {
+      .post(Uri.parse('http://10.0.2.2:9090/user/getUsernameByUID'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   }, body: jsonEncode(queryParams));
   if (response.statusCode == 200) {
@@ -103,15 +103,22 @@ Future<String?> getUserEmail(String uid) async {
 
 Future<List<Product>> getAllProducts() async {
   final response = await http
-      .get(Uri.parse('http://10.0.2.2:9090/product/getAllProducts'), headers: {
+      .post(Uri.parse('http://10.0.2.2:9090/product/getAllProducts'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   HttpHeaders.connectionHeader: 'keep-alive',
   'keep-alive': "timeout=100, max=10000",
+    HttpHeaders.acceptCharsetHeader: 'utf-8'
   });
   if (response.statusCode == 200) {
-    Iterable l = json.decode(response.body);
-    List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
-    return products;
+    try{
+      Iterable l = json.decode(response.body);
+      List<Product> products = List<Product>.from(l.map((model)=> Product.fromJson(model)));
+      return products;
+    }
+    catch(e){
+      throw Exception('Failed to load user');
+    }
+
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
@@ -190,7 +197,7 @@ Future<List<int>> getUserBagItemsByUserUID(String userUID) async {
     'userUID': userUID
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/bag/getUserBagItemsByUserUID').replace(queryParameters: queryParams), headers: {
+      .post(Uri.parse('http://10.0.2.2:9090/bag/getUserBagItemsByUserUID'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.connectionHeader: 'keep-alive',
     'keep-alive': "timeout=100, max=10000",
@@ -212,11 +219,15 @@ Future<String> addToUserBagByUserUIDandPid(String? userUID, int Pid) async {
     'userUID': userUID,
     'Pid': Pid
   };
-  getUserBagItemsByUserUID(userUID!).then((value) => {
-    if(!value.contains(Pid)){
-      flag = true
-    }
-  });
+  // getUserBagItemsByUserUID(userUID!).then((value) => {
+  //   if(!value.contains(Pid)){
+  //     flag = true
+  //   }
+  // });
+  List<int> products = await getUserBagItemsByUserUID(userUID!);
+  if (!products.contains(Pid)){
+    flag = true;
+  }
 
   if(flag) {
     final response = await http
@@ -239,7 +250,7 @@ Future<String> addToUserBagByUserUIDandPid(String? userUID, int Pid) async {
   }
 }
 
-Future<String> deleteProductFromUserBagByUserUIDandPid(String? userUID, String Pid) async {
+Future<String> deleteProductFromUserBagByUserUIDandPid(String? userUID, int Pid) async {
   final queryParams = {
     'userUID': userUID,
     'Pid': Pid

@@ -56,9 +56,6 @@ class AuthenticationService{
       UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
       User? user = userCredential.user;
       final userFirebase = _firebaseAuth.currentUser;
-      fetchUser(userFirebase!.uid).then((value) =>{
-
-      });
       // if (findOne(where.eq('userUID', userFirebase!.uid),
       //         collectionType: CollectionType.UserCollection) ==
       //     null) {

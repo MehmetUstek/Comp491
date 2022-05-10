@@ -159,11 +159,11 @@ def changeUsernameByUID():
             mimetype='application/json'
         )
 
-@app.route("/product/getAllProducts", methods= ['GET'])
+@app.route("/product/getAllProducts", methods= ['GET', 'POST'])
 def getAllProducts():
     try:
         products = products_collection.find()
-        product_list = parse_json(products)
+        product_list = parse_json(products[:100])
         return jsonify(product_list)
     except Exception as ex:
         print(ex)
@@ -296,7 +296,7 @@ def getUserBagItemsByUserUID():
         }
         bag = bags_collection.find_one(filter=filter)
         products = bag["ProductIds"]
-        return products
+        return jsonify(products)
     except Exception as ex:
         print(ex)
         return Response(
