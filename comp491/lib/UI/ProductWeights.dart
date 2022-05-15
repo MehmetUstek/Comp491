@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../view/Product.dart';
 import '../view/dbQueries.dart';
@@ -47,7 +48,6 @@ class _ProductWeights extends State<ProductWeights> {
     img3dUrl = img3Name.getDownloadURL();
     img4dUrl = img4Name.getDownloadURL();
     future = img1dUrl;
-
   }
 
   final ref = FirebaseStorage.instance.ref();
@@ -254,17 +254,30 @@ class _ProductWeights extends State<ProductWeights> {
                           color: Colors.black)),
                 ),
               ),
-              const Padding(padding: EdgeInsets.only(left: 25),
-              child:
-              SizedBox(
-                height: 22,
-                child: Text("Color",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16,
-                        color: Color(0xff272022))),
-              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const <Widget>[
+                      SizedBox(
+                        height: 22,
+                        child: Text("Color",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16,
+                                color: Color(0xff272022))),
+                      ),
+                      SizedBox(
+                        height: 22,
+                        child: Text("Shape",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 16,
+                                color: Color(0xff272022))),
+                      ),
+                    ]),
               ),
               Slider(
                 value: _currentSliderValue,
@@ -278,46 +291,25 @@ class _ProductWeights extends State<ProductWeights> {
                   });
                 },
               ),
-              const Padding(padding: EdgeInsets.only(left: 25),
-                child:
-                SizedBox(
-                  height: 22,
-                  child: Text("Shape",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                          color: Color(0xff272022))),
-                ),
-              ),
-              Slider(
-                value: _currentSliderValueShape,
-                max: 100,
-                divisions: 10,
-                activeColor: const Color(0xffB20029),
-                label: _currentSliderValueShape.round().toString(),
-                onChanged: (double value) {
-                  setState(() {
-                    _currentSliderValueShape = value;
-                  });
-                },
-              ),
-              Align(alignment: Alignment.center,child:
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: const Color(0xffB20029),),
-
-                  onPressed: (){
-                    Navigator.pop(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProductPage(
-                            product: product,
-                            userUID: userUID,
-                            colorWeight: _currentSliderValue,
-                            shapeWeight: _currentSliderValueShape,
-                          )),
-                    );
-              }, child: Text("Submit")),
+              Align(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xffB20029),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductPage(
+                                  product: product,
+                                  userUID: userUID,
+                                  colorWeight: _currentSliderValue,
+                                  shapeWeight: _currentSliderValueShape,
+                                )),
+                      );
+                    },
+                    child: Text("Submit")),
               ),
             ],
           ),

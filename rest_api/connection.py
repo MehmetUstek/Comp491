@@ -1,5 +1,5 @@
 import pymongo
-#import dotenv
+import dotenv
 from bson import json_util, objectid
 from flask import Flask, jsonify, request, json, Response
 from flask_pymongo import PyMongo
@@ -9,9 +9,9 @@ import pickle
 #import data_usage as dat
 from rest_api.data_usage import best_ones_ids
 # Local
-MONGO_URI = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB+Compass&directConnection=true&ssl=false'
+# MONGO_URI = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB+Compass&directConnection=true&ssl=false'
 # Atlas, Remote DB
-# MONGO_URI = dotenv.get_key("./.env", "MONGODB_URI")
+MONGO_URI = dotenv.get_key("./.env", "MONGODB_URI")
 app = Flask(__name__)
 app.config["MONGO_URI"] = MONGO_URI
 mongo = PyMongo(app)
@@ -20,7 +20,7 @@ mongo = PyMongo(app)
 def connectToDB():
     try:
         client = MongoClient(MONGO_URI)
-        db = client['comp491']
+        db = client['Comp491']
         client.server_info() #trigger exception
         return db
     except:
@@ -69,6 +69,7 @@ def create_user():
 @app.route("/user/getUserByUID", methods= ['GET', 'POST'])
 def getUserByUID():
     try:
+
         userUID = request.get_json()['userUID']
         filter = {
             'userUID': userUID
@@ -356,6 +357,7 @@ def addPimagesToDB():
         index += 1
 
 # addPimagesToDB()
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=9090)
