@@ -83,9 +83,9 @@ class _ProductPage extends State<ProductPage> {
           color: Colors.white,
           width: MediaQuery.of(context).size.width,
           // margin: EdgeInsets.only(left: 50.0, right: 50.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
+            // mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Padding(padding: EdgeInsets.only(top: 20)),
               Padding(

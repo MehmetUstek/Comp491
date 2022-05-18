@@ -73,7 +73,10 @@ class _HomePage extends State<HomePage>
                         itemBuilder: (BuildContext context, int index) {
                           var img1Name = ref.child(
                               'images/' + products[index].image1 + '.png');
-                          return OutlinedButton(
+                          return FittedBox(
+                            // fit: BoxFit.scaleDown,
+                            child:
+                            OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -161,6 +164,7 @@ class _HomePage extends State<HomePage>
                                 ),
                               ],
                             ),
+                          ),
                           );
                         },
                       );

@@ -9,9 +9,9 @@ import pickle
 #import data_usage as dat
 from rest_api.data_usage import best_ones_ids
 # Local
-# MONGO_URI = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB+Compass&directConnection=true&ssl=false'
+MONGO_URI = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB+Compass&directConnection=true&ssl=false'
 # Atlas, Remote DB
-MONGO_URI = dotenv.get_key("./.env", "MONGODB_URI")
+# MONGO_URI = dotenv.get_key("./.env", "MONGODB_URI")
 app = Flask(__name__)
 app.config["MONGO_URI"] = MONGO_URI
 mongo = PyMongo(app)
@@ -20,7 +20,7 @@ mongo = PyMongo(app)
 def connectToDB():
     try:
         client = MongoClient(MONGO_URI)
-        db = client['Comp491']
+        db = client['comp491']
         client.server_info() #trigger exception
         return db
     except:
@@ -360,4 +360,4 @@ def addPimagesToDB():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=9090)
+    app.run(debug=True, port=9090, host='0.0.0.0')

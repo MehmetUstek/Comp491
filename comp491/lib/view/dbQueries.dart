@@ -9,6 +9,7 @@ import 'User.dart';
 
 enum CollectionType { UserCollection }
 
+var localIP = "172.20.147.57";
 var db = Db(
     dotenv.get('MONGODB_URI_LOCAL', fallback: 'API_URL not found'));
 //User
@@ -20,13 +21,33 @@ Future<DbCollection> getUsersCollection() async {
   // db.close();
   return collection;
 }
+Future<String> createUser(UserData user) async {
+  final queryParams = {
+    'userUID': user.userUID,
+    'username': user.userName,
+    'userEmail': user.userEmail
+  };
+  final response = await http
+      .post(Uri.parse('http://$localIP:9090/user/create_user'),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+      }, body: jsonEncode(queryParams));
+  if (response.statusCode == 200) {
+    return "OK";
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load user bag');
+  }
 
-Future<UserData> fetchUser(String uid) async {
+}
+
+Future<UserData> fetchUser(String? uid) async {
   final queryParams = {
     'userUID': uid
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/user/getUsernameByUID'), headers: {
+      .post(Uri.parse('http://$localIP:9090/user/getUserByUID'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   }, body: jsonEncode(queryParams));
   if (response.statusCode == 200) {
@@ -40,12 +61,14 @@ Future<UserData> fetchUser(String uid) async {
     throw Exception('Failed to load user');
   }
 }
+
+
 Future<String?> getUsername(String uid) async {
   final queryParams = {
     'userUID': uid
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/user/getUsernameByUID').replace(queryParameters: queryParams), headers: {
+      .post(Uri.parse('http://$localIP:9090/user/getUsernameByUID').replace(queryParameters: queryParams), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   }, body: jsonEncode(queryParams));
   if (response.statusCode == 200) {
@@ -66,7 +89,7 @@ Future<String?> changeUsername(String uid, String username) async {
     'username': username
   };
   final response = await http
-      .patch(Uri.parse('http://10.0.2.2:9090/user/changeUsernameByUID').replace(queryParameters: queryParams), headers: {
+      .patch(Uri.parse('http://$localIP:9090/user/changeUsernameByUID').replace(queryParameters: queryParams), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   }, body: jsonEncode(queryParams));
   if (response.statusCode == 200) {
@@ -86,7 +109,7 @@ Future<String?> getUserEmail(String uid) async {
     'userUID': uid
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/user/getUserEmailByUID').replace(queryParameters: queryParams), headers: {
+      .post(Uri.parse('http://$localIP:9090/user/getUserEmailByUID').replace(queryParameters: queryParams), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   }, body: jsonEncode(queryParams));
   if (response.statusCode == 200) {
@@ -102,8 +125,10 @@ Future<String?> getUserEmail(String uid) async {
 }
 
 Future<List<Product>> getAllProducts() async {
+  print('http://$localIP:9090/product/getAllProducts');
+
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/product/getAllProducts'), headers: {
+      .post(Uri.parse('http://$localIP:9090/product/getAllProducts'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   HttpHeaders.connectionHeader: 'keep-alive',
   'keep-alive': "timeout=100, max=10000",
@@ -130,7 +155,7 @@ Future<Product?> getProductByPid(int Pid) async {
     'Pid': Pid
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/product/getProductByPid'), headers: {
+      .post(Uri.parse('http://$localIP:9090/product/getProductByPid'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     "Connection": "keep-alive",
     "keep-alive": "timeout=5, max=1000"
@@ -152,7 +177,7 @@ Future<String?> getProductNameByPid(String Pid) async {
     'Pid': Pid
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/product/getProductNameByPid'), headers: {
+      .post(Uri.parse('http://$localIP:9090/product/getProductNameByPid'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     "Connection": "keep-alive",
     "keep-alive": "timeout=5, max=1000"
@@ -176,7 +201,7 @@ Future<List<Product>> getUserBagByUserUID(String userUID) async {
     'userUID': userUID
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/bag/getUserBagByUserUID').replace(queryParameters: queryParams), headers: {
+      .post(Uri.parse('http://$localIP:9090/bag/getUserBagByUserUID').replace(queryParameters: queryParams), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.connectionHeader: 'keep-alive',
     'keep-alive': "timeout=100, max=10000",
@@ -197,7 +222,7 @@ Future<List<int>> getUserBagItemsByUserUID(String userUID) async {
     'userUID': userUID
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/bag/getUserBagItemsByUserUID'), headers: {
+      .post(Uri.parse('http://$localIP:9090/bag/getUserBagItemsByUserUID'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.connectionHeader: 'keep-alive',
     'keep-alive': "timeout=100, max=10000",
@@ -231,7 +256,7 @@ Future<String> addToUserBagByUserUIDandPid(String? userUID, int Pid) async {
 
   if(flag) {
     final response = await http
-        .put(Uri.parse('http://10.0.2.2:9090/bag/addToUserBagByUserUIDandPid'),
+        .put(Uri.parse('http://$localIP:9090/bag/addToUserBagByUserUIDandPid'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.connectionHeader: 'keep-alive',
@@ -256,7 +281,7 @@ Future<String> deleteProductFromUserBagByUserUIDandPid(String? userUID, int Pid)
     'Pid': Pid
   };
   final response = await http
-      .put(Uri.parse('http://10.0.2.2:9090/bag/deleteProductFromUserBagByUserUIDandPid'), headers: {
+      .put(Uri.parse('http://$localIP:9090/bag/deleteProductFromUserBagByUserUIDandPid'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.connectionHeader: 'keep-alive',
     'keep-alive': "timeout=100, max=10000",
@@ -276,7 +301,7 @@ Future<List<Product>> getSuggestedProductsByPid(String pid) async {
     'Pid': pid
   };
   final response = await http
-      .post(Uri.parse('http://10.0.2.2:9090/product/getSuggestedProductsByPid'), headers: {
+      .post(Uri.parse('http://$localIP:9090/product/getSuggestedProductsByPid'), headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.connectionHeader: 'keep-alive',
     'keep-alive': "timeout=100, max=10000",

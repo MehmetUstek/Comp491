@@ -6,3 +6,4 @@ rest_api/.env
 *.xml
 *.pyc
 *.json
+.env

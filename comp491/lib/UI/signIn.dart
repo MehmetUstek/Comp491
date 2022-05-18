@@ -1,4 +1,5 @@
 import 'package:comp491/view/authentication_service.dart';
+import 'package:comp491/view/dbQueries.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -381,7 +382,10 @@ class _SignInState extends State<SignInPage> {
                         Future<String?> v = context
                             .read<AuthenticationService>()
                             .signInWithGoogle();
-                        v.then((value) => print(value));
+                        v.then((value) => {
+                          print("yes"),
+                          print(value)
+                        });
                         setState(() {});
                       },
                     ),
