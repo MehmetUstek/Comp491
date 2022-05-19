@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import PIL
 from sklearn.cluster import KMeans
 
-N=10
+N=16
 
 def get_cluster_results(k_cluster):
     n_pixels = len(k_cluster.labels_)
@@ -23,7 +23,7 @@ def get_image_color_features(masked_img):
     image_arr = np.reshape(image_arr, (-1, 4))
     image_arr = image_arr[image_arr[:,3] > 50][:,:3]
     
-    clt = KMeans(n_clusters=N)
+    clt = KMeans(n_clusters=N, n_init=20)
     clt_1 = clt.fit(image_arr)
     colors, percentages = get_cluster_results(clt_1)
     return colors, percentages
