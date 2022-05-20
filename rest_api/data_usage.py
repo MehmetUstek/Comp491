@@ -57,7 +57,7 @@ def getResNetandColorScores(id):
 #         scores.append((all_clr[i+1][0], -score))
 #     return scores
 
-def normalize_arrays_and_weighted_avg(vector1, vector2):
+def normalize_arrays_and_weighted_avg(vector1, vector2, w1, w2):
     ans = []
     vec1_arr = []
     vec2_arr = []
@@ -71,7 +71,7 @@ def normalize_arrays_and_weighted_avg(vector1, vector2):
     std2 = np.std(np.array(vec2_arr))
 
     for j in range(len(vector1)):
-        ans.append((vector1[j][0], ((vector1[j][1] - m1)/std1)*0.0 + ((vector2[j][1] - m2)/std2)*1.0))
+        ans.append((vector1[j][0], ((vector1[j][1] - m1)/std1)*w1 + ((vector2[j][1] - m2)/std2)*w2))
 
     return ans
 
@@ -81,16 +81,16 @@ def get_k_min(scores, k):
         proper_form[proper_form.argpartition(k,order = ['distance'])[0:k]],
         order = ['distance'], axis = 0)
 
-def best_ones_ids(id):
+def best_ones_ids(id, weight1, weight2):
     res_scores, color_scores = getResNetandColorScores(id)
-    arr = normalize_arrays_and_weighted_avg(res_scores, color_scores)
+    arr = normalize_arrays_and_weighted_avg(res_scores, color_scores, weight1, weight2)
     new = get_k_min(arr, 10)
     ret = []
     for item in new:
         ret.append(item[0])
     return ret
 
-print(best_ones_ids("60"))
+print(best_ones_ids("60", 0.1, 0.9))
 
 
 
