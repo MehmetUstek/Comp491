@@ -1,5 +1,6 @@
 import 'package:comp491/UI/profilePage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../view/User.dart';
 import '../view/authentication_service.dart';
@@ -45,6 +46,8 @@ class _ProfileTab extends State<ProfileTab> {
       primary: Colors.black54,
     );
     return Scaffold(
+      appBar: AppBar(centerTitle: true, backgroundColor: Colors.black, title: Text("Product Finder", style: GoogleFonts.poppins(textStyle:TextStyle(color: Colors.white, fontSize: 25, ),))),
+
       body: Center(
           child: Container(
             width: MediaQuery.of(context).size.width,
@@ -53,7 +56,7 @@ class _ProfileTab extends State<ProfileTab> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(padding: EdgeInsets.only(top: 100)),
+                Padding(padding: EdgeInsets.only(top: 20)),
 
                 Padding(
                   padding: padding,
@@ -71,32 +74,6 @@ class _ProfileTab extends State<ProfileTab> {
                               builder: (context) =>  ProfilePage(userUID: userUID,)),
                         );
                       },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: padding,
-                  child: Center(
-                    child: ElevatedButton(
-                      style: style,
-                      child: const Text(
-                        'Lorem Ipsum',
-                        style: TextStyle(fontSize: 15, color: Colors.white),
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: padding,
-                  child: Center(
-                    child: ElevatedButton(
-                      style: style,
-                      child: const Text(
-                        'Lorem Ipsum',
-                        style: TextStyle(fontSize: 15, color: Colors.white),
-                      ),
-                      onPressed: () {},
                     ),
                   ),
                 ),

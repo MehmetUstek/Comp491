@@ -98,7 +98,8 @@ def best_ones_ids(id):
     new = get_k_min(arr, 10)
     ret = []
     for item in new:
-        ret.append(item[0].item())
+        if item[0] != id:
+            ret.append(item[0].item())
     return ret
 
 # print(best_ones_ids("526"))

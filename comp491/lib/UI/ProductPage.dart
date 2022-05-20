@@ -349,6 +349,9 @@ class _ProductPage extends State<ProductPage> {
                               var imgName = ref.child(
                                   'images/' + productSuggested.image1 + '.png');
                               return OutlinedButton(
+                                // style: OutlinedButton.styleFrom(
+                                //   backgroundColor: const Color(0xffF5F5F5FF),
+                                // ),
                                 onPressed: () {
                                   Navigator.push(
                                     context,
@@ -359,6 +362,7 @@ class _ProductPage extends State<ProductPage> {
                                             )),
                                   );
                                 },
+
                                 child: SizedBox(
                                   // height: 70,
                                   width: MediaQuery.of(context).size.width / 3,

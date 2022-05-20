@@ -4,6 +4,7 @@ import 'package:comp491/view/dbQueries.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ImprovementPage extends StatefulWidget {
   final String? userUID;
@@ -74,6 +75,8 @@ class _ImprovementPage extends State<ImprovementPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(centerTitle: true, backgroundColor: Colors.black, title: Text("Product Finder", style: GoogleFonts.poppins(textStyle:TextStyle(color: Colors.white, fontSize: 25, ),))),
+
       // appBar: AppBar(
       //   // Here we take the value from the MyHomePage object that was created by
       //   // the App.build method, and use it to set our appbar title.
@@ -89,7 +92,7 @@ class _ImprovementPage extends State<ImprovementPage> {
             // mainAxisAlignment: MainAxisAlignment.start,
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Padding(padding: EdgeInsets.only(top: 100)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
               const Padding(
                 padding: EdgeInsets.only(left: 40),
                 child: Text('Shopping Bag',
@@ -325,7 +328,7 @@ class _ImprovementPage extends State<ImprovementPage> {
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                               color: Colors.black87)),
-                      Text('3000,00 TL',
+                      Text('670,00 \$',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontFamily: "Arial",
