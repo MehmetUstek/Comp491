@@ -29,9 +29,11 @@ def put_to_db(collection: Collection, data_list):
         image_str = data[1]
         image_id = image_str[7:]
         img = Image.open(f"./sub1_out/image{image_id}sub1.png")
+        gray = img.convert('LA')
+        norm = gray.convert('RGB')
         img2 = np.asarray(img)
-        img2 = crop_image(img2)
-        #vector = ex.extract_resnet(img2)
+        vector = ex.extract_resnet(img)
+        vector_colorless = ex.extract_resnet(norm)
         colour, perc = clr.get_image_color_features(img2)
         price_with_dollars = data[2]
         price = price_with_dollars[1:]
@@ -40,7 +42,8 @@ def put_to_db(collection: Collection, data_list):
             "Pname" : data[0],
             "Pprice" : price,
             "Pdescription": data[3],
-            #"resnet50": bson.binary.Binary(pickle.dumps(vector)),
+            "resnet50": bson.binary.Binary(pickle.dumps(vector)),
+            "renet50-colorless": bson.binary.Binary(pickle.dumps(vector_colorless)),
             "color": bson.binary.Binary(pickle.dumps(colour)),
             "percentage": bson.binary.Binary(pickle.dumps(perc))
         })
