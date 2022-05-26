@@ -1,6 +1,6 @@
 class UserData {
   String? oid;
-  final String userUID;
+  final String? userUID;
   String? userEmail;
   String? userName;
 
@@ -14,7 +14,7 @@ class UserData {
   @override
   String toString() {
     return "user" +
-        this.userUID +
+        this.userUID! +
         "userName" +
         this.userName.toString();
   }

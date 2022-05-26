@@ -217,7 +217,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // print(futureFullData);
     // futureHomeContent = fetchHomeContent();
 
-    fetchUser(userUID!).then((value) => _user = value);
+    // fetchUser(userUID!).then((value) => _user = value);
     // user.initUser(userUID!).then((value) {
     //   print(value);
     //   print("outside" + user.toString());

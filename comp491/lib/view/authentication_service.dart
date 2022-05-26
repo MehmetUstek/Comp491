@@ -56,18 +56,12 @@ class AuthenticationService{
       UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
       User? user = userCredential.user;
       final userFirebase = _firebaseAuth.currentUser;
-      fetchUser(userFirebase!.uid).then((value) =>{
-
-      });
-      // if (findOne(where.eq('userUID', userFirebase!.uid),
-      //         collectionType: CollectionType.UserCollection) ==
-      //     null) {
-      //   insertOne({
-      //     'userUID': userFirebase.uid,
-      //     'userEmail': userFirebase.email,
-      //     'userName': userFirebase.displayName,
-      //   }, collectionType: CollectionType.UserCollection);
-      // }
+      // fetchUser(user?.uid).catchError((){
+      //
+      // });
+      createUser(UserData(userUID: user?.uid,
+          userEmail: user?.email,
+          userName: user?.displayName));
       return "Signed in";
     } on FirebaseAuthException catch(e){
       return e.message;

@@ -4,9 +4,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../view/Product.dart';
 import 'ProductPage.dart';
+
 
 class HomePage extends StatefulWidget {
   final String? userUID;
@@ -35,6 +37,7 @@ class _HomePage extends State<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(centerTitle: true, backgroundColor: Colors.black, title: Text("Product Finder", style: GoogleFonts.poppins(textStyle:TextStyle(color: Colors.white, fontSize: 25, ),))),
       body: Center(
         child: Container(
           color: Colors.white,
@@ -42,7 +45,7 @@ class _HomePage extends State<HomePage>
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 100),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
               child: FutureBuilder(
                   future: future,
                   builder:
@@ -73,8 +76,14 @@ class _HomePage extends State<HomePage>
                         itemBuilder: (BuildContext context, int index) {
                           var img1Name = ref.child(
                               'images/' + products[index].image1 + '.png');
-                          return OutlinedButton(
+                          return Padding(
+                            padding: const EdgeInsets.only(top:20),
+                            child:FittedBox(
+                            // fit: BoxFit.scaleDown,
+                            child:
+                            OutlinedButton(
                             style: OutlinedButton.styleFrom(
+                              backgroundColor: const Color(0xfff5f5f5ff),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 side: const BorderSide(
@@ -90,6 +99,8 @@ class _HomePage extends State<HomePage>
                                     builder: (context) => ProductPage(
                                           product: products[index],
                                           userUID: userUID,
+                                      colorWeight: 0.8,
+                                      shapeWeight: 0.2,
                                         )),
                               );
                             },
@@ -141,17 +152,21 @@ class _HomePage extends State<HomePage>
                                 // ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.only(left: 5, top: 15),
-                                  child: Text(products[index].title,
+                                      const EdgeInsets.only(left: 5, top: 10),
+                                  child: SizedBox(
+                                    width:120,
+                                    height:25,
+                                    child:Text(products[index].title,
                                       textAlign: TextAlign.left,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 12,
                                           color: Colors.black)),
                                 ),
+                                ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.only(left: 5, top: 10),
+                                      const EdgeInsets.only(left: 40, top: 5, bottom: 10),
                                   child: Text(products[index].price + " \$",
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
@@ -161,6 +176,8 @@ class _HomePage extends State<HomePage>
                                 ),
                               ],
                             ),
+                          ),
+                          ),
                           );
                         },
                       );
