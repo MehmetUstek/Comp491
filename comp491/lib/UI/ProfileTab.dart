@@ -43,7 +43,7 @@ class _ProfileTab extends State<ProfileTab> {
       ),
       fixedSize:
       Size(MediaQuery.of(context).size.width *7/8, 52),
-      primary: Colors.black54,
+      primary: Colors.black,
     );
     return Scaffold(
       appBar: AppBar(centerTitle: true, backgroundColor: Colors.black, title: Text("Product Finder", style: GoogleFonts.poppins(textStyle:TextStyle(color: Colors.white, fontSize: 25, ),))),

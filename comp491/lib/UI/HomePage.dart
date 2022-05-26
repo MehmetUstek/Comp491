@@ -83,7 +83,7 @@ class _HomePage extends State<HomePage>
                             child:
                             OutlinedButton(
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: const Color(0xffF5F5F5FF),
+                              backgroundColor: const Color(0xfff5f5f5ff),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 side: const BorderSide(
@@ -99,6 +99,8 @@ class _HomePage extends State<HomePage>
                                     builder: (context) => ProductPage(
                                           product: products[index],
                                           userUID: userUID,
+                                      colorWeight: 0.8,
+                                      shapeWeight: 0.2,
                                         )),
                               );
                             },

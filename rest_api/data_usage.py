@@ -9,7 +9,7 @@ import sys
 sys.path.insert(0, "../artemis/src/compare")
 sys.path.insert(0, "../color_histogram")
 
-# import image_extraction as ex
+import image_extraction as ex
 import color_histogram as clr
 import numpy as np
 
@@ -92,9 +92,10 @@ def get_k_min(scores, k):
         order = ['distance'], axis = 0)
 
 def best_ones_ids(id, weight1, weight2):
+    k_min = 10
     res_scores, color_scores = getResNetandColorScores(id)
     arr = normalize_arrays_and_weighted_avg(res_scores, color_scores, weight1, weight2)
-    new = get_k_min(arr, 10)
+    new = get_k_min(arr, k_min)
     ret = []
     for item in new:
         if item[0] != id:

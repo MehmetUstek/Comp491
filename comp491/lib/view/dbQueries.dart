@@ -9,7 +9,9 @@ import 'User.dart';
 
 enum CollectionType { UserCollection }
 
-var localIP = "172.20.147.57";
+// var localIP = "172.20.147.63";
+// Emulator:
+var localIP = "10.0.2.2";
 var db = Db(
     dotenv.get('MONGODB_URI_LOCAL', fallback: 'API_URL not found'));
 //User
@@ -275,6 +277,7 @@ Future<String> addToUserBagByUserUIDandPid(String? userUID, int Pid) async {
   }
 }
 
+
 Future<String> deleteProductFromUserBagByUserUIDandPid(String? userUID, int Pid) async {
   final queryParams = {
     'userUID': userUID,
@@ -296,9 +299,14 @@ Future<String> deleteProductFromUserBagByUserUIDandPid(String? userUID, int Pid)
 }
 
 // Suggestions
-Future<List<Product>> getSuggestedProductsByPid(String pid) async {
+Future<List<Product>> getSuggestedProductsByPid(String pid, double? weight1, double? weight2) async {
+  weight1 ??= 0.5;
+  weight2 ??= 0.5;
   final queryParams = {
-    'Pid': pid
+    'Pid': pid,
+    'weight1': weight1,
+    'weight2': weight2,
+
   };
   final response = await http
       .post(Uri.parse('http://$localIP:9090/product/getSuggestedProductsByPid'), headers: {

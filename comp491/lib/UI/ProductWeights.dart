@@ -61,8 +61,7 @@ class _ProductWeights extends State<ProductWeights> {
 
   double headerSize = 17;
   double slideItemWidth = 75;
-  double _currentSliderValue = 20;
-  double _currentSliderValueShape = 20;
+  double _currentSliderValue = 50;
 
   @override
   Widget build(BuildContext context) {
@@ -300,13 +299,8 @@ class _ProductWeights extends State<ProductWeights> {
                     onPressed: () {
                       Navigator.pop(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => ProductPage(
-                                  product: product,
-                                  userUID: userUID,
-                                  colorWeight: _currentSliderValue,
-                                  shapeWeight: _currentSliderValueShape,
-                                )),
+                        [_currentSliderValue,
+                        100-_currentSliderValue]
                       );
                     },
                     child: Text("Submit")),

@@ -34,6 +34,7 @@ class _ProductPage extends State<ProductPage> {
   var img3dUrl;
   var img4dUrl;
   var future;
+  var suggestedFuture;
   var temp1;
   var temp2;
   var temp3;
@@ -55,6 +56,7 @@ class _ProductPage extends State<ProductPage> {
     img3dUrl = img3Name.getDownloadURL();
     img4dUrl = img4Name.getDownloadURL();
     future = img1dUrl;
+    suggestedFuture = getSuggestedProductsByPid(product.productId.toString(), shapeWeight, colorWeight);
   }
 
   final ref = FirebaseStorage.instance.ref();
@@ -277,15 +279,27 @@ class _ProductPage extends State<ProductPage> {
                   height: 45,
                   child: Row(mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                    TextButton(onPressed: (){
-                      Navigator.push(
+                    TextButton(onPressed: () async {
+                      final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => ProductWeights(
                               product: product,
                               userUID: userUID,
                             )),
-                      );
+                      )
+                      //     .then((value) {
+                      //   setState(() {
+                      //     suggestedFuture = getSuggestedProductsByPid(product.productId.toString(), shapeWeight, colorWeight);
+                      //   });
+                      // })
+                      ;
+                      print(result);
+                      colorWeight = result[0]/100;
+                      shapeWeight = result[1]/100;
+                      setState(() {
+                        suggestedFuture = getSuggestedProductsByPid(product.productId.toString(), shapeWeight, colorWeight);
+                      });
                     }, child:
                     const Text('Product Preferences',
                         textAlign: TextAlign.center,
@@ -327,13 +341,21 @@ class _ProductPage extends State<ProductPage> {
                 height: 180,
                 child: FutureBuilder(
                     future:
-                        getSuggestedProductsByPid(product.productId.toString()),
+                        suggestedFuture,
                     builder: (BuildContext context,
                         AsyncSnapshot<List<Product>> snapshotSuggestions) {
                       if (snapshotSuggestions.hasError) {
                         // Show error
                         return const Text(
                             "Error Occurred while downloading user data");
+                      }
+                      if (snapshotSuggestions.connectionState != ConnectionState.done) {
+                        return const FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: CircularProgressIndicator(
+                            color: Color(0xffB20029),
+                          ),
+                        );
                       }
                       if (snapshotSuggestions.hasData) {
                         List<Product>? products = snapshotSuggestions.data;
@@ -433,6 +455,7 @@ class _ProductPage extends State<ProductPage> {
                                             left: 5, top: 15),
                                         child: Text(
                                           productSuggested.title,
+                                          maxLines: 2,
                                           textAlign: TextAlign.left,
                                           style: const TextStyle(
                                               fontWeight: FontWeight.normal,

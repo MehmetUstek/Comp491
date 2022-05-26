@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ImprovementPage extends StatefulWidget {
   final String? userUID;
+
   const ImprovementPage({Key? key, required this.userUID}) : super(key: key);
 
   @override
@@ -16,21 +17,9 @@ class ImprovementPage extends StatefulWidget {
 
 class _ImprovementPage extends State<ImprovementPage> {
   var future;
+  late int totalAmount = 0;
   late String? userUID;
   final ref = FirebaseStorage.instance.ref();
-  final shoppingBag = List.generate(
-    20,
-    (i) => Product(
-      productId: 1,
-      title: "1",
-      description: "1",
-      price: "1",
-      image1: "image0sub1",
-      image2: "image0sub2",
-      image3: "image0sub3",
-      image4: "image0sub4",
-    ),
-  );
 
   // FutureBuilder(
   // future: getAllProducts(),
@@ -75,7 +64,16 @@ class _ImprovementPage extends State<ImprovementPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, backgroundColor: Colors.black, title: Text("Product Finder", style: GoogleFonts.poppins(textStyle:TextStyle(color: Colors.white, fontSize: 25, ),))),
+      appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.black,
+          title: Text("Product Finder",
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              ))),
 
       // appBar: AppBar(
       //   // Here we take the value from the MyHomePage object that was created by
@@ -103,211 +101,199 @@ class _ImprovementPage extends State<ImprovementPage> {
                         fontSize: 18,
                         color: Colors.black87)),
               ),
-              const Padding(padding: EdgeInsets.only(top: 40)),
+              const Padding(padding: EdgeInsets.only(top: 30)),
               Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 //TODO: Change later.
-                height: MediaQuery.of(context).size.height * 4 / 7,
-                child:
-                FutureBuilder(
-                  future: future,
-                builder: (BuildContext context,
-                AsyncSnapshot<dynamic>
-                snapshot2) {
-                  if (snapshot2.hasError) {
-                    // Show error
-                    return const Text(
-                        "Error Occurred while downloading user bag data");
-                  }
-                  if (snapshot2.hasData) {
-                    List<Product> product_list = snapshot2.data;
-                    return
-                      ListView.builder(
-                        //TODO: Change later.
-                        // itemCount: todos.length,
-                          itemCount: product_list.length,
-                          padding: const EdgeInsets.only(left: 5, right: 5),
-                          scrollDirection: Axis.vertical,
-                          addAutomaticKeepAlives: false,
-                          cacheExtent: 100,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Slidable(
-                              key: const ValueKey(0),
+                height: MediaQuery.of(context).size.height * 4 / 7-15,
+                child: FutureBuilder(
+                    future: future,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot2) {
+                      if (snapshot2.hasError) {
+                        // Show error
+                        return const Text(
+                            "Error Occurred while downloading user bag data");
+                      }
+                      if (snapshot2.hasData) {
+                        List<Product> product_list = snapshot2.data;
+                        totalAmount = 0;
 
-                              // The end action pane is the one at the right or the bottom side.
-                              endActionPane: ActionPane(
-                                // dismissible: DismissiblePane(onDismissed: () {}),
-                                motion: const ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    flex: 2,
-                                    //TODO: Write OnPressed.
-                                    onPressed: (BuildContext context) {
-                                      deleteProduct(context, product_list[index].productId);
-                                    },
-                                    autoClose: false,
+                        for(Product product in product_list){
+                          totalAmount += int.parse(product.price);
+                        }
+                        return ListView.builder(
+                            //TODO: Change later.
+                            // itemCount: todos.length,
+                            itemCount: product_list.length,
+                            padding: const EdgeInsets.only(left: 5, right: 5),
+                            scrollDirection: Axis.vertical,
+                            addAutomaticKeepAlives: false,
+                            cacheExtent: 100,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              Product product = product_list[index];
+                              String title = product.title;
+                              String price = product.price;
+                              var img1Name = ref.child(
+                                  'images/' + product.image1 + '.png');
+                              return Slidable(
+                                key: const ValueKey(0),
 
-                                    backgroundColor: Colors.red,
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.delete_rounded,
-                                    label: 'Delete',
-                                  ),
-                                  const SlidableAction(
-                                    flex: 2,
-                                    onPressed: null,
-                                    backgroundColor: Colors.black45,
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.close,
-                                    label: 'Close',
-                                  ),
-                                ],
-                              ),
-                              child: FutureBuilder(
-                                future: getProductByPid(product_list[index].productId),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<dynamic> snapshot) {
-                                  if (snapshot.hasError) {
-                                    // Show error
-                                    return const Text(
-                                        "Error Occurred while downloading user data");
-                                  }
-                                  if (snapshot.hasData) {
-                                    Product product = snapshot.data;
-                                    String title = product.title;
-                                    String price = product.price;
-                                    var img1Name = ref
-                                        .child(
-                                        'images/' + product.image1 + '.png');
-                                    return SizedBox(
-                                      height: 100,
-                                      // width: 100,
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              5),
-                                          side: const BorderSide(
-                                            color: Colors.black12,
+                                // The end action pane is the one at the right or the bottom side.
+                                endActionPane: ActionPane(
+                                  // dismissible: DismissiblePane(onDismissed: () {}),
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      flex: 2,
+                                      //TODO: Write OnPressed.
+                                      onPressed: (BuildContext context) {
+                                        deleteProduct(context,
+                                            product_list[index].productId);
+                                      },
+                                      autoClose: false,
+
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.delete_rounded,
+                                      label: 'Delete',
+                                    ),
+                                    const SlidableAction(
+                                      flex: 2,
+                                      onPressed: null,
+                                      backgroundColor: Colors.black45,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.close,
+                                      label: 'Close',
+                                    ),
+                                  ],
+                                ),
+                                child: SizedBox(
+                                        height: 100,
+                                        // width: 100,
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            side: const BorderSide(
+                                              color: Colors.black12,
+                                            ),
                                           ),
-                                        ),
-                                        semanticContainer: true,
-                                        clipBehavior: Clip
-                                            .antiAliasWithSaveLayer,
-                                        elevation: 10,
-                                        shadowColor: Colors.black,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 30),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              FutureBuilder(
-                                                  future: img1Name
-                                                      .getDownloadURL(),
-                                                  builder: (
-                                                      BuildContext context,
-                                                      AsyncSnapshot<dynamic>
-                                                      snapshot1) {
-                                                    if (snapshot1.hasError) {
-                                                      // Show error
-                                                      return const Text(
-                                                          "Error Occurred while downloading user data");
-                                                    }
-                                                    if (snapshot1.hasData) {
-                                                      return CachedNetworkImage(
-                                                          imageUrl: snapshot1
-                                                              .data,
-                                                          placeholder: (context,
-                                                              url) =>
-                                                          const FittedBox(fit: BoxFit.scaleDown,
-                                                            child:CircularProgressIndicator(
-                                                              color: Color(0xffB20029),
-
-                                                            ),
+                                          semanticContainer: true,
+                                          clipBehavior:
+                                              Clip.antiAliasWithSaveLayer,
+                                          elevation: 10,
+                                          shadowColor: Colors.black,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, right: 30),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                FutureBuilder(
+                                                    future: img1Name
+                                                        .getDownloadURL(),
+                                                    builder: (BuildContext
+                                                            context,
+                                                        AsyncSnapshot<dynamic>
+                                                            snapshot1) {
+                                                      if (snapshot1.hasError) {
+                                                        // Show error
+                                                        return const Text(
+                                                            "Error Occurred while downloading user data");
+                                                      }
+                                                      if (snapshot1.hasData) {
+                                                        return CachedNetworkImage(
+                                                            imageUrl: snapshot1
+                                                                .data,
+                                                            placeholder: (context,
+                                                                    url) =>
+                                                                const FittedBox(
+                                                                  fit: BoxFit
+                                                                      .scaleDown,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    color: Color(
+                                                                        0xffB20029),
+                                                                  ),
+                                                                ),
+                                                            errorWidget:
+                                                                (context, url,
+                                                                        error) =>
+                                                                    const Icon(Icons
+                                                                        .error),
+                                                            fit: BoxFit
+                                                                .fitHeight);
+                                                      } else {
+                                                        return const FittedBox(
+                                                          fit: BoxFit.scaleDown,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            color: Color(
+                                                                0xffB20029),
                                                           ),
-                                                          errorWidget: (context,
-                                                              url, error) =>
-                                                              Icon(Icons.error),
-                                                          fit: BoxFit
-                                                              .fitHeight);
-                                                    } else {
-                                                      return const FittedBox(fit: BoxFit.scaleDown,
-                                                        child:CircularProgressIndicator(
-                                                          color: Color(0xffB20029),
-
-                                                        ),
-                                                      );
-                                                    }
-                                                  }),
-                                              // Image.asset(
-                                              //   "../data_crawling/images/image"+ shoppingBag[index].imageId+"sub1.png",
-                                              //   fit: BoxFit.fitHeight,
-                                              // ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  SizedBox(
-                                                    child:
-                                                    Text(title,
-                                                        textAlign: TextAlign
-                                                            .center,
-
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                            FontWeight.normal,
-                                                            fontSize: 12,
-                                                            color: Colors
-                                                                .black)),
-                                                    width: 150,
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .only(
-                                                        top: 10),
-                                                    child: Text(price + " \$",
-                                                        textAlign: TextAlign
-                                                            .center,
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                            FontWeight.normal,
-                                                            fontSize: 13,
-                                                            color: Colors
-                                                                .black45)),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                                        );
+                                                      }
+                                                    }),
+                                                // Image.asset(
+                                                //   "../data_crawling/images/image"+ shoppingBag[index].imageId+"sub1.png",
+                                                //   fit: BoxFit.fitHeight,
+                                                // ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      child: Text(title,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              fontSize: 12,
+                                                              color: Colors
+                                                                  .black)),
+                                                      width: 150,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 10),
+                                                      child: Text(price + " \$",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              fontSize: 13,
+                                                              color: Colors
+                                                                  .black45)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    );
-                                  } else {
-                                    return const FittedBox(fit: BoxFit.scaleDown,
-                                      child:CircularProgressIndicator(
-                                        color: Color(0xffB20029),
 
-                                      ),
-                                    );
-                                  }
-                                },
-                              ),
-                            );
-                          }
-                      );
-                  }
-                  else {
-                    return const FittedBox(fit: BoxFit.scaleDown,
-                      child:CircularProgressIndicator(
-                        color: Color(0xffB20029),
-
-                      ),
-                    );
-                  }
-                }
-              ),
+                              );
+                            });
+                      } else {
+                        return const FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: CircularProgressIndicator(
+                            color: Color(0xffB20029),
+                          ),
+                        );
+                      }
+                    }),
               ),
               Center(
                 child: Container(
@@ -320,21 +306,21 @@ class _ImprovementPage extends State<ImprovementPage> {
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const <Widget>[
-                      Text('TOTAL',
+                    children: <Widget>[
+                      const Text('TOTAL',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontFamily: "Arial",
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                               color: Colors.black87)),
-                      Text('670,00 \$',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontFamily: "Arial",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: Colors.black87)),
+                         Text('$totalAmount \$',
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                  fontFamily: "Arial",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Colors.black87)),
                     ]),
               ),
               Padding(
