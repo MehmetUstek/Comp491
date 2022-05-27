@@ -404,7 +404,7 @@ class _SignInState extends State<SignInPage> {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           side: BorderSide(
                               width: 0.0,
@@ -414,7 +414,7 @@ class _SignInState extends State<SignInPage> {
                         fixedSize: Size(60, 60),
                         primary: Colors.white,
                       ),
-                      child: FaIcon(
+                      child: const FaIcon(
                         FontAwesomeIcons.apple,
                         color: Color(0xff272022),
                       ),

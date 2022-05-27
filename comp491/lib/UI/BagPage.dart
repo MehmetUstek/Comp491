@@ -106,7 +106,8 @@ class _ImprovementPage extends State<ImprovementPage> {
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 //TODO: Change later.
-                height: MediaQuery.of(context).size.height * 4 / 7-15,
+                height: MediaQuery.of(context).size.height * 4 / 7-15
+                ,
                 child: FutureBuilder(
                     future: future,
                     builder: (BuildContext context,

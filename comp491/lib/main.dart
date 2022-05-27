@@ -74,14 +74,6 @@ class AuthenticationWrapper extends StatelessWidget {
         title: 'Flutter Memo Home Page',
         userUID: FirebaseAuth.instance.currentUser?.uid);
   }
-
-//   var currentUser = FirebaseAuth.instance.currentUser;
-//   if (currentUser != null) {
-//     return MyHomePage(
-//         title: 'Flutter Memo Home Page', userUID: currentUser.uid);
-//   }
-//   return SignInPage();
-// }
 }
 
 class MyHomePage extends StatefulWidget {
@@ -106,9 +98,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String? userUID;
-  bool isPremium = false;
   UserData? _user;
-  late var subscription;
   final List<Tab> myTabs = <Tab>[
     Tab(
       child: Row(
@@ -163,52 +153,9 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
   final List<Widget> profileTabWidgets = <Widget>[];
 
-  //MAP
-  // GoogleMapController? _controller;
-  // Location currentLocation = Location();
-  // Set<Marker> _markers = {};
-  //
-  // void getLocation() async {
-  //   await currentLocation.getLocation();
-  //   subscription = currentLocation.onLocationChanged.listen((LocationData loc) {
-  //     var str = ModalRoute.of(context)!.settings.name;
-  //     print("String" + str!);
-  //     _controller
-  //         ?.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
-  //       target: LatLng(loc.latitude ?? 0.0, loc.longitude ?? 0.0),
-  //       zoom: 12.0,
-  //     )));
-  //     print(loc.latitude);
-  //     print(loc.longitude);
-  //     setState(() {
-  //       _markers.add(Marker(
-  //           markerId: MarkerId('Home'),
-  //           position: LatLng(loc.latitude ?? 0.0, loc.longitude ?? 0.0)));
-  //     });
-  //   });
-  //   // subscription.cancel();
-  //   NavigatorState? navigatorState = Navigator.maybeOf(context);
-  //   if (navigatorState != null) {}
-  // }
-
   _MyHomePageState(this.userUID);
 
-  bool isUserPremium() {
-    return isPremium;
-  }
 
-  Gradient background = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.topRight,
-    stops: [
-      0.5,
-      0.9,
-    ],
-    colors: [
-      Color(0xffA9C7F2),
-      Color(0xff8DB5EE),
-    ],
-  );
 
   @override
   void initState() {
@@ -296,9 +243,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
-          // backgroundColor: Colors.deepOrangeAccent,
           backgroundColor: Colors.white,
-          // bottomNavigationBar: TabBar(tabs: myTabs,),
           bottomNavigationBar: SizedBox(height: 65, child: menu()),
           // appBar: AppBar(
           //   // Here we take the value from the MyHomePage object that was created by

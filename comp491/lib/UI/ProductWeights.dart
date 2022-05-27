@@ -260,7 +260,7 @@ class _ProductWeights extends State<ProductWeights> {
                     children: const <Widget>[
                       SizedBox(
                         height: 22,
-                        child: Text("Color",
+                        child: Text("Shape",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 fontWeight: FontWeight.normal,
@@ -269,7 +269,7 @@ class _ProductWeights extends State<ProductWeights> {
                       ),
                       SizedBox(
                         height: 22,
-                        child: Text("Shape",
+                        child: Text("Color",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                                 fontWeight: FontWeight.normal,
@@ -299,11 +299,11 @@ class _ProductWeights extends State<ProductWeights> {
                     onPressed: () {
                       Navigator.pop(
                         context,
-                        [_currentSliderValue,
-                        100-_currentSliderValue]
+                        [_currentSliderValue+10,
+                        90-_currentSliderValue]
                       );
                     },
-                    child: Text("Submit")),
+                    child: Text("Apply Changes")),
               ),
             ],
           ),

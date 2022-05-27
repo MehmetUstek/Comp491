@@ -99,7 +99,7 @@ class _ProductPage extends State<ProductPage> {
                       height: 22,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: Text(product.title,
+                        child: Text(product.title.substring(0,15),
                             textAlign: TextAlign.start,
                             style: const TextStyle(
                                 fontWeight: FontWeight.normal,
@@ -393,26 +393,6 @@ class _ProductPage extends State<ProductPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Container(
-                                        width: 35,
-                                        height: 20,
-                                        margin: const EdgeInsets.only(left: 90),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xff272022),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: const FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: Text('99%',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 11,
-                                                color: Colors.white,
-                                              )),
-                                        ),
-                                      ),
                                       FutureBuilder(
                                           future: imgName.getDownloadURL(),
                                           builder: (BuildContext context,

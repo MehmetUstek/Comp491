@@ -9,9 +9,10 @@ import 'User.dart';
 
 enum CollectionType { UserCollection }
 
-// var localIP = "172.20.147.63";
+var localIP = "172.20.147.63";
+// var localIP = "172.20.10.2";
 // Emulator:
-var localIP = "10.0.2.2";
+// var localIP = "10.0.2.2";
 var db = Db(
     dotenv.get('MONGODB_URI_LOCAL', fallback: 'API_URL not found'));
 //User
